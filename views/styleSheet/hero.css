@@ -2,12 +2,14 @@
 # Header Section
 --------------------------------------------------------------*/
 #header {
+  position: absolute;
   top: 0px;
   height: 70px;
   z-index: 997;
   transition: all 0.5s;
   padding: 10px 0;
-  background: rgba(26, 24, 22, 0.2);
+  width: 100%;
+  background: rgba(26, 24, 22, 0.5);
 }
 
 #header .logo h1 {
@@ -248,13 +250,15 @@ a {
 }
 
 /*--------------------------------------------------------------
-# card recette Section
+#carousel Section
 --------------------------------------------------------------*/
 
 .carousel {
     background-image: url("../../assets/slide/slide-1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    width: 100%;
+    overflow: hidden;
 
   }
   
@@ -332,48 +336,4 @@ a {
 .card:hover .card-image {
     transform: scale(1.2);
 }
-/* .gallery-single{
-	margin: 30px 0px;
-}
 
-.gallery-single {
-    position: relative;
-    overflow: hidden;
-    -webkit-box-shadow: 0 0 10px #ccc;
-    box-shadow: 0 0 10px #ccc;
-}
-.why-text {
-    position: absolute;
-    left: 0;
-    bottom: -100%;
-    right: 0;
-    height: 100%;
-    background: #00000080;
-    padding: 12px 12px;
-    -webkit-transition: all .3s ease;
-    transition: all .3s ease;
-}
-.why-text h4{
-	color: #ffffff;
-	font-size: 24px;
-	font-weight: 500;
-	font-family: 'Arbutus Slab', serif;
-}
-.why-text p{
-	color: #ffffff;
-	font-size: 18px;
-	border-bottom: 1px dashed #010101;
-	margin: 0px;
-	padding-bottom: 15px;
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-.why-text h5{
-	font-size: 28px;
-	font-weight: 600;
-	color: #ffffff;
-}
-
-.gallery-single:hover .why-text{
-	bottom: 0px;
-} */

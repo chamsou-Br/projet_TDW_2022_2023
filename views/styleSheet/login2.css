@@ -1,14 +1,9 @@
-body {
-    background-image: linear-gradient(135deg, #FAB2FF 10%, #ffb03b 100%);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-family: "Open Sans", sans-serif;
-    color: #333333;
-  }
-  
+
   .box-form {
-    margin: 0 auto;
+position: relative;
+top: 50%;
+transform: translateY(-50%);
+    margin: auto;
     width: 80%;
     background: #FFFFFF;
     border-radius: 10px;
@@ -30,6 +25,10 @@ body {
   .box-form div {
     height: auto;
   }
+  
+  .box-form .left h1{
+    color: #cfa671;
+  }
   .box-form .left {
     color: #FFFFFF;
     background-size: cover;
@@ -41,12 +40,12 @@ body {
     padding: 30px;
     width: 100%;
     height: 100%;
-    background: #5961f9ad;
+    background: #000000ad;
     overflow: hidden;
     box-sizing: border-box;
   }
   .box-form .left .overlay h1 {
-    font-size: 8vmax;
+    font-size: 6vmax;
     line-height: 1;
     font-weight: 900;
     margin-top: 40px;
@@ -70,21 +69,33 @@ body {
     margin-left: 30px;
   }
   .box-form .right {
-    padding: 40px;
+    padding:  40px;
     overflow: hidden;
   }
   @media (max-width: 980px) {
+    .box-form {
+        width: 100%;
+    }
     .box-form .right {
       width: 100%;
     }
+    .box-form .left .overlay span a:last-child {
+
+        margin-left: 5px;
+      }
   }
   .box-form .right h5 {
     font-size: 3vmax;
+    color: #cfa671;
     line-height: 0;
   }
   .box-form .right p {
+    margin-top: 30px;
     font-size: 14px;
-    color: #B0B3B9;
+    color: #000;
+  }
+  .box-form .right a {
+    color: #000;
   }
   .box-form .right .inputs {
     overflow: hidden;
@@ -92,7 +103,7 @@ body {
   .box-form .right input {
     width: 100%;
     padding: 10px;
-    margin-top: 25px;
+    margin-top: 20px;
     font-size: 16px;
     border: none;
     outline: none;
@@ -119,7 +130,7 @@ body {
     border: 0;
     outline: 0;
     box-shadow: 0px 4px 20px 0px linear-gradient(135deg, #FAB2FF 10%, #1904E5 100%);
-    background-image: linear-gradient(135deg, #FAB2FF 10%, #1904E5 100%);
+    background: #cfa671;
   }
   
   label {
@@ -133,7 +144,7 @@ body {
     position: absolute;
     font-family: FontAwesome;
     background: transparent;
-    border: 3px solid #3b5998;
+    border: 3px solid #cfa671;
     border-radius: 4px;
     color: transparent;
     left: -30px;
@@ -145,11 +156,11 @@ body {
     content: ' \f00c';
     color: #fff;
     cursor: pointer;
-    background: #3b5998;
+    background: #cfa671;
   }
   
   label:hover::before .text-checkbox {
-    background: #3b5998;
+    background: #cfa671;
   }
   
   label span.text-checkbox {
