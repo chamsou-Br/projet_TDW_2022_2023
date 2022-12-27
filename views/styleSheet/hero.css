@@ -1,6 +1,7 @@
 /*--------------------------------------------------------------
-# Header Section
+# Header Section cfa671 ffb03b
 --------------------------------------------------------------*/
+
 #header {
   position: absolute;
   top: 0px;
@@ -49,14 +50,14 @@
 }
 .navbar .iconContainer:hover {
   padding: 10px;
-  background-color: #ffa012;
+  background-color: #cfa671;
   border-radius: 20px;
 }
 .navbar li {
   position: relative;
 }
 .navbar li i {
-  color: #ffa012;
+  color: #cfa671;
   text-align: center;
 }
 .navbar .iconContainer:hover i {
@@ -64,7 +65,7 @@
 }
 
 .contact-btn {
-  background: #ffb03b;
+  background: #cfa671;
   color: #fff;
   border-radius: 50px;
   margin: 0 0 0 20px;
@@ -77,7 +78,7 @@
 }
 
 .contact-btn:hover {
-  background: #ffa012;
+  background: #cfa671;
   color: #fff;
 }
 
@@ -140,7 +141,7 @@
 }
 
 #hero h2 span {
-  color: #ffb03b;
+  color: #cfa671;
 }
 
 #hero p {
@@ -220,12 +221,12 @@
   -webkit-animation-delay: 0.8s;
   animation-delay: 0.8s;
   color: #fff;
-  border: 2px solid #ffb03b;
+  border: 2px solid #cfa671;
 }
 
 #hero .btn-menu:hover,
 #hero .btn-book:hover {
-  background: #ffb03b;
+  background: #cfa671;
   color: #fff;
 }
 
@@ -257,6 +258,7 @@ a {
     background-image: url("../../assets/slide/slide-1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
     width: 100%;
     overflow: hidden;
 
@@ -272,7 +274,33 @@ a {
     background-color: rgba(12, 11, 10, 0.7);
 }
   
-  
+.section-title {
+  padding-top: 30px;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.section-title h2 {
+  margin: 15px 0 0 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #5f5950;
+}
+
+.section-title h2 span {
+  color: #cfa671;
+}
+
+.section-title p {
+  margin: 15px auto 0 auto;
+  font-weight: 300;
+}
+
+@media (min-width: 1024px) {
+  .section-title p {
+    width: 50%;
+  }
+}
 
 .carousel-indicators {
     margin-top: 200px;
@@ -281,14 +309,14 @@ a {
 .card {
   margin: auto;
   overflow: hidden;
-
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.3);
 }
 
 .card .box {
-  padding: 30px 30px;
+  padding: 35px 30px;
   width: 100%;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-  transition: all ease-in-out 0.3s;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.4);
+  transition: all ease-in-out 0.4s;
 }
 
 .card .box span {
@@ -316,13 +344,13 @@ a {
 .card .card-image {
     background-size: cover;
     height: 100px;
-    transition: all ease-in-out 0.3s;
+    transition: all ease-in-out 0.4s;
   }
   
 
 .card:hover .box {
-  background: #ffb03b;
-  padding: 20px 20px 70px 30px;
+  background: #cfa671;
+  padding: 20px 20px 50px 30px;
   box-shadow: 10px 15px 30px rgba(0, 0, 0, 0.18);
 }
 
@@ -337,3 +365,225 @@ a {
     transform: scale(1.2);
 }
 
+/*--------------------------------------------------------------
+# navbar Section
+--------------------------------------------------------------*/
+#nav {
+  position: sticky;
+  top: 0px;
+  height: 70px;
+  z-index: 997;
+  transition: all 0.5s;
+  padding: 10px 0;
+  width: 100%;
+  background: rgba(26, 24, 22, 1);
+}
+
+#nav .logo h1 {
+  font-size: 28px;
+  margin: 0;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 3px;
+}
+
+#nav .logo h1 a,  #nav a {
+  color: #fff;
+  text-decoration: none;
+}
+#nav li a:hover ,   #nav .logo h1 a {
+  color: #cfa671;
+}
+
+
+
+#nav .logo img {
+  padding: 0;
+  margin: 0;
+  max-height: 40px;
+}
+
+/*--------------------------------------------------------------
+# filter button
+--------------------------------------------------------------*/
+
+.filter-button-group {
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  margin: 10px 15px;
+  display: inline-block;
+}
+
+.filter-button-group button {
+  color: #333;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: #fff;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 4px;
+}
+
+.filter-button-group button.active {
+  background: #cfa671;
+  color: #fff;
+  box-shadow: 2px 20px 45px 5px rgba(0,0,0,.2);
+}
+
+/*--------------------------------------------------------------
+#Deytails recette
+--------------------------------------------------------------*/
+.recette-img {
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
+  border: 4px solid #FFF;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.recette-img img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 1rem;
+  transition: all ease-in-out 0.4s;
+}
+.recette-img img:hover{
+  transform: scale(1.2);
+}
+
+.userInfo {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.userInfo h5 {
+  font-size: 16px;
+  color: #6c665c;
+  letter-spacing: 1.1;
+  font-weight: 500;
+
+}
+
+.userInfo  i {
+  color: #cfa671;
+}
+
+.etape {
+  padding: 10px 50px;
+}
+.ingredient {
+  padding: 10px 50px; 
+}
+.ingredient h1 ,.etape h1{
+  font-size: 32px;
+  font-weight: 700;
+  color: #5f5950;
+  margin-bottom: 30px;
+  
+}
+
+
+
+ .etape-item {
+  margin: 10px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+ .etape .etape-item {
+  border-left: 3px solid #cfa671;
+}
+
+ .etape-item div {
+  min-width: 25px;
+  height: 25px;
+  background-color:  #FFF;
+  border: 2px solid #5f5950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  margin-left: 15px;
+}
+ .etape-item div span {
+  color: #5f5950;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+ .etape-item h5 {
+  font-size: 14px;
+  color: #000000AA;
+  letter-spacing: 1.1;
+  font-weight: 500;
+  line-height: 25px;
+  margin-left: 15px;
+}
+
+.recette-info h1{
+  font-size: 50px;
+  font-weight: 700;
+  color: #cfa671;
+  margin-bottom: 30px;
+}
+.recette-info p {
+  font-size: 14px;
+  color: #000000AA;
+  letter-spacing: 1.1;
+  font-weight: 500;
+  line-height: 25px;
+}
+
+.recette-time {
+  display: flex;
+}
+.recette-time div {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 1.1;
+ color: #000;
+ margin: 0 10px;
+}
+.recette-time div span{
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1.1;
+  color: #6c665c;
+}
+
+.recette-calorie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 8px 10px;
+  max-width: 400px;
+  border-radius: 0.2rem;
+  background-color: #cfa671;
+  color: #FFF;
+  font-size: 14px;
+  letter-spacing: 1.1;
+  font-weight: 500;
+}
+
+.gallery{
+  margin-bottom: 20px;
+}
+.gallery .gallery-item {
+  overflow: hidden;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+}
+
+.gallery .gallery-item img {
+  transition: all ease-in-out 0.4s;
+}
+
+.gallery .gallery-item:hover img {
+  transform: scale(1.1);
+}

@@ -22,7 +22,7 @@ class userView
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./views/styleSheet/login2.css">
-    <link href="./views/styleSheet/hero2.css" rel="stylesheet" type="text/css" />
+    <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -257,13 +257,13 @@ class userView
           <h2><?php echo $title1 ?><span><?php echo $title2 ?></span></h2>
           <p><?php echo $desc ?></p>
         </div>
-    <div style="margin: 40px 0px;" id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div style="margin: 40px 0px;" id="<?php echo $title2 ?>" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators ">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="1"
                 aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="2"
                 aria-label="Slide 3"></button>
         </div>
         <div class="carousel-inner" style="padding: 0 20px;">
@@ -296,12 +296,12 @@ class userView
             </div>
         </div>
         <button style="margin-left: 0px;" class="carousel-control-prev" type="button"
-            data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            data-bs-target="#<?php echo $title2 ?>" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
         <button style="margin-right: 0px;" class="carousel-control-next" type="button"
-            data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            data-bs-target="#<?php echo $title2 ?>" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
@@ -326,6 +326,53 @@ class userView
 			</div>
         <?php
     }
+
+    private function Gallerie($nom){
+        ?>
+        <div class="gallery">
+        <div class="section-title">
+          <h2>quelque picture de <span><?php echo " ".$nom ?></span></h2>
+       </div>
+       <div class="row g-0 gallery-items">
+
+            <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+                <a href="./assets/slide/slide-1.jpg" class="gallery-lightbox">
+                <img src="./assets/slide/slide-1.jpg" alt="" class="img-fluid">
+                </a>
+            </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+                <a href="./assets/slide/slide-2.jpg" class="gallery-lightbox">
+                <img src="./assets/slide/slide-2.jpg" alt="" class="img-fluid">
+                </a>
+            </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+                <a href="./assets/slide/slide-3.jpg" class="gallery-lightbox">
+                <img src="./assets/slide/slide-3.jpg" alt="" class="img-fluid">
+                </a>
+            </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+                <a href="./assets/slide/slide-1.jpg" class="gallery-lightbox">
+                <img src="./assets/slide/slide-1.jpg" alt="" class="img-fluid">
+                </a>
+            </div>
+            </div>
+
+
+
+</div>
+        </div>
+        <?php
+    }
     private function CardRecette()
     {
         ?>
@@ -340,6 +387,94 @@ class userView
 </div>
 <?php
     }
+    private function DetaialsRecette(){
+        ?>
+    <div>
+        <div class="row">
+            <div class="col-lg-4 ingredient" >
+                 <div class="recette-img" >
+                    <img src="./assets/slide/slide-1.jpg" />
+                 </div>
+                 <div class="userInfo">
+                    <h5><i style="color: #6c665c;" class="bi bi-person-circle"></i> chamsou Br</h5>
+                    <h5>4.5 <i class="bi bi-star-fill"></i></h5>
+                 </div>
+                 <h1>Ingredient</h1> 
+                 <div class="etape-item">
+                    <div>
+                        <span>1</span>
+                    </div>
+                    <h5>400g from tomato and botato </h5>
+                </div>
+                <div class="etape-item">
+                    <div>
+                        <span>2</span>
+                    </div>
+                    <h5>1 orange non traitée et 100 g d’écorces d’oranges confites coupées en petits dés</h5>
+                </div>
+                <div class="etape-item">
+                    <div>
+                        <span>3</span>
+                    </div>
+                    <h5>1L from oil </h5>
+                </div>
+                <div class="etape-item">
+                    <div>
+                        <span>4</span>
+                    </div>
+                    <h5>coffe of water </h5>
+                </div>
+            </div>
+            <div class="col-lg-8 etape" >
+                <div class="recette-info">
+                    <h1>Bourek à la viande hachée</h1>
+                    <p>Le bourek est une pâtisserie salée que l’on trouve régulièrement sur les tables du Ramadan en Turquie. Cette gourmandise est constituée d’une feuille de yufka (comparable aux feuilles de brick, mais plus épaisse), farcie avec la préparation de votre choix et roulée sous forme de cigare. Nous vous proposons aujourd’hui de réaliser de délicieux boureks à la viande hachée</p>
+                </div>
+                <div class="recette-time" >
+                    <div>
+                        Prep : <span>10 min</span>
+                    </div>
+                    <div>
+                        Repo : <span>20 min</span>
+                    </div>
+                    <div>
+                        Cuiss : <span>10 min</span>
+                    </div>
+                    <div>
+                        Total : <span>40 min</span>
+                    </div>
+                </div>
+                <div class="recette-calorie">
+                    <div>
+                        <i style="margin-right: 5px;" class="bi bi-dash-circle-fill"></i> cette recette contiane <span> 102 </span> calories 
+                    </div>
+                    <i class="bi bi-lightbulb-fill"></i>
+                </div>
+                <h1>Instructions</h1> 
+                 <div class="etape-item">
+                    <div>
+                        <span>1</span>
+                    </div>
+                    <h5>Émincez finement l’oignon et faites-le suer dans un filet d’huile d’olive. Ajoutez la viande hachée , faites revenir quelques minutes puis salez et poivrez. Ajoutez les épices. Remuez avec une cuillère en bois pour bien détacher la viande </h5>
+                </div> 
+                <div class="etape-item">
+                    <div>
+                        <span>2</span>
+                    </div>
+                    <h5>Faites chauffer 1 c. à soupe d'huile d'olive dans une poêle.</h5>
+                </div> 
+                <div class="etape-item">
+                    <div>
+                        <span>3</span>
+                    </div>
+                    <h5>Versez 40 cl d'eau puis le cube de bouillon et laissez cuire à feu moyen en remuant de temps en temps</h5>
+                </div> 
+                
+            </div>
+        </div>
+    </div>
+        <?php
+    }
     public function ShowLoginPage()
     {
     ?>
@@ -349,14 +484,15 @@ class userView
 
 <body>
     <?php
-    $this->LoginScreen()
         // $this->header();
         // $this->Hero();
-        // $this->Menu();
-        // $this->Carousel("Check our"," entrées","Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-        // $this->Carousel("Check our",' plats',"Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-        // $this->Carousel("Check our"," desserts",'Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.');
-        // $this->Carousel("Check our"," boissons",'Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.');
+        $this->Menu();
+        $this->DetaialsRecette();
+        $this->Gallerie("Bourek ");
+         
+        // $this->Carousel("Check our ",'plats',"Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+        // $this->Carousel("Check our ","desserts",'Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.');
+        // $this->Carousel("Check our ","boissons",'Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.');
         // $this->FilterButtons()
         ?>
     <script src="./views/script/hero.js"></script>
