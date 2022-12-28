@@ -17,4 +17,7 @@
         heroCarouselIndicators.innerHTML += "<li data-bs-target='#heroCarousel' data-bs-slide-to='" + index + "'></li>"
     });
 
-  })()
+  }
+  
+  
+  )()
