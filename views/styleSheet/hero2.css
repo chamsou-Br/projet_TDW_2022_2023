@@ -329,16 +329,16 @@ a {
 }
 
 .card .box h4 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   padding: 0;
-  margin: 20px 0;
+  margin: 10px 0;
   color: #6c665c;
 }
 
 .card .box p {
   color: #aaaaaa;
-  font-size: 15px;
+  font-size: 14px;
   margin: 0;
   padding: 0;
 }
@@ -912,9 +912,11 @@ each of the slides */
       auto complete input 
  #################################*/
 
-.autocomplete-container {
+.autocomplete-container ,.search-recette{
 display: flex;
 align-items: center;
+justify-content: center;
+width: 100%;
 padding: 0px 30px;
 }
 
@@ -987,7 +989,7 @@ border-radius: 0.1rem;
 transition: all 0.3s ease-in-out;
 }
 .submit:hover{
-background: #f00;
+background: #FFF;
 color: #cfa671;
 border: 2px solid #d0a772;
 }
@@ -996,42 +998,45 @@ border: 2px solid #d0a772;
     INGREDIENT LIST 
 -------------------------------------------------------------------*/
 
-.contact-imfo-box{
-	background: #d0a772;
-	padding: 30px 0;
+.ingredient-select {
+  padding: 20px 5%;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.overflow-hidden {
-    overflow: hidden;
+.ingredient-item {
+  margin: 10px 0;
+  display: flex;
+  align-items: flex-start;
+  width: 25%;
 }
 
-.contact-imfo-box i{
-	display: block;
-	float: left;
-	width: 60px;
-	height: 60px;
-	line-height: 60px;
-	text-align: center;
-	background: #fff;
-	color: #d0a772;
-	font-size: 30px;
-	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	-ms-border-radius: 50%;
-	border-radius: 50%;
-	margin-right: 20px;
+.ingredient-select .ingredient-item {
+  border-left: 3px solid #cfa671;
 }
-.contact-imfo-box h4 {
-    margin: 0px;
-    margin-top: 5px;
-	color: #ffffff;
-	font-size: 20px;
-	padding: 0px;
-	font-weight: 500;
-	line-height: 24px;
+
+.ingredient-item div {
+  min-width: 25px;
+  height: 25px;
+  background-color: #fff;
+  border: 2px solid #5f5950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  margin-left: 15px;
 }
-.contact-imfo-box p {
-    margin: 0px;
-	color: #ffffff;
-	font-weight: 300;
+.ingredient-item div span {
+  color: #5f5950;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ingredient-item h5 {
+  font-size: 14px;
+  color: #000000aa;
+  letter-spacing: 1.1;
+  font-weight: 500;
+  line-height: 25px;
+  margin-left: 15px;
 }

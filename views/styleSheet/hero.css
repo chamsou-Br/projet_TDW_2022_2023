@@ -338,7 +338,7 @@ a {
 
 .card .box p {
   color: #aaaaaa;
-  font-size: 15px;
+  font-size: 13px;
   margin: 0;
   padding: 0;
 }
@@ -913,6 +913,7 @@ each of the slides */
  #################################*/
 
 .autocomplete-container ,.search-recette{
+  background-color: #000;
 display: flex;
 align-items: center;
 justify-content: center;

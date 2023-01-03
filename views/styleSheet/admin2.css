@@ -1,0 +1,154 @@
+/*#########################
+    add news
+############################*/
+body{
+    font-family: 'Roboto', sans-serif;
+  }
+.addForm{
+    width: 100%;
+    padding: 30px;
+    background: #fff;
+  }
+  
+  .addForm .form-group {
+    padding-bottom: 8px;
+  }
+  
+  .addForm .validate {
+    display: none;
+    color: red;
+    margin: 0 0 15px 0;
+    font-weight: 400;
+    font-size: 13px;
+  }
+  
+  .addForm .error-message {
+    display: none;
+    color: #fff;
+    background: #ed3c0d;
+    text-align: left;
+    padding: 15px;
+    font-weight: 600;
+  }
+  
+  .addForm .error-message br+br {
+    margin-top: 25px;
+  }
+  
+  .addForm .sent-message {
+    display: none;
+    color: #fff;
+    background: #18d26e;
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+  }
+  
+  .addForm .loading {
+    display: none;
+    background: #fff;
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .addForm .loading:before {
+    content: "";
+    display: inline-block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    margin: 0 10px -6px 0;
+    border: 3px solid #18d26e;
+    border-top-color: #eee;
+    -webkit-animation: animate-loading 1s linear infinite;
+    animation: animate-loading 1s linear infinite;
+  }
+  
+  .addForm input,
+  .addForm textarea ,.addForm select {
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 14px;
+  }
+  
+  .addForm input {
+    height: 44px;
+  }
+  
+  .addForm textarea {
+
+    padding: 10px 12px;
+  }
+
+  .addForm input:focus , .addForm textarea:focus ,  .addForm select:focus{
+    outline: none;
+    border: 2px solid #cfa671;
+    box-shadow: none;
+  }
+  
+  .addForm button[type=submit] {
+    background: #cfa671;
+    border: 0;
+    padding: 10px 24px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 10px;
+  }
+  
+  .addForm button[type=submit]:hover {
+    background: #FFF;
+    color: #cfa671;
+    border: 2px solid #cfa671;
+  }
+  
+
+
+  /* "################################################################# 
+        table
+############################################################## */ 
+table {
+    width: 500px;
+    font-size: 14px;
+}
+tbody tr{
+    height: 50px;
+}
+tbody{
+    padding-top: 30px;
+}
+
+tr{
+    border-color: #cfa671 !important;
+}
+
+/*#############################################################
+#                            Selected                        #
+############################################################## */ 
+.selected {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+.form-check {
+    margin: 10px 20px;
+}
+
+.selectedTitle {
+
+    margin: 10px 0;
+    font-size: 18px;
+    color: #cfa671;
+    text-align: center;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    padding: 0;
+}
+.form-check-input-healthy {
+width: 18px;
+margin-right: 5px;
+}

@@ -26,5 +26,34 @@ class ingredientModal{
     private function Deconexion(&$db){
         $db = null;
     }
+
+    public function getAllIngredientsModal(){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM ingredient");
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+    public function getIngredientByIdModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM ingredient where nom = :id");
+        $_REQUEST->bindParam("id",$id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+    public function getIngredintRecette($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT *  FROM ingredient  join ingredient_recette on ingredient_recette.idIngredient = ingredient.nom where idRecette = :id");
+        $_REQUEST->bindParam("id",$id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
 }
 ?>

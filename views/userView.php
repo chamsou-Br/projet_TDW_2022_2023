@@ -1,16 +1,19 @@
 <?php
 
 require_once("./controllers/authController.php");
+require_once("./controllers/recetteController.php");
+require_once("./controllers/ingredientController.php");
 
 class userView
 {
 
-    private function Entete_Page()
+    public function Entete_Page()
     {
 ?>
 
 <head>
     <meta charset="UTF-8">
+    <meta charset="ISO-8859-1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -22,7 +25,7 @@ class userView
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./views/styleSheet/login2.css">
-    <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
+    <link href="./views/styleSheet/hero2.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -85,7 +88,7 @@ class userView
     }
 
 
-    private function HeaderImage($img, $title1, $title2)
+    public function HeaderImage($img, $title1, $title2)
     {
 ?>
 <div style="background-image: url(<?php echo $img ?>);" class="header-img">
@@ -94,7 +97,7 @@ class userView
 <?php
     }
 
-    private function TitleSection($title1, $title2, $desc)
+    public function TitleSection($title1, $title2, $desc)
     {
 ?>
 <div class="section-title">
@@ -103,7 +106,7 @@ class userView
 </div><?php
     }
 
-    private function Header()
+    public function Header()
     {
 ?>
 <header id="header" class=" d-flex align-items-center header-transparent">
@@ -269,49 +272,53 @@ class userView
 <?php
     }
 
-    private function Carousel($title2)
+    private function Carousel($title2,$values)
     {
+
 ?>
 <div class="carouselContainer">
 
     <div style="margin: 40px 0px;" id="<?php echo $title2 ?>" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators ">
-            <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
+            <?php $j = 0 ;
+            while($j < count($values)/3){
+                ?>
+                <button type="button" data-bs-target="#<?php echo $title2 ?>" data-bs-slide-to="<?php echo $j ?>" class="<?php if ($j==0) echo('active')?>"
+                aria-current="true" aria-label="<?php echo "Slide ".$j ?>"></button>
+                <?php
+                $j = $j +1 ;
+            }?>
         </div>
         <div class="carousel-inner" style="padding: 0 20px;">
-            <div class="carousel-item active">
-                <div style="display: flex;padding : 50px 30px">
-                    <?php
-        $this->CardRecette();
-        $this->CardRecette();
-        $this->CardRecette();
+        <?php
+                echo count($values);
+                $i = 0 ;
+                while($i + 3 <= count($values)) {
                     ?>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div style="display: flex;padding : 50px 30px">
+                    <div class="carousel-item <?php if ($i< 3) echo "active" ?>">
+                        <div style="display: flex;padding : 50px 30px">
+                                <?php
+                                $this->CardRecette($i,$values[$i]);
+                                $this->CardRecette($i+1,$values[$i+1]);
+                                $this->CardRecette($i+2,$values[$i+2]);
+                                ?>
+                        </div>
+                    </div>
                     <?php
-        $this->CardRecette();
-        $this->CardRecette();
-        $this->CardRecette();
-                    ?>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div style="display: flex;padding : 50px 30px">
-                    <?php
-        $this->CardRecette();
-        $this->CardRecette();
-        $this->CardRecette();
-                    ?>
-                </div>
-            </div>
-        </div>
+                    $i = $i + 3;
+                }
+                ?>
+                    <div class="carousel-item ">
+                        <div style="display: flex;padding : 50px 30px">
+                                <?php
+                                while ($i < count($values)) {
+                                    $this->CardRecette($i,$values[$i]);
+                                    $i = $i + 1;
+                                }
+                                ?>
+                        </div>
+                    </div>
+
         <button style="margin-left: 0px;" class="carousel-control-prev" type="button"
             data-bs-target="#<?php echo $title2 ?>" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -327,7 +334,7 @@ class userView
 <?php
     }
 
-    private function FilterButtons($filters)
+    public function FilterButtons($filters)
     {
 ?>
 <div class="row">
@@ -394,15 +401,15 @@ class userView
 </div>
 <?php
     }
-    private function CardRecette()
+    private function CardRecette($i,$value)
     {
 ?>
 <div class="card" style="width: 18rem;">
-    <div class="card-image" style="background-image: url(assets/rec1.jpg)"></div>
+    <div class="card-image" style="background-image: url(<?php echo($value['path'])?>)"></div>
     <div class="box">
-        <span>01</span>
-        <h4>Lorem Ipsum</h4>
-        <p>Ulamco laboris nisi ut aliquip ex ea commodo consequat. Et consectetur ducimus vero placeat</p>
+        <span><?php if ($i+1 < 10) echo "0".($i+1); else echo($i+1) ;  ?></span>
+        <h4><?php echo $value["nom"] ?></h4>
+        <p><?php echo substr($value["descr"],0,100) ?></p>
     </div>
 
 </div>
@@ -473,97 +480,81 @@ class userView
 </div>
 <?php
     }
-    private function DetaialsRecette()
+    public function DetaialsRecette($details , $ingrs,$instrs)
     {
+        $prep = isset($details["tempsPreparation"]) ? $details["tempsPreparation"] : 0;
+        $repo = isset($details["tempsReposint"]) ? $details["tempsReposint"] : 0;
+        $cuis = isset($details["tempsCuisson"]) ? $details["tempsCuisson"] : 0;
+        $tot = $repo + $prep + $cuis;
+        $user = isset($details["idUser"]) ? "@" . explode("@", $details["idUser"])[0] : "@undifined";
+        $calorie = 0;
+        foreach($ingrs as $ingr ){
+            $calorie = $calorie + $ingr["calories"];
+        }
         ?>
 <div>
     <div class="row">
         <div class="col-lg-4 ingredient">
             <div class="recette-img">
-                <img src="./assets/slide/slide-1.jpg" />
+                <img src="<?php echo $details["path"] ?>" />
             </div>
             <div class="userInfo">
-                <h5><i style="color: #6c665c;" class="bi bi-person-circle"></i> chamsou Br</h5>
-                <h5>4.5 <i class="bi bi-star-fill"></i></h5>
+                <h5><i style="color: #6c665c;" class="bi bi-person-circle"></i><?php echo $user ?></h5>
+                <h5><?php echo $details['notation'] ?><i class="bi bi-star-fill"></i></h5>
             </div>
             <h1>Ingredient</h1>
-            <div class="etape-item">
-                <div>
-                    <span>1</span>
+            <?php 
+            foreach( $ingrs as $key => $ingr ){
+                ?>
+                <div class="etape-item">
+                    <div>
+                        <span><?php echo $key+1 ?></span>
+                    </div>
+                    <h5><?php echo $ingr["quan"] ?></h5>
                 </div>
-                <h5>400g from tomato and botato </h5>
-            </div>
-            <div class="etape-item">
-                <div>
-                    <span>2</span>
-                </div>
-                <h5>1 orange non traitée et 100 g d’écorces d’oranges confites coupées en petits dés</h5>
-            </div>
-            <div class="etape-item">
-                <div>
-                    <span>3</span>
-                </div>
-                <h5>1L from oil </h5>
-            </div>
-            <div class="etape-item">
-                <div>
-                    <span>4</span>
-                </div>
-                <h5>coffe of water </h5>
-            </div>
+                <?php
+            }
+            ?>
         </div>
         <div class="col-lg-8 etape">
             <div class="recette-info">
-                <h1>Bourek à la viande hachée</h1>
-                <p>Le bourek est une pâtisserie salée que l’on trouve régulièrement sur les tables du Ramadan en
-                    Turquie. Cette gourmandise est constituée d’une feuille de yufka (comparable aux feuilles de brick,
-                    mais plus épaisse), farcie avec la préparation de votre choix et roulée sous forme de cigare. Nous
-                    vous proposons aujourd’hui de réaliser de délicieux boureks à la viande hachée</p>
+                <h1><?php echo $details['nom'] ?></h1>
+                <p><?php echo $details['descr'] ?></p>
             </div>
             <div class="recette-time">
                 <div>
-                    Prep : <span>10 min</span>
+                    Prep : <span><?php echo $prep.' min' ?></span>
                 </div>
                 <div>
-                    Repo : <span>20 min</span>
+                    Repo : <span><?php echo $repo.' min' ?></span>
                 </div>
                 <div>
-                    Cuiss : <span>10 min</span>
+                    Cuiss : <span><?php echo $cuis.' min' ?></span>
                 </div>
                 <div>
-                    Total : <span>40 min</span>
+                    Total : <span><?php echo $tot.' min'  ?></span>
                 </div>
             </div>
             <div class="recette-calorie">
                 <div>
-                    <i style="margin-right: 5px;" class="bi bi-dash-circle-fill"></i> cette recette contiane <span> 102
-                    </span> calories
+                    <i style="margin-right: 5px;" class="bi bi-dash-circle-fill"></i> cette recette contiane <span>
+                    <?php echo $calorie  ?></span> calories
                 </div>
                 <i class="bi bi-lightbulb-fill"></i>
             </div>
             <h1>Instructions</h1>
-            <div class="etape-item">
-                <div>
-                    <span>1</span>
-                </div>
-                <h5>Émincez finement l’oignon et faites-le suer dans un filet d’huile d’olive. Ajoutez la viande hachée
-                    , faites revenir quelques minutes puis salez et poivrez. Ajoutez les épices. Remuez avec une
-                    cuillère en bois pour bien détacher la viande </h5>
+            <?php
+            foreach($instrs as $key => $instr){
+                ?>
+                <div class="etape-item">
+                    <div>
+                        <span><?php echo $key+1 ?></span>
+                    </div>
+                    <h5><?php echo $instr["instruction"] ?> </h5>
             </div>
-            <div class="etape-item">
-                <div>
-                    <span>2</span>
-                </div>
-                <h5>Faites chauffer 1 c. à soupe d'huile d'olive dans une poêle.</h5>
-            </div>
-            <div class="etape-item">
-                <div>
-                    <span>3</span>
-                </div>
-                <h5>Versez 40 cl d'eau puis le cube de bouillon et laissez cuire à feu moyen en remuant de temps en
-                    temps</h5>
-            </div>
-
+                <?php
+            }
+            ?>
         </div>
     </div>
 </div>
@@ -643,7 +634,7 @@ class userView
 <?php
     }
 
-    private function inputAutoComplete(){
+    public function inputAutoComplete(){
         ?>
         <form class="autocomplete-container" autocomplete="off" action="">
             <div class="autocomplete" style="width:300px;">
@@ -780,9 +771,10 @@ class userView
 <?php
 
     }
-    public function ShowLoginPage()
+    public function ShowAcceilPage()
     {
     ?>
+
 <?php
         $this->Entete_Page();
 ?>
@@ -796,10 +788,20 @@ class userView
         $this->Menu();
         // $this->DetaialsRecette();
         // $this->Gallerie("Bourek ");
+
+        $recetteController = new recetteController();
+        $values0 =   $recetteController->getRecetteByCategorieController(0);
+        $values1 =   $recetteController->getRecetteByCategorieController(1);
+        $values2 =   $recetteController->getRecetteByCategorieController(2);
+        $values3 =   $recetteController->getRecetteByCategorieController(3);
+        $this->TitleSection("check our", "entrées", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+        $this->Carousel("id1",$values0);
         $this->TitleSection("check our", "plats", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-        $this->Carousel("id1");
-        $this->Carousel("id2");
-        $this->Carousel("id3");
+        $this->Carousel("id2",$values1);
+        $this->TitleSection("check our", "desserts", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+        $this->Carousel("id3",$values2);
+        $this->TitleSection("check our", "boissons", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+        $this->Carousel("id4 ",$values3);
     ?>
     <script src="./views/script/hero.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -807,6 +809,35 @@ class userView
         crossorigin="anonymous"></script>
 </body>
 <?php
+    }
+    public function showDetailRecettePage(){
+        ?>
+        <?php
+                $this->Entete_Page();
+        ?>
+        
+        
+        
+        <body>
+            <?php
+                $this->header();
+                $this->HeaderImage("assets/slide/slide-2.jpg", "Chercher Recettes avec", "Delcious");
+                $this->Menu();
+                $recette = new recetteController();
+                $ingredient = new ingredientController();
+                $recetteDetails = $recette->getRecetteByIdController(0);
+                $ingrs = $ingredient->getIngredientRecettController(0);
+                $instrs = $recette->getInstructionsRecettesController(0);
+                $this->DetaialsRecette($recetteDetails[0],$ingrs,$instrs)
+            ?>
+            <script src="./views/script/hero.js"></script>
+            <script src="./views/script/autoComplete2.js"></script>
+            
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        </body>
+        <?php 
     }
 
 }
