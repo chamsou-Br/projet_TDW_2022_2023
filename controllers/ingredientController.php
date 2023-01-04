@@ -19,5 +19,30 @@ class ingredientController {
         $res = $IngreModal->getIngredintRecette($id);
         return $res;  
     }
+
+    public function getVitaminsIngredientController($id){
+        $ingredient = new ingredientModal();
+        $res = $ingredient->getVitaminsIngredientModal($id);
+        return $res;
+    }
+
+    public function getMinealsIngredientController($id){
+        $ingredient = new ingredientModal();
+        $res = $ingredient->getMinealsIngredientModal($id);
+        return $res;
+    }
+
+    public function getVitaminsController(){
+        $ingredient = new ingredientModal();
+        $res = $ingredient->getVitaminsModal();
+        return $res;
+    }
+    public function getMineralsController(){
+        $ingredient = new ingredientModal();
+        $res = $ingredient->getMineralsModal();
+        return $res;
+    }
+
+    
 }
 ?>

@@ -766,6 +766,7 @@ each of the slides */
     position: absolute;
     top: 0;
     background-color: #FFF;
+    width: 100%;
     padding: 30px 25px;
     border: 1px solid #ddd;
     transition-duration: .5s;

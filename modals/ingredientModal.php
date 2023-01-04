@@ -29,7 +29,7 @@ class ingredientModal{
 
     public function getAllIngredientsModal(){
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("SELECT * FROM ingredient");
+        $_REQUEST = $db->prepare("SELECT * FROM ingredient order by nom ");
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         $this->Deconexion($db);
@@ -49,6 +49,44 @@ class ingredientModal{
     public function getIngredintRecette($id){
         $db = $this->Connexion();
         $_REQUEST = $db->prepare("SELECT *  FROM ingredient  join ingredient_recette on ingredient_recette.idIngredient = ingredient.nom where idRecette = :id");
+        $_REQUEST->bindParam("id",$id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+    public function getVitaminsModal(){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM `vitamine`");
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+    public function getMineralsModal(){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM `mineral`");
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+
+    public function getVitaminsIngredientModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM vitamine_ingredient join vitamine on vitamine.sign = vitamine_ingredient.idVitamine where vitamine_ingredient.idIngredient = :id");
+        $_REQUEST->bindParam("id",$id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+    public function getMinealsIngredientModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM mineral_ingredient join mineral on mineral.sign = mineral_ingredient.idMineral where mineral_ingredient.idIngredient = :id");
         $_REQUEST->bindParam("id",$id);
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);

@@ -329,16 +329,16 @@ a {
 }
 
 .card .box h4 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   padding: 0;
-  margin: 20px 0;
+  margin: 10px 0;
   color: #6c665c;
 }
 
 .card .box p {
   color: #aaaaaa;
-  font-size: 13px;
+  font-size: 14px;
   margin: 0;
   padding: 0;
 }
@@ -766,10 +766,11 @@ each of the slides */
     position: absolute;
     top: 0;
     background-color: #FFF;
+    width: 100%;
     padding: 30px 25px;
     border: 1px solid #ddd;
     transition-duration: .5s;
-    height: 450px;
+    min-height: 450px;
   }
 
   .blog-detail .border {
@@ -913,7 +914,6 @@ each of the slides */
  #################################*/
 
 .autocomplete-container ,.search-recette{
-  background-color: #000;
 display: flex;
 align-items: center;
 justify-content: center;

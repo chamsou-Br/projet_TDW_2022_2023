@@ -47,19 +47,38 @@ class recetteModal {
         return $res;
     }
 
-  public function addRecetteModal($idUser,$nom,$descr,$tempsPréparation,$tempsReposint,$tempsCuisson,$idCategorie,$idFete) {
+  public function addRecetteModal($idRecette,$idUser,$nom,$descr,$tprep,$tempsReposint,$tempsCuisson,$idCategorie,$idFete,$picture,$ingrs,$instrs,$ingrDesc) {
     $db = $this->Connexion();
-    $_REQUEST = $db->prepare(" INSERT INTO recette ( `idUser`, `nom`, `descr` , `tempsPréparation`, `tempsReposint`, `tempsCuisson`, `idCategorie`, `idFete`) VALUE (:idUser, :nom ,  :descr , :tempsPréparation, :tempsCuisson, :tempsReposint, :idCategorie, :idFete)");
+    $_REQUEST_PICTURE = $db->prepare("INSERT INTO  `image` ( `path`, `idRecette` ) VALUES ( :pathimage , :idRecette)");
+    $_REQUEST_PICTURE->bindParam("pathimage",$picture);
+    $_REQUEST_PICTURE->bindParam("idRecette",$idRecette);
+    $_REQUEST_PICTURE->execute();
+    $_REQUEST = $db->prepare(" INSERT INTO recette ( `idRecette`,`idUser`, `nom`, `descr` , `tempsPreparation`, `tempsReposint`, `tempsCuisson`, `idCategorie`, `idFete`) VALUE (:idRecette, :idUser, :nom ,  :descr , :tprep, :tempsCuisson, :tempsReposint, :idCategorie, :idFete)");
     $_REQUEST->bindParam("idUser",$idUser);
+    $_REQUEST->bindParam("idRecette",$idRecette);
     $_REQUEST->bindParam("nom",$nom);
     $_REQUEST->bindParam("descr",$descr);
-    $_REQUEST->bindParam("tempsPréparation",$tempsPréparation);
+    $_REQUEST->bindParam("tprep",$tprep);
     $_REQUEST->bindParam("tempsReposint",$tempsReposint);
     $_REQUEST->bindParam("tempsCuisson",$tempsCuisson);
     $_REQUEST->bindParam("idCategorie",$idCategorie);
     $_REQUEST->bindParam("idFete",$idFete);
     $_REQUEST->execute();
     $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+    foreach($ingrs as $key => $ingr) {
+      $_REQUEST_INGR = $db->prepare("INSERT INTO ingredient_recette (`idIngredient`,`idRecette` , `quan`) values (:idIngredient , :idRecette , :quan)");
+      $_REQUEST_INGR->bindParam("idIngredient",$ingr);
+      $_REQUEST_INGR->bindParam("idRecette",$idRecette);
+      $_REQUEST_INGR->bindParam("quan",$ingrDesc[$key]);
+      $_REQUEST_INGR->execute();
+    }
+    foreach($instrs as $key => $instr) {
+      $_REQUEST_INSTR = $db->prepare("INSERT INTO etape values (:id  , :idRecette ,:instr)");
+      $_REQUEST_INSTR->bindParam("id",$key);
+      $_REQUEST_INSTR->bindParam("idRecette",$idRecette);
+      $_REQUEST_INSTR->bindParam("instr",$instr);
+      $_REQUEST_INSTR->execute();
+    }
     $this->Deconexion($db);
     return $res;   
   }
@@ -91,6 +110,23 @@ class recetteModal {
     $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
     $this->Deconexion($db);
     return $res;
+}
+
+public function getAllCategorieModal(){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("SELECT *  FROM categorie ");
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+public function getAllFeteModal(){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("SELECT *  FROM fetes ");
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
 }
 
 

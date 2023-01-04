@@ -25,7 +25,7 @@ class userView
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./views/styleSheet/login2.css">
-    <link href="./views/styleSheet/hero2.css" rel="stylesheet" type="text/css" />
+    <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -702,48 +702,71 @@ class userView
 </body>
 <?php
     }
-    private function CardIngredient(){
+    private function CardIngredient($values){
+        $ingredient = new ingredientController();
         ?>
         	<div class="blog-box">
 		<div class="container">
         <div class="row">
-    <div class="col-lg-4 col-md-6 col-12">
-        <div class="blog-box-inner">
+        <?php 
+        foreach($values as $value) {
+            if ($value["valide"] == 1) {
+                ?>
+            <div class="col-lg-4 col-md-6 col-12">
+            <div class="blog-box-inner">
             <div class="blog-img-box">
                 <img class="img-fluid" src="./assets/slide/slide-1.jpg" alt="">
             </div>
             <div class="blog-detail">
-                <h4>sucre glace</h4>
-                <h6>this ingredient is good ingr h kl qsk sp donc il faur</h6>
+                <h4><?php echo $value["nom"] ?></h4>
+                <h6><?php echo $value["descr"] ?></h6>
                 <div class="border"></div>
                 <div class="recette-calorie">
                     <div>
-                        <i style="margin-right: 5px;" class="bi bi-dash-circle-fill"></i><span> 102 </span> calories
+                        <i style="margin-right: 5px;" class="bi bi-dash-circle-fill"></i><span><?php echo $value["calories"] ?></span> calories
                     </div>
                     <i class="bi bi-lightbulb-fill"></i>
                 </div>
-                <div class="vitamine-items">
-                    <div class="vitamine-item">A1</div><div class="vitamine-item">A2</div><div class="vitamine-item">D2</div><div class="vitamine-item">D2</div><div class="vitamine-item">B2</div><div class="vitamine-item">B1</div><div class="vitamine-item">K</div><div class="vitamine-item">C1</div>
+                <div class="vitamine-items">     
+                    <?php
+                    $vits = $ingredient->getVitaminsIngredientController($value["nom"]);
+                    foreach ($vits as $vit) {
+                        ?>
+                        <div class="vitamine-item"><?php echo $vit["sign"] ?></div>
+                        <?php
+                    }
+                    ?>            
                 </div>
                 <div class="mineral-items">
-                    <div class="mineral-item">
-                        <div class="mineral-sign">Ca</div>
-                        <span>Calcium</span>
-                    </div>
-                    <div class="mineral-item">
-                        <div class="mineral-sign">Ch</div>
-                        <span>Chloride</span>
-                    </div>
-                    <div class="mineral-item">
-                        <div class="mineral-sign">Mg</div>
-                        <span>Magnes</span>
-                    </div>
+                <?php
+                $mins = $ingredient->getMinealsIngredientController($value["nom"]);
+                foreach ($mins as $min) {
+                    ?>
+                        <div class="mineral-item">
+                             <div class="mineral-sign"><?php echo $min["sign"] ?></div>
+                            <span><?php echo $min["nom"] ?></span>
+                         </div>
+                        <?php
+                }
+                ?>   
                </div>
-                <a  class="btn btn-md btn-circle btn-outline-new-white" href="">Healthy</a>
-                <a class="btn btn-md btn-circle btn-outline-new-white" href="">Saison</a>
+               <?php if ($value["Healthy"] == 1) {
+                         ?>
+                               <a  class="btn btn-md btn-circle btn-outline-new-white" href="">Healthy</a>
+                            <?php
+                     }
+                     ?>
+                 <a class="btn btn-md btn-circle btn-outline-new-white" href=""><?php echo $value["saison"] ?></a>
             </div>
-        </div>
-    </div>
+            </div>
+            </div>
+            <?php
+            }
+        }
+        ?>
+
+
+    
     
         </div></div>
 </div><?php
@@ -761,7 +784,9 @@ class userView
         $this->HeaderImage("assets/slide/slide-2.jpg", "Ingredients in", "Delcious");
         $this->Menu();
         $this->TitleSection("check our", "Ingredients", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-       $this->CardIngredient()
+        $ingredient = new ingredientController();
+        $ingrs = $ingredient->getAllIngredientsController();
+        $this->CardIngredient($ingrs)
     ?>
     <script src="./views/script/hero.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -828,7 +853,7 @@ class userView
                 $recetteDetails = $recette->getRecetteByIdController(0);
                 $ingrs = $ingredient->getIngredientRecettController(0);
                 $instrs = $recette->getInstructionsRecettesController(0);
-                $this->DetaialsRecette($recetteDetails[0],$ingrs,$instrs)
+            $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs);
             ?>
             <script src="./views/script/hero.js"></script>
             <script src="./views/script/autoComplete2.js"></script>
