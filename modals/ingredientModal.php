@@ -93,5 +93,15 @@ class ingredientModal{
         $this->Deconexion($db);
         return $res;
     }
+
+    public function deleteIngredientModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("DELETE FROM `ingredient` WHERE nom = :id");
+        $_REQUEST->bindParam("id", $id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+      }
 }
 ?>

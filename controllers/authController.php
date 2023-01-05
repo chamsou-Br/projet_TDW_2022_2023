@@ -19,11 +19,27 @@ class AuthController
         return $isAuth;
     }
 
+    public function getAlluserController(){
+        $AuthModal = new AuthModal();
+        $res = $AuthModal->getAllUsersModal();
+        return $res;
+    }
+
+    public function valideuserController($id){
+        $AuthModal = new AuthModal();
+        $res = $AuthModal->valideUserModal($id);
+        return $res;
+    }
+
     public function LogOut_Controller() {
         $AuthModal = new AuthModal();
         $AuthModal->LogOut();
     }
-
+    public function getsearchUserController($search){
+        $auth = new AuthModal();
+        $res = $auth->getSearchUserModal($search);
+        return $res;
+    }
 
 }
 

@@ -67,6 +67,35 @@ class AuthModal
         }
     }
 
+    public function getAllUsersModal(){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM utilisateur order by nom ");
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+
+    }
+
+    public function valideUserModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("UPDATE utilisateur SET valid = 1 where email = :id");
+        $_REQUEST->bindParam("id", $id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+      }
+
+      public function getSearchUserModal($search){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM utilisateur where instr(nom,:search) order by nom ");
+          $_REQUEST->bindParam("search", $search);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+      }
     public function LogOut() {
         if (isset($_POST['logout'])) {
             unset($_SESSION["email"]);

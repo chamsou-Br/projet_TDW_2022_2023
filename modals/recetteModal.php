@@ -30,7 +30,7 @@ class recetteModal {
 
     public function getAllRecetteModal(){
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("SELECT * FROM recette JOIN image ON recette.idRecette = image.idRecette");
+        $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email order by recette.nom ");
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         $this->Deconexion($db);
@@ -120,6 +120,16 @@ public function getAllCategorieModal(){
   $this->Deconexion($db);
   return $res;
 }
+
+public function getAllSaisonModal(){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("SELECT *  FROM saison ");
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
 public function getAllFeteModal(){
   $db = $this->Connexion();
   $_REQUEST = $db->prepare("SELECT *  FROM fetes ");
@@ -128,6 +138,38 @@ public function getAllFeteModal(){
   $this->Deconexion($db);
   return $res;
 }
+
+public function deleteRecetteModal($id){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("DELETE FROM `recette` WHERE idRecette = :id");
+  $_REQUEST->bindParam("id", $id);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+public function valideRecetteModal($id){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("UPDATE recette SET valid = 1 where idRecette = :id");
+  $_REQUEST->bindParam("id", $id);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+public function getSearchRecetteModal($search){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("SELECT  recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email where instr(recette.nom,:search) order by recette.nom ");
+    $_REQUEST->bindParam("search", $search);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+
 
 
 

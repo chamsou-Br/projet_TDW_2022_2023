@@ -43,6 +43,11 @@ class ingredientController {
         return $res;
     }
 
+    public function deleteIngredientController($id){
+        $ingr = new ingredientModal();
+        $res = $ingr->deleteIngredientModal($id);
+        return $res;
+    }
     
 }
 ?>

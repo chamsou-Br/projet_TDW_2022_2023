@@ -69,14 +69,14 @@ class adminstrationView {
 <?php
     }
 
-    private function SearchBar(){
+    private function SearchBar($title){
         ?>
-        <form action="forms/contact.php" style="width :80%;margin:auto" method="post" role="form" class="addForm">
+        <form action="" style="width :80%;margin:auto" method="post" role="form" class="addForm">
           <div class="row" style="display: flex;align-items: center;">
             <div class="col-md-6 form-group" >
-              <input type="text" style="margin-top : 10px" name="titre" class="form-control" id="name" placeholder="titre de news" required>
+              <input type="text" style="margin-top : 10px" name="search" class="form-control" id="name" placeholder="<?php echo $title ?>" required>
             </div>
-            <div class="col-md-6 text-center"><button type="submit">Search</button></div>
+            <div class="col-md-6 text-center"><button name="searchSubmit" type="submit">Search</button></div>
           </div>
         </form>
         <?php
@@ -129,7 +129,15 @@ class adminstrationView {
     <tbody>
       <?php if ($type == 0) {
       $this->bodyIngredientTable($values);
-      }?>
+      }
+      if ($type == 1) {
+        $this->bodyRecetteTable($values);
+      }
+      if($type == 2) {
+      $this->bodyUserTable($values);
+      }
+
+       ?>
     </tbody>
   </table>
 </div>
@@ -143,13 +151,72 @@ class adminstrationView {
       <tr>
         <th scope="row"><?php echo $value["nom"] ?></th>
         <td><?php echo $value["calories"] ?></td>
-        <td><?php echo $value["Healthy"] ?></td>
+        <?php if ($value["Healthy"] == 1) { ?>
+            <td><i class="bi bi-check2"></i></td>
+          <?php
+          } else { ?> 
+           <td><i class="bi bi-x-lg"></i></td>
+          <?php
+
+          }?>
         <td><?php echo $value["saison"] ?></td>
+        <td><a>modifier</a></td>
+        <td><a href="?idIngredientSupp=<?php echo $value['nom'] ?>">Supprimer</a></td>
 
       </tr>
       <?php
     }
     }
+    private function bodyUserTable($values){
+
+      foreach ($values as $key=> $value) {
+        ?>     
+        <tr>
+          <th scope="row"><?php echo $key ?></th>
+          <td><?php echo $value["nom"] ?></td>
+          <td><?php echo $value["prenom"] ?></td>
+          <td><?php echo $value["email"] ?></td>
+          <td><?php echo $value["age"] ?></td>
+          <?php if ($value["valid"] == 1) { ?>
+            <td><i class="bi bi-check2"></i></td>
+          <?php
+          } else { ?> 
+           <td> <a href="./?idUserValid=<?php echo $value['email'] ?>" >valider</a> </td>
+          <?php
+          }?>
+        </tr>
+        <?php
+
+      }
+      }
+
+      private function bodyRecetteTable($values){
+
+        foreach ($values as $value) {
+          ?>     
+          <tr>
+            <th scope="row"><?php echo $value["nom"] ?></th>
+            <td><?php echo $value["nomUser"] ?></td>
+            <td><?php echo $value["nomCategorie"] ?></td>
+            <td><?php echo $value["nomFete"] ?></td>
+            <td><?php echo $value["tempsPreparation"]." min" ?></td>
+            <td><?php echo $value["tempsReposint"]." min" ?></td>
+            <td><?php echo $value["tempsCuisson"]." min" ?></td>
+            <?php if ($value["valid"] == 1) { ?>
+              <td><i class="bi bi-check2"></i></td>
+            <?php
+            } else { ?> 
+             <td> <a href="?idRecetteValide=<?php echo $value['idRecette'] ?>" >valider</a> </td>
+            <?php
+  
+            }?>
+              <td><a>modifier</a></td>
+              <td><a href="?idRecetteSupp=<?php echo $value['idRecette'] ?>">Supprimer</a></td>
+          </tr>
+          <?php
+  
+        }
+        }
 
     public function Selected($name,$title) {
         ?>
@@ -213,15 +280,12 @@ class adminstrationView {
 
 
     }
-    private function formRecette(){
+    private function formRecette($id){
       $recette = new recetteController();
-      if (isset($_POST["ajouter-recette"])) {
-      echo "OK";
-        $recette->addRecette();
-        }
+
         ?>
         <form action="" method="post" role="form" class="addForm">
-         <input type="hidden" name="idRecette" value="30"  class="form-control" id="name"  >
+         <input type="hidden" name="idRecette" value="<?php echo $id ?>"  class="form-control" id="name"  >
          <input type="hidden" name="idUser" value="user1@gmail.com"  class="form-control" id="name"  >
           <div class="row">
 
@@ -333,6 +397,19 @@ class adminstrationView {
     }
     public function showUsersPage() {
         $userView = new userView();
+        $auth = new AuthController();
+        
+        if (isset($_GET['idUserValid'])) {
+          $auth->valideuserController($_GET['idUserValid']);     
+        }
+        // get users info for table
+        $users = [];
+        if (isset($_POST["searchSubmit"])){
+         $users = $auth->getsearchUserController($_POST["search"]);
+        }else {
+          $users = $auth->getAlluserController();
+        }
+
         $this->Entete_Page();
         ?>        
         <body>
@@ -341,12 +418,13 @@ class adminstrationView {
                 $userView->HeaderImage("assets/slide/slide-2.jpg", "Utlisateurs de", "Delcious");
                 $this->Menu();
                 $userView->TitleSection("Consulter", "Utilisateurs", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-
-                $userView->FilterButtons(["age", "email", "nom"]);
-                $this->SearchBar();
-                $this->table(["utilisateur","name","email","age","valider"]);
+                // $userView->FilterButtons(["age", "email", "nom"]);
+                $this->SearchBar('chercher utilisateur par nom');
+                $userView->FilterButtons(['nom', 'prenom',"email",'age',] ,0);
+                $this->table(["utilisateur","name","prenom","email","age","valider"],2,$users);
           ?>
             <script src="./views/script/hero.js"></script>
+            <script src="./views/script/sort.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                 crossorigin="anonymous"></script>
@@ -356,6 +434,9 @@ class adminstrationView {
     public function shownNtritionPage() {
         $userView = new userView();
         $ingredient = new ingredientController();
+        if (isset($_GET['idIngredientSupp'])) {
+        $ingredient->deleteIngredientController($_GET['idIngredientSupp']);     
+        }
         $ingrs = $ingredient->getAllIngredientsController();
         $this->Entete_Page();
         ?>        
@@ -365,7 +446,7 @@ class adminstrationView {
                 $userView->HeaderImage("assets/slide/slide-2.jpg", "ajpouter nutrition in", "Delcious");
                 $this->Menu();
                 $userView->TitleSection("Ajouter", "nutrition", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem."); 
-                $this->table(["ingredient","calorie","healthy","saison","vitamins" , "minerals"],0,$ingrs);
+                $this->table(["ingredient","calorie","healthy","saison",'modifier','supprimer'],0,$ingrs);
                 $this->formNurtition();
 
           ?>
@@ -378,7 +459,24 @@ class adminstrationView {
     }
     public function shownGestionRecettePage() {
         $userView = new userView();
-        $this->Entete_Page();
+        $recetteCtrl = new recetteController();
+        if (isset($_GET['idRecetteSupp'])) {
+        $recetteCtrl->deleteRecetteController($_GET['idRecetteSupp']);     
+        }
+        if (isset($_GET['idRecetteValide'])) {
+          $recetteCtrl->valideRecetteController($_GET['idRecetteValide']);     
+        }
+        if (isset($_POST["ajouter-recette"])) {
+          $recetteCtrl->addRecette();
+        }
+        // get recette info for table
+        $recs = [];
+        if (isset($_POST["searchSubmit"])){
+         $recs = $recetteCtrl->getSearchRecetteController($_POST["search"]);
+        }else {
+          $recs = $recetteCtrl->getAllRecetteController();
+        }
+            $this->Entete_Page();
         ?>        
         <body>
             <?php
@@ -386,13 +484,14 @@ class adminstrationView {
                 $userView->HeaderImage("assets/slide/slide-2.jpg", "Gestion Recettes in", "Delcious");
                 $this->Menu();
                 $userView->TitleSection("Gestion de", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-            $userView->FilterButtons(["categorie1","categorie2","categorie3"]);
-            $userView->FilterButtons(["fete1","fete2","fete3","fete4"]);
-            $this->SearchBar();
-                $this->table(["recette","utilisateur","calorie","categorie","notation","valider","modifier" , "supprimer"],1,[]);
-            $this->formRecette();
+                // $userView->FilterButtons(["categorie1","categorie2","categorie3"]);
+                // $userView->FilterButtons(["fete1","fete2","fete3","fete4"]);
+                $this->SearchBar("search recette");
+                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss',"valider","modifier" , "supprimer"],1,$recs);
+            $this->formRecette(count($recs));
           ?>
             <script src="./views/script/autoComplete.js"></script>
+            <script src="./views/script/hero2.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                 crossorigin="anonymous"></script>

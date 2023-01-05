@@ -310,6 +310,7 @@ a {
 }
 .card {
   margin: auto;
+  height: 360px;
   overflow: hidden;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.3);
 }
@@ -317,6 +318,7 @@ a {
 .card .box {
   padding: 35px 30px;
   width: 100%;
+  height: 100%;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.4);
   transition: all ease-in-out 0.4s;
 }
@@ -770,7 +772,7 @@ each of the slides */
     padding: 30px 25px;
     border: 1px solid #ddd;
     transition-duration: .5s;
-    min-height: 450px;
+    height: 450px;
   }
 
   .blog-detail .border {
@@ -1041,3 +1043,46 @@ border: 2px solid #d0a772;
   line-height: 25px;
   margin-left: 15px;
 }
+
+
+/* ####################
+        searchBar
+  ##################### */
+
+  .addForm{
+    width: 100%;
+    padding: 30px;
+    background: #fff;
+  }
+  .addForm .form-group {
+    padding-bottom: 8px;
+  }
+  .addForm input,
+  .addForm textarea ,.addForm select {
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 14px;
+  }
+  .addForm input:focus , .addForm textarea:focus ,  .addForm select:focus{
+    outline: none;
+    border: 2px solid #cfa671;
+    box-shadow: none;
+  }
+  .addForm input {
+    height: 44px;
+  }
+  
+  .addForm button[type=submit] {
+    background: #cfa671;
+    border: 0;
+    padding: 10px 24px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 10px;
+  }
+  
+  .addForm button[type=submit]:hover {
+    background: #FFF;
+    color: #cfa671;
+    border: 2px solid #cfa671;
+  }  
