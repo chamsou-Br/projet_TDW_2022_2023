@@ -7,7 +7,23 @@ class  recetteController{
     
     public function getAllRecetteController() {
         $recetteModal = new recetteModal();
-        $res =  $recetteModal->getAllRecetteModal();
+        $recettes =  $recetteModal->getAllRecetteModal();
+        $ingrModal = new ingredientModal();
+        $res = [];
+        foreach($recettes as $key =>$rec ) {
+            $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
+            $i = 0;
+            $c = 0;
+            foreach( $ingrs as $ingr) {
+                if ($ingr["Healthy"] == 1) {
+                    $i = $i + 1;
+                }
+                $c = $c + $ingr["calories"];
+            }
+                $rec["Healthy"] = 1;
+                $rec["calories"] = $c;
+                array_push($res, $rec);
+        }
         return $res;
     }
 
@@ -74,7 +90,24 @@ class  recetteController{
 
     public function getSearchRecetteController($search){
         $recette = new recetteModal();
-        $res = $recette->getSearchRecetteModal($search);
+        $recettes = $recette->getSearchRecetteModal($search);
+        $ingrModal = new ingredientModal();
+        $res = [];
+        foreach($recettes as $key =>$rec ) {
+            $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
+            $i = 0;
+            $c = 0;
+            foreach( $ingrs as $ingr) {
+                if ($ingr["Healthy"] == 1) {
+                    $i = $i + 1;
+                }
+                $c = $c + $ingr["calories"];
+            }
+
+                $rec["Healthy"] = 1;
+                $rec["calories"] = $c;
+                array_push($res, $rec);
+        }
         return $res;
     }
 
@@ -177,6 +210,22 @@ class  recetteController{
         return $res; 
 
     }
+
+    public function addFavoriteRecetteControlle($idUser,$idRecette){
+        $recetteModal = new recetteModal();
+        $recetteModal->addFavoriteRecetteModal($idUser, $idRecette);
+    }
+    public function deleteFavoriteRecetteController($idUser,$idRecette){
+        $recetteModal = new recetteModal();
+        $recetteModal->deleteFavoriteRecetteModal($idUser, $idRecette);
+    }
+
+    public function getFavoriteRecetteController($id){
+        $recetteModal = new recetteModal();
+        $res = $recetteModal->getFavoriteRecetteModal($id);
+        return $res;
+    }
+
 
 
 }

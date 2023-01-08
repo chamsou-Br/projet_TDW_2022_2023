@@ -71,15 +71,33 @@ class adminstrationView {
 
     private function SearchBar($title){
         ?>
-        <form action="" style="width :80%;margin:auto" method="post" role="form" class="addForm">
+        <form action="" style="margin : 0px;margin-left : 110px;" method="post" role="form" class="addForm">
           <div class="row" style="display: flex;align-items: center;">
-            <div class="col-md-6 form-group" >
-              <input type="text" style="margin-top : 10px" name="search" class="form-control" id="name" placeholder="<?php echo $title ?>" required>
+            <div class="col-md-4 form-group" >
+              <input type="text"  name="search" class="form-control" id="name" placeholder="<?php echo $title ?>" required>
             </div>
             <div class="col-md-6 text-center"><button name="searchSubmit" type="submit">Search</button></div>
           </div>
         </form>
         <?php
+    }
+
+    public function TrieButtons($tris)
+    {
+        ?>
+
+            <div class="row" style="margin-left : 130px" >  
+                <div class="col-lg-4">
+                <select  class="form-select tri-select"  aria-label="Default select example">
+                    <option selected>Trier par</option>
+                    <?php foreach ($tris as $key=> $tri) { ?>
+                      <option value="<?php echo $key ?> "><?php echo $tri ?></option>
+                    <?php }?>
+                    </select>
+                </div>          
+
+            </div>
+            <?php
     }
 
 
@@ -148,7 +166,7 @@ class adminstrationView {
     private function bodyIngredientTable($values){
     foreach ($values as $value) {
       ?>     
-      <tr>
+      <tr >
         <th scope="row"><?php echo $value["nom"] ?></th>
         <td><?php echo $value["calories"] ?></td>
         <?php if ($value["Healthy"] == 1) { ?>
@@ -190,11 +208,11 @@ class adminstrationView {
       }
       }
 
-      private function bodyRecetteTable($values){
+    private function bodyRecetteTable($values){
 
         foreach ($values as $value) {
           ?>     
-          <tr>
+          <tr categorie="<?php if (isset($value["nomCategorie"])) echo $value["nomCategorie"] ?>" fete="<?php if(isset($value["nomFete"])) echo $value["nomFete"] ?>">
             <th scope="row"><?php echo $value["nom"] ?></th>
             <td><?php echo $value["nomUser"] ?></td>
             <td><?php echo $value["nomCategorie"] ?></td>
@@ -202,6 +220,7 @@ class adminstrationView {
             <td><?php echo $value["tempsPreparation"]." min" ?></td>
             <td><?php echo $value["tempsReposint"]." min" ?></td>
             <td><?php echo $value["tempsCuisson"]." min" ?></td>
+            <td><?php echo $value["calories"] ?></td>
             <?php if ($value["valid"] == 1) { ?>
               <td><i class="bi bi-check2"></i></td>
             <?php
@@ -476,6 +495,16 @@ class adminstrationView {
         }else {
           $recs = $recetteCtrl->getAllRecetteController();
         }
+        $categorie = $recetteCtrl->getAllCategoriesController();
+          $fetes = $recetteCtrl->getAllFeteController();
+          $catgFilter = ["All"];
+          $feteFilter = ["All"];
+          foreach($categorie as $cat) {
+          array_push($catgFilter, $cat["nom"]);
+          }
+          foreach ($fetes as $fete) {
+        array_push($feteFilter, $fete["nom"]);
+          }
             $this->Entete_Page();
         ?>        
         <body>
@@ -484,14 +513,16 @@ class adminstrationView {
                 $userView->HeaderImage("assets/slide/slide-2.jpg", "Gestion Recettes in", "Delcious");
                 $this->Menu();
                 $userView->TitleSection("Gestion de", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                // $userView->FilterButtons(["categorie1","categorie2","categorie3"]);
-                // $userView->FilterButtons(["fete1","fete2","fete3","fete4"]);
+                $userView->FilterButtons($feteFilter,0,"fete");
+                $userView->FilterButtons($catgFilter,0,"categorie");
                 $this->SearchBar("search recette");
-                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss',"valider","modifier" , "supprimer"],1,$recs);
-            $this->formRecette(count($recs));
+                $this->TrieButtons(["temp prep","temp repos",'temp cuiss',"calories"]);
+                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','calories',"valider","modifier" , "supprimer"],1,$recs);
+                $this->formRecette(count($recs));
           ?>
             <script src="./views/script/autoComplete.js"></script>
-            <script src="./views/script/hero2.js"></script>
+            <script src="./views/script/filterGestionRecette.js"></script>
+            <script src="./views/script/hero.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                 crossorigin="anonymous"></script>

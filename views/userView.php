@@ -24,12 +24,8 @@ class userView
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
                 integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-            <link rel="stylesheet" href="./views/styleSheet/login2.css">
+            <link rel="stylesheet" href="./views/styleSheet/login.css">
             <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
-
-
-
-
         </head>
         <?php
     }
@@ -37,9 +33,12 @@ class userView
     private function LoginScreen()
     {
         $auth = new AuthController();
-        if (isset($_POST['email']) && isset($_POST["password"])) {
-            echo ($_POST['email']);
-            echo ($_POST["password"]);
+        if (isset($_POST['login'])) {
+            $res = $auth->AuthUser_Controller($_POST['email'], $_POST["password"]);
+            if(count($res) > 0){
+                echo "true";
+            } else
+                echo "false";
         }
         ?>
         <div class="box-form">
@@ -60,23 +59,68 @@ class userView
                 <p>Vous n'aves pas un compte ? <a href="#">Creer nouvelle compte</a> Cela prend moins d’une minute</p>
                 <form method="post">
                     <div class="inputs">
-                        <input type="text" name="email" placeholder="email">
+                        <input required type="text" name="email" placeholder="email">
                         <br>
-                        <input type="password" name="password" placeholder="mot de passe">
+                        <input required type="password" name="password" placeholder="mot de passe">
                     </div>
 
-                    <br><br>
-
+                    <br>
                     <div class="remember-me--forget-password">
                         <!-- Angular -->
-                        <label>
-                            <input type="checkbox" name="check" />
-                            <span class="text-checkbox">Souvenez-vous de moi</span>
-                        </label>
                         <p>Mot de passe oublié ?</p>
                     </div>
                     <br>
-                    <button type="submit" class="submitInput" name="connecter">connexion</button>
+                    <button type="submit" class="submitInput" name="login">connexion</button>
+                    <br>
+                </form>
+
+
+            </div>
+
+        </div>
+        <!-- partial -->
+        <?php
+    }
+
+    private function RegistreScreen()
+    {
+        $auth = new AuthController();
+        if (isset($_POST['register'])) {
+            $res = $auth->RegisterUserController();
+            echo count($res);
+        }
+        ?>
+        <div class="box-form">
+            <div class="left">
+                <div class="overlay">
+                    <h1>Bienvenue avec nous</h1>
+                    <p>Chef master un site web algerien pour proposer une variete de recettes différentes a la demande , et
+                        partager les plus délicieux plats algériens .</p>
+                    <span>
+                        <p>conexion avec réseau sociaux</p>
+                        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-google" aria-hidden="true"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div class="right" style="width: 50%;">
+                <h5>connecter</h5>
+                <p>Vous aves  un compte ? <a href="#">connectez avec nous </a></p>
+                <form method="post">
+                    <div class="inputs">
+                        <input type="text" required name="nom" placeholder="nome">
+                        <br>
+                        <input type="text" required name="prenom" placeholder="prenom">
+                        <br>
+                        <input type="email" required name="email" placeholder="email">
+                        <br>
+                        <input type="number" required name="age" placeholder="age">
+                        <br>
+                        <input type="password" required name="password" placeholder="mot de passe">
+                    </div>
+                    <br>
+                    <button type="submit" class="submitInput" name="register">connexion</button>
+                    <br>
                 </form>
 
 
@@ -346,13 +390,13 @@ class userView
             <?php
     }
 
-    public function FilterButtons($filters, $active)
+    public function FilterButtons($filters, $active,$title)
     {
         ?>
             <div class="row">
                 <div class="col-lg-12">
                     <form class="special-menu text-center">
-                        <div class="button-group filter-button-group">
+                        <div class="button-group filter-button-group <?php echo $title ?>">
 
                             <?php foreach ($filters as $key => $value) { ?>
                                 <button type="submit"
@@ -370,6 +414,7 @@ class userView
             </div>
             <?php
     }
+
 
     private function Gallerie($nom)
     {
@@ -521,6 +566,41 @@ class userView
                 </header>
             </div>
             <?php
+    }
+
+    public function ProfileUser($value){
+        ?>
+            <div class="profile">
+                <div class="row" style="display: flex;align-items: center;">
+                    <div class="col-lg-4">
+                        <div class="profile-img">
+                            <img src="https://ptetutorials.com/images/user-profile.png" />
+                        </div>
+                    </div>
+                    <form method="post"  class="col-lg-8 row profile-info" >
+
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="nom" value="<?php echo $value["nom"] ?>" class="form-control" id="name" placeholder="name " >
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="prenom" value="<?php echo $value["prenom"] ?>" class="form-control" id="name" placeholder="prenom" >
+                    </div>
+                    <div class="col-md-6 form-group ">
+                        <input type="text" name="email" value="<?php echo $value["email"] ?>" class="form-control" id="name" placeholder="email" >
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="number" name="age" value="<?php echo $value["age"] ?>" class="form-control" id="name" placeholder="age" >
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <input type="password" name="motdepass" value="<?php echo $value["motdepass"] ?>" class="form-control" id="name" placeholder="nouvelle password" >
+                    </div>
+                    <div class="col-md-6 form-group">
+                    <button style="margin: auto;" class="submit "  name="save-profile" type="submit">Sauvgarder</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        <?php
     }
     public function DetaialsRecette($details, $ingrs, $instrs)
     {
@@ -681,7 +761,7 @@ class userView
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Recettes natural avec", "Delcious");
                 $this->Menu();
                 $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->FilterButtons($saisonFilter,0);
+                $this->FilterButtons($saisonFilter,0,"saison");
                 $this->cardsContainer($values);
                 ?>
                 <script src="./views/script/hero.js"></script>
@@ -752,8 +832,8 @@ class userView
             <div style="display: flex;  flex-wrap: wrap;">
                 <?php foreach ($values as $key => $value) { ?>
                     <div style="margin : 20px" categorie="<?php echo $value["nomCategorie"] ?>"
-                        fete="<?php echo $value["nomFete"] ?>" saison="<?php if(isset($value['saison'])) echo $value['saison']; ?>" 
-                        calories="<?php if(isset($value['calories'])) echo $value['calories']; ?>" >
+                        fete="<?php echo $value["nomFete"] ?>" saison="<?php if(isset($value['saison'])) echo $value['saison'] ?>" 
+                        calories="<?php if(isset($value['calories'])) echo $value['calories'] ?>" >
                         <?php $this->CardRecette($key, $value); ?>
                     </div>
                 <?php } ?>
@@ -778,7 +858,7 @@ class userView
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Fetes avec", "Delcious");
                 $this->Menu();
                 $this->TitleSection("check our", "Fetes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->FilterButtons($feteFiter, 0);
+                $this->FilterButtons($feteFiter, 0,"fete");
                 $this->cardsContainer($values);
                 ?>
                 <script src="./views/script/hero.js"></script>
@@ -904,7 +984,7 @@ class userView
             <body>
                 <?php
                 $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Delcios", "Restaurant");
+                $this->Hero();
                 $this->Menu();
                 // $this->DetaialsRecette();
                 // $this->Gallerie("Bourek ");
@@ -932,13 +1012,8 @@ class userView
     }
     public function showDetailRecettePage()
     {
-        ?>
-            <?php
             $this->Entete_Page();
             ?>
-
-
-
             <body>
                 <?php
                 $this->header();
@@ -961,5 +1036,48 @@ class userView
         <?php
     }
 
+    public function showProfilePage(){
+
+        $recetteCtrl = new recetteController();
+        $authCtrl = new AuthController();
+        if(isset($_POST["save-profile"])){
+            $authCtrl->updateUserController();
+        }
+        $user = $authCtrl->getUserController('user1@gmail.com');
+        $recette = $recetteCtrl->getFavoriteRecetteController("user1@gmail.com");
+
+        $this->Entete_Page();
+        ?>
+        <body>
+            <?php
+
+            $this->Menu();
+            $this->ProfileUser($user);
+            $this->TitleSection("Votre favorites", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+            $this->cardsContainer($recette);
+            ?>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        </body>
+    <?php
+    }
+
+    public function showLoginPage(){
+        
+
+        $this->Entete_Page();
+        ?>
+        <body>
+            <?php
+
+            $this->RegistreScreen();
+            ?>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        </body>
+    <?php
+    }
 }
 ?>

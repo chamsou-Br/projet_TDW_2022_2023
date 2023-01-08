@@ -1086,3 +1086,72 @@ border: 2px solid #d0a772;
     color: #cfa671;
     border: 2px solid #cfa671;
   }  
+
+
+  /* ##############################
+              Profile 
+     ##############################*/
+
+     .profile {
+      padding: 10px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+     }
+     .profile-img {
+      box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.3);
+      border-radius: 100%;
+      border: 4px solid #fff;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .profile-img img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 10rem;
+      transition: all ease-in-out 0.4s;
+    }
+    .profile-img img:hover {
+      transform: scale(1.2);
+    }
+
+    .addForm input,
+.addForm textarea ,.addForm select {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+.profile input {
+  height: 44px;
+}
+
+.profile textarea {
+
+  padding: 10px 12px;
+}
+
+.profile input:focus , .profile textarea:focus ,  .profile select:focus{
+  outline: none;
+  border: 2px solid #cfa671;
+  box-shadow: none;
+}
+
+.profile button[type=submit] {
+  background: #cfa671;
+  border: 0;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 10px;
+}
+
+.profile button[type=submit]:hover {
+  background: #FFF;
+  color: #cfa671;
+  border: 2px solid #cfa671;
+}
+
+.profile-info {
+  height: 250px;
+}

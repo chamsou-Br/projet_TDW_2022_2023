@@ -30,7 +30,7 @@ window.addEventListener("beforeunload", function (e) {
     sessionStorage.setItem('scrollpos', window.scrollY);
 });
 
-console.log("kkk")
+
 document.querySelectorAll(".card")[1].parentNode.style.display = "none"
 
 }

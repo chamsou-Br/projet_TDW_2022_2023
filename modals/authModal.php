@@ -29,9 +29,27 @@ class AuthModal
         $db = null;
     }
 
+    
+    public function registreUser($nom,$prenom,$email,$age,$password) {
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("INSERT INTO utilisateur (`email`,`nom` , `prenom` , `age` ,`valid`, `motdepass`) values (:email,:nom,:prenom,:age , 0 ,:motdepass)");
+        $_REQUEST->bindParam("email",$email);
+        $_REQUEST->bindParam("nom",$nom);
+        $_REQUEST->bindParam("prenom",$prenom);
+        $_REQUEST->bindParam("age",$age);
+        $_REQUEST->bindParam("motdepass",$password);
+        $_REQUEST->execute();
+        session_start();
+        $_SESSION["email"] = $email;
+        $_SESSION["password"] = $password;    
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+
     public function AuthUser($email,$password) {
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("SELECT * from utilisateur where email=:email AND motdepasse=:hash_pwd");
+        $_REQUEST = $db->prepare("SELECT * from utilisateur where email=:email AND motdepass=:hash_pwd");
         $_REQUEST->bindParam("email",$email);
         $_REQUEST->bindParam("hash_pwd",$password);
         $_REQUEST->execute();
@@ -39,12 +57,12 @@ class AuthModal
         if($_REQUEST->rowCount()==1){  
             session_start();
             $_SESSION["email"] = $res[0]['email'];
-            $_SESSION["password"] = $res[0]['hash_pwd'];       
+            $_SESSION["password"] = $res[0]['motdepass'];       
             $this->Deconexion($db);       
-            return "true";
+            return $res[0];
         }else{
             $this->Deconexion($db);
-            return "false";
+            return [];
         }
     }
 
@@ -101,6 +119,30 @@ class AuthModal
             unset($_SESSION["email"]);
             unset($_SESSION["password"]);
         }
+
+    }
+
+    public function getUserModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * FROM utilisateur where email = :email");
+        $_REQUEST->bindParam("email", $id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res[0];
+    }
+
+    public function ubdateuserModal($nom,$prenom,$email,$age,$password){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("UPDATE utilisateur SET nom = :nom , prenom = :prenom , age = :age , motdepass = :motdepass where email = :email");
+        $_REQUEST->bindParam("nom", $nom);
+        $_REQUEST->bindParam("prenom", $prenom);
+        $_REQUEST->bindParam("age", $age);
+        $_REQUEST->bindParam("motdepass", $password);
+        $_REQUEST->bindParam("email", $email);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
 
     }
 

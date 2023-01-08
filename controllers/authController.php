@@ -4,10 +4,15 @@ require_once("./modals/authModal.php");
 class AuthController
 {
     public function AuthUser_Controller($email,$password) {
-        echo($email." ".$password);
         $AuthModal = new AuthModal();
         $isAuth = $AuthModal->AuthUser($email,$password);
         return $isAuth;
+    }
+
+    public function RegisterUserController() {
+        $AuthModal = new AuthModal();
+        $res = $AuthModal->registreUser($_POST["nom"],$_POST["prenom"],$_POST["email"],$_POST["age"],$_POST["password"]);
+        return $res;
     }
 
     public function VerifyIfAuthDoneAlready_Controller() {
@@ -39,6 +44,17 @@ class AuthController
         $auth = new AuthModal();
         $res = $auth->getSearchUserModal($search);
         return $res;
+    }
+
+    public function getUserController($id){
+        $auth = new AuthModal();
+        $res = $auth->getUserModal($id);
+        return $res;
+    }
+
+    public function updateUserController(){
+        $auth = new AuthModal();
+        $auth->ubdateuserModal($_POST["nom"],$_POST["prenom"],$_POST['email'],$_POST["age"],$_POST["motdepass"]);
     }
 
 }

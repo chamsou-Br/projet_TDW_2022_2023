@@ -16,7 +16,7 @@ class recetteModal {
     {
         try {
             ini_set('mssql.charset', 'UTF-8');
-            $db = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->databasename . ';', $this->username, $this->password);
+            $db = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->databasename . ';', $this->username, $this->password,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
         } catch (PDOException $th) {
             printf("erreur de connexion à la base de donnée", $th->getMessage());
             exit();
@@ -163,6 +163,37 @@ public function getSearchRecetteModal($search){
   $db = $this->Connexion();
   $_REQUEST = $db->prepare("SELECT  recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email where instr(recette.nom,:search) order by recette.nom ");
     $_REQUEST->bindParam("search", $search);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+public function addFavoriteRecetteModal($idUser , $idRecette){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("INSERT INTO recettefavoris values (:idUser ,:idRecette)");
+  $_REQUEST->bindParam("idUser", $idUser);
+  $_REQUEST->bindParam("idRecette", $idRecette);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+public function deleteFavoriteRecetteModal($idUser , $idRecette){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("DELETE FROM recettefavoris WHERE idUser = :idUser AND idRecette = :idRecette");
+  $_REQUEST->bindParam("idUser", $idUser);
+  $_REQUEST->bindParam("idRecette", $idRecette);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+public function getFavoriteRecetteModal($id){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email JOIN recettefavoris on recette.idRecette = recettefavoris.idRecette WHERE recettefavoris.idUser = :idUser");
+  $_REQUEST->bindParam("idUser", $id);
   $_REQUEST->execute();
   $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
   $this->Deconexion($db);

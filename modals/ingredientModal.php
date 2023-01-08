@@ -15,7 +15,7 @@ class ingredientModal{
     public function Connexion()
     {
         try {
-            $db = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->databasename . ';', $this->username, $this->password);
+            $db = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->databasename . ';', $this->username, $this->password,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
         } catch (PDOException $th) {
             printf("erreur de connexion à la base de donnée", $th->getMessage());
             exit();
