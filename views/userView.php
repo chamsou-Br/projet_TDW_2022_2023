@@ -1,9 +1,10 @@
 <?php
 
-require_once("./controllers/authController.php");
-require_once("./controllers/recetteController.php");
-require_once("./controllers/ingredientController.php");
-
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/authController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/recetteController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/ingredientController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/parametreController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/newsController.php';
 class userView
 {
 
@@ -191,7 +192,7 @@ class userView
         <?php
     }
 
-    private function Hero()
+    private function Hero($values)
     {
         ?>
         <!-- ======= Hero Section ======= -->
@@ -202,63 +203,24 @@ class userView
                     <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
 
                     <div class="carousel-inner" role="listbox">
-
-                        <!-- Slide 1 -->
-                        <div class="carousel-item active" style="background-image: url(assets/slide/slide-1.jpg);">
+                        <?php foreach ($values as $key => $value) { ?>
+                            <div class="carousel-item <?php if ($key == 0) echo 'active' ?>" style="background-image: url(<?php echo $value["path"] ?>);">
                             <div class="carousel-container">
                                 <div class="carousel-content">
-                                    <h2 class="animate__animated animate__fadeInDown"><span>Delicious</span> Restaurant</h2>
-                                    <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui
-                                        aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem
-                                        mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti
-                                        vel. Minus et tempore modi architecto.</p>
+                                    <h2 class="animate__animated animate__fadeInDown"><span><?php echo $value["nom"] ?></span> </h2>
+                                    <p class="animate__animated animate__fadeInUp"><?php echo $value["descr"] ?></p>
                                     <div>
                                         <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Our
                                             Menu</a>
-                                        <a href="#book-a-table"
-                                            class="btn-book animate__animated animate__fadeInUp scrollto">Book a Table</a>
+                                        <a href="./recette?id=<?php echo $value["idRecette"] ?>"
+                                            class="btn-book animate__animated animate__fadeInUp scrollto">Consulter</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <?php }?>
 
-                        <!-- Slide 2 -->
-                        <div class="carousel-item" style="background-image: url(assets/slide/slide-2.jpg);">
-                            <div class="carousel-container">
-                                <div class="carousel-content">
-                                    <h2 class="animate__animated animate__fadeInDown">Lorem Ipsum Dolor</h2>
-                                    <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui
-                                        aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem
-                                        mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti
-                                        vel. Minus et tempore modi architecto.</p>
-                                    <div>
-                                        <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Our
-                                            Menu</a>
-                                        <a href="#book-a-table"
-                                            class="btn-book animate__animated animate__fadeInUp scrollto">Book a Table</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Slide 3 -->
-                        <div class="carousel-item" style="background-image: url(assets/slide/slide-3.jpg);">
-                            <div class="carousel-container">
-                                <div class="carousel-content">
-                                    <h2 class="animate__animated animate__fadeInDown">Sequi ea ut et est quaerat</h2>
-                                    <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui
-                                        aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem
-                                        mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti
-                                        vel. Minus et tempore modi architecto.</p>
-                                    <div>
-                                        <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Our
-                                            Menu</a>
-                                        <a href="#book-a-table"
-                                            class="btn-book animate__animated animate__fadeInUp scrollto">Book a Table</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
                     <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
@@ -278,7 +240,7 @@ class userView
 
 
 
-    private function Menu()
+    private function Menu($key)
     {
         ?>
         <header id="nav" class=" d-flex align-items-center header-transparent">
@@ -290,22 +252,22 @@ class userView
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
                     <ul>
-                        <li><a class="nav-link scrollto" href="#contact">
+                        <li><a style="<?php if ($key == 1) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./news">
                                 News
                             </a></li>
-                        <li><a class="nav-link scrollto" href="#contact">
+                        <li><a style="<?php if ($key == 2) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./ideeRecette">
                                 idées de recette
                             </a></li>
-                        <li><a class="nav-link scrollto" href="#contact">
+                        <li><a style="<?php if ($key == 3) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./healthy">
                                 Healthy
                             </a></li>
-                        <li><a class="nav-link scrollto" href="#contact">
+                        <li><a style="<?php if ($key == 4) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./saison">
                                 saisons
                             </a></li>
-                        <li><a class="nav-link scrollto" href="#contact">
+                        <li><a style="<?php if ($key == 5) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./fete">
                                 fêtes
                             </a></li>
-                        <li><a class="nav-link scrollto" href="#contact">
+                        <li><a style="<?php if ($key == 6) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./nutrition">
                                 nutrition
                             </a></li>
 
@@ -327,7 +289,6 @@ class userView
 
         ?>
         <div class="carouselContainer">
-
             <div style="margin: 40px 0px;" id="<?php echo $title2 ?>" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators ">
                     <?php $j = 0;
@@ -341,9 +302,10 @@ class userView
                         $j = $j + 1;
                     } ?>
                 </div>
+                
                 <div class="carousel-inner" style="padding: 0 20px;">
                     <?php
-                    echo count($values);
+
                     $i = 0;
                     while ($i + 3 <= count($values)) {
                         ?>
@@ -468,7 +430,8 @@ class userView
     private function CardRecette($i, $value)
     {
         ?>
-            <div class="card" style="width: 18rem;">
+
+            <a href="./recette?id=<?php echo $value["idRecette"] ?>" class="card" style="width: 18rem;">
                 <div class="card-image" style="background-image: url(<?php echo ($value['path']) ?>)"></div>
                 <div class="box">
                     <span>
@@ -483,7 +446,8 @@ class userView
                     </p>
                 </div>
 
-            </div>
+    </a>
+
             <?php
     }
     
@@ -500,31 +464,28 @@ class userView
         <?php
     }
 
-    private function News()
+    private function News($value)
     {
         ?>
 
             <div class="swiper-slide events">
                 <div class="row event-item">
-                    <div class="col-lg-6">
-                        <img src="assets/rec1.jpg" style="z-index: 20;" class="img-fluid" alt="">
+                    <div class="col-lg-5">
+                        <img src="<?php echo $value["img"] ?>" style="z-index: 20;width :100%;height : 90%;border : 3px solid #FFF;border-radius : 20px;margin : 0 20px" class="img-fluid" alt="">
                     </div>
-                    <div class="col-lg-6 pt-4 pt-lg-0 content">
-                        <h3>Custom Parties</h3>
-                        <div class="price">
-                            <p><span>$99</span></p>
-                        </div>
-                        <p class="fst-italic">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                            et
-                            dolore
-                            magna aliqua.
-                        </p>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content" style="margin-left: 20px;">
+                        <h3><?php echo $value["title"] ?></h3>
+
                         <ul>
-                            <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                            <li><i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.
-                            </li>
-                            <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+                            <?php
+                            $items = explode(".",$value["descr"]);
+                            foreach($items as $item){
+                                ?>
+                                <li><i class="bi bi-check-circle"></i> <?php echo $item ?></li>
+                                <?php
+                            }
+                            ?>
+
                         </ul>
                         <p>
                             Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
@@ -537,9 +498,11 @@ class userView
             <?php
     }
 
-    private function Diaporama($images)
+    private function Diaporama($values)
     {
+
         ?>
+
             <div class="diaporama">
                 <header id="slideshow">
                     <div class="slide-wrapper">
@@ -547,19 +510,21 @@ class userView
                         <!-- Define each of the slides
                and write the content -->
 
-                        <?php foreach ($images as $image) {
+                        <?php foreach ($values as $value) {
                             ?>
-                            <div class="slide" style="background-image: url(<?php echo ($image) ?>); background-size: cover;">
+                            <div class="slide" style="background-image: url(<?php echo ($value["img"])?>); background-size: cover;">
                                 <div class="slide-cover">
-                                    <?php $this->News() ?>
+                                    <?php $this->News($value) ?>
                                 </div>
-
                             </div>
                             <?php
 
                         } ?>
                         <div class="slide"
-                            style="background-image: url(<?php echo (reset($images)) ?>); background-size: cover;">
+                            style="background-image: url(<?php echo ($values[0]["img"]) ?>); background-size: cover;">
+                            <div class="slide-cover">
+                                    <?php $this->News($values[0]) ?>
+                                </div>
                         </div>
 
                     </div>
@@ -697,8 +662,9 @@ class userView
     }
     public function ShowNewsScreen()
     {
-        ?>
-            <?php
+        $newCtrl = new newsController();
+        $news = $newCtrl->getNewsController();
+        $recette = $newCtrl->getNewsRecetteController();
             $this->Entete_Page();
             ?>
 
@@ -707,10 +673,10 @@ class userView
             <body>
                 <?php
                 $this->header();
-                $this->Diaporama(["./assets/slide/slide-1.jpg", "./assets/slide/slide-2.jpg", './assets/slide/slide-3.jpg']);
-                $this->Menu();
+                $this->Menu(1);
+                $this->Diaporama($news);
                 $this->TitleSection("check our", "new recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->Carousel("News");
+                $this->cardsContainer($recette);
                 ?>
                 <script src="./views/script/hero.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -729,7 +695,7 @@ class userView
                 <?php
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Bonne santé avec", "Delcious");
-                $this->Menu();
+                $this->Menu(3);
                 $this->TitleSection("check our", "Healthy Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->SearchBar("taper number de calories");
                 $this->cardsContainer($values);
@@ -759,7 +725,7 @@ class userView
                 <?php
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Recettes natural avec", "Delcious");
-                $this->Menu();
+                $this->Menu(4);
                 $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->FilterButtons($saisonFilter,0,"saison");
                 $this->cardsContainer($values);
@@ -800,6 +766,8 @@ class userView
             $values = $recetteController->getAllRecetteController();
         }
 
+        
+
         $this->Entete_Page();
         ?>
 
@@ -809,15 +777,15 @@ class userView
                 <?php
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Chercher Recettes avec", "Delcious");
-                $this->Menu();
+                $this->Menu(2);
                 $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->inputAutoComplete();
-                $this->Carousel("ideerecette", $values);
+                $this->cardsContainer($values)
 
 
                 ?>
                 <script src="./views/script/hero.js"></script>
-                <script src="./views/script/autoComplete2.js"></script>
+                <script src="./views/script/autoComplete.js"></script>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
@@ -856,7 +824,7 @@ class userView
                 <?php
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Fetes avec", "Delcious");
-                $this->Menu();
+                $this->Menu(5);
                 $this->TitleSection("check our", "Fetes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->FilterButtons($feteFiter, 0,"fete");
                 $this->cardsContainer($values);
@@ -878,7 +846,7 @@ class userView
                     <div class="row">
                         <?php
                         foreach ($values as $value) {
-                            if ($value["valide"] == 1) {
+                            if ($value["valide"] == 0) {
                                 ?>
                                 <div class="col-lg-4 col-md-6 col-12">
                                     <div class="blog-box-inner">
@@ -957,7 +925,7 @@ class userView
                 <?php
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Ingredients in", "Delcious");
-                $this->Menu();
+                $this->Menu(6);
                 $this->TitleSection("check our", "Ingredients", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $ingredient = new ingredientController();
                 $ingrs = $ingredient->getAllIngredientsController();
@@ -977,6 +945,8 @@ class userView
 
             <?php
             $this->Entete_Page();
+            $par = new parametreController();
+            $diapo = $par->getDiaporamaController();
             ?>
 
 
@@ -984,8 +954,8 @@ class userView
             <body>
                 <?php
                 $this->header();
-                $this->Hero();
-                $this->Menu();
+                $this->Hero($diapo);
+                $this->Menu(0);
                 // $this->DetaialsRecette();
                 // $this->Gallerie("Bourek ");
         
@@ -1001,7 +971,7 @@ class userView
                 $this->TitleSection("check our", "desserts", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->Carousel("id3", $values2);
                 $this->TitleSection("check our", "boissons", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->Carousel("id4 ", $values3);
+                $this->Carousel("id4", $values3);
                 ?>
                 <script src="./views/script/hero.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -1016,14 +986,15 @@ class userView
             ?>
             <body>
                 <?php
+                
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Chercher Recettes avec", "Delcious");
-                $this->Menu();
+                $this->Menu(-1);
                 $recette = new recetteController();
                 $ingredient = new ingredientController();
-                $recetteDetails = $recette->getRecetteByIdController(0);
-                $ingrs = $ingredient->getIngredientRecettController(0);
-                $instrs = $recette->getInstructionsRecettesController(0);
+                $recetteDetails = $recette->getRecetteByIdController($_GET["id"] ?? 0);
+                $ingrs = $ingredient->getIngredientRecettController($_GET["id"] ?? 0);
+                $instrs = $recette->getInstructionsRecettesController($_GET["id"] ?? 0);
                 $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs);
                 ?>
                 <script src="./views/script/hero.js"></script>

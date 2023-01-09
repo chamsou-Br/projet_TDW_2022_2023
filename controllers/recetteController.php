@@ -1,7 +1,7 @@
 <?php
 
-require_once('./modals/recetteModal.php');
-require_once('./modals/ingredientModal.php');
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/recetteModal.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/ingredientModal.php';
 class  recetteController{
     
     
@@ -121,9 +121,11 @@ class  recetteController{
             $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
             $i = 0;
             foreach( $ingrs as $ingr) {
+
                 if (stripos(json_encode($idee),$ingr['nom']) !== false) {
                     $i = $i + 1;
                 }
+                // echo $ingr["nom"] . '| '.$i.' | '.$rec["idRecette"].'  '.$idee[0]."{{";
             }
             if ($i >= 0.7 * count($idee)){
                 array_push($res, $rec);

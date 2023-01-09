@@ -1,6 +1,8 @@
 <?php
 
-require_once("./modals/authModal.php");
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/authModal.php';
+
 class AuthController
 {
     public function AuthUser_Controller($email,$password) {

@@ -31,7 +31,7 @@ window.addEventListener("beforeunload", function (e) {
 });
 
 
-document.querySelectorAll(".card")[1].parentNode.style.display = "none"
+
 
 }
 )()

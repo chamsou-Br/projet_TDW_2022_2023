@@ -8,7 +8,5 @@ $User = new userView();
 $Admin = new adminstrationView();
 
 
-$request = $_SERVER['REQUEST_URI'];
-
-$User->ShowAcceilPage()
+$User->showDetailRecettePage();
 ?>

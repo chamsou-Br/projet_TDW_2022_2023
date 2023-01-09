@@ -10,5 +10,5 @@ $Admin = new adminstrationView();
 
 $request = $_SERVER['REQUEST_URI'];
 
-$User->ShowAcceilPage()
+$User->ShowNewsScreen()
 ?>

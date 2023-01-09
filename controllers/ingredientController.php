@@ -1,6 +1,8 @@
 <?php 
 
-require_once('./modals/ingredientModal.php');
+
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/ingredientModal.php';
 class ingredientController {
     public function getAllIngredientsController(){
         $IngreModal = new ingredientModal();

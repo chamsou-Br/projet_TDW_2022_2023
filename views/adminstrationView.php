@@ -1,9 +1,11 @@
 <?php 
 
-require_once("./views/userView.php");
-require_once("./controllers/authController.php");
-require_once("./controllers/recetteController.php");
-require_once("./controllers/ingredientController.php");
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/views/userView.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/authController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/recetteController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/ingredientController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/newsController.php';
 
 class adminstrationView {
 
@@ -32,28 +34,28 @@ class adminstrationView {
 <?php
     }
 
-    private function Menu()
+    private function Menu($key)
     {
 ?>
 <header id="nav" class=" d-flex align-items-center header-transparent">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
         <div class="logo me-auto">
-            <h1><a href="index.html" class="active">accueil</a></h1>
+            <h1><a href="./admin" class="<?php if ($key == 0) echo "active" ?>">admin</a></h1>
         </div>
 
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto" href="#contact">
+                <li><a style="<?php if ($key == 1) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./gestionNews">
                         News
                     </a></li>
-                <li><a class="nav-link scrollto" href="#contact">
+                <li><a style="<?php if ($key == 2) echo "color: #cfa671;" ?>"class="nav-link scrollto " href="./gestionRecette">
                         Recettes
                     </a></li>
-                <li><a class="nav-link scrollto" href="#contact">
+                <li><a style="<?php if ($key == 3) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./gestionUtilisateur">
                         utilisateurs
                     </a></li>
-                <li><a class="nav-link scrollto" href="#contact">
+                <li><a style="<?php if ($key == 4) echo "color: #cfa671;" ?>" class="nav-link scrollto " href="./gestionNutrition">
                 nutrition
                     </a></li>
 
@@ -62,7 +64,7 @@ class adminstrationView {
         </nav>
         <!-- navbar -->
 
-        <a href="#contact-btn" class="contact-btn scrollto">Contact us</a>
+        <a href="" class="contact-btn scrollto">Deconexion</a>
 
     </div>
 </header><!-- End Header -->
@@ -103,27 +105,27 @@ class adminstrationView {
 
     private function formNews(){
         ?>
-                <form action="forms/contact.php" method="post" role="form" class="addForm">
+        <form method="post" role="form" class="addForm">
           <div class="row">
             <div class="col-md-6 form-group">
-              <input type="text" name="titre" class="form-control" id="name" placeholder="titre de news" required>
+              <input type="text" name="title" class="form-control" id="name" placeholder="titre de news" >
             </div>
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="text" class="form-control" name="recette" id="email" placeholder="recette" required>
+              <input type="number"  class="form-control" name="recette" id="email" placeholder="recette" >
             </div>
           </div>
           <div class="form-group mt-3">
-            <input type="text" class="form-control" name="img" id="subject" placeholder="image de news" required>
+            <input type="text" class="form-control" name="img" id="subject" placeholder="image de news" >
           </div>
           <div class="form-group mt-3">
-            <textarea class="form-control" name="desc" rows="5" placeholder="description" required></textarea>
+            <textarea class="form-control" name="descr" rows="5" placeholder="description" ></textarea>
           </div>
           <div class="my-3">
             <div class="loading">Loading</div>
             <div class="error-message"></div>
             <div class="sent-message">Your message has been sent. Thank you!</div>
           </div>
-          <div class="text-center"><button type="submit">Send Message</button></div>
+          <div class="text-center"><button name="addNews" type="submit">ajouter News</button></div>
         </form>
         <?php
 
@@ -154,6 +156,9 @@ class adminstrationView {
       if($type == 2) {
       $this->bodyUserTable($values);
       }
+      if($type == 3) {
+        $this->bodyNewsTable($values);
+        }
 
        ?>
     </tbody>
@@ -185,6 +190,25 @@ class adminstrationView {
       <?php
     }
     }
+    
+    private function bodyNewsTable($values){
+
+      foreach ($values as $key=> $value) {
+        ?>     
+        <tr>
+          <th><?php if ($value["idRecette"] == NULL)
+            echo $value["title"]; else echo "nouvelle recette" ?></th>
+          <td><?php echo $value["descr"] ?></td>
+          <td><?php if ($value["idRecette"] != NULL)
+            echo $value["nom"]; else echo '-' ?></td>
+           <td> <a href="?idNewsSupp=<?php echo $value['idNews'] ?>" >supprimer</a> </td>
+          <?php
+          }?>
+        </tr>
+        <?php
+
+      }
+      
     private function bodyUserTable($values){
 
       foreach ($values as $key=> $value) {
@@ -255,6 +279,28 @@ class adminstrationView {
         </div>
     </section>
         <?php
+    }
+    public function categorieAdmin(){
+    $path = ["gestionRecette", "gestionNews", "gestionUtilisateur", "gestionNutrition", "parametre"];
+    $values = ["Gestion des recettes", "Gestion des News", "La gestion des utilisateurs", "Gestion de la nutrition", "Paramètres :"];
+    $pictures = ["./assets/slide/slide-1.jpg", "./assets/slide/slide-2.jpg", "./assets/slide/slide-3.jpg", "./assets/slide/slide-1.jpg", "./assets/slide/slide-3.jpg"];
+              ?>
+      <div style="display: flex;  flex-wrap: wrap;background : #FFF;height : 100%;justify-content : center;align-items : center">
+          <?php foreach ($values as $key => $value) { ?>
+              <div style="margin : 40px" >
+              <a href="./<?php echo $path[$key] ?>" class="card" style="width: 18rem;">
+                <div class="card-image" style="background-image: url(<?php echo ($pictures[$key]) ?>)"></div>
+                <div class="box">
+                    <span>
+                    </span>
+                    <h4 style="font-size: 16px;"><?php echo $value ?></h4>
+                </div>
+
+    </a>
+              </div>
+          <?php } ?>
+      </div>
+      <?php
     }
     private function formNurtition(){
         ?>
@@ -396,14 +442,21 @@ class adminstrationView {
     public function showAddNewsPage() {
         $userView = new userView();
         $this->Entete_Page();
+        $newsCtrl = new newsController();
+        if (isset($_POST["addNews"]) ) {
+           $newsCtrl->addNewsController();
+        }
+        if (isset($_GET["idNewsSupp"])) {
+      $newsCtrl->deleteNewsController($_GET["idNewsSupp"]);
+        }
+        $news = $newsCtrl->getNewsController();
+        $recete = $newsCtrl->getNewsRecetteController();
         ?>        
         <body>
             <?php
-                $userView->header();
-                $userView->HeaderImage("assets/slide/slide-2.jpg", "News in", "Delcious");
-                $this->Menu();
+                $this->Menu(1);
                 $userView->TitleSection("Add", "some news", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->table(["news","title","description"]);
+                $this->table(["title","description","Recette",'supprimer'],3,array_merge($news,$recete));
                 $this->formNews();
 
           ?>
@@ -433,13 +486,10 @@ class adminstrationView {
         ?>        
         <body>
             <?php
-                $userView->header();
-                $userView->HeaderImage("assets/slide/slide-2.jpg", "Utlisateurs de", "Delcious");
-                $this->Menu();
+                $this->Menu(3);
                 $userView->TitleSection("Consulter", "Utilisateurs", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                // $userView->FilterButtons(["age", "email", "nom"]);
                 $this->SearchBar('chercher utilisateur par nom');
-                $userView->FilterButtons(['nom', 'prenom',"email",'age',] ,0);
+                $userView->FilterButtons(['nom', 'prenom',"email",'age',] ,0,'');
                 $this->table(["utilisateur","name","prenom","email","age","valider"],2,$users);
           ?>
             <script src="./views/script/hero.js"></script>
@@ -461,10 +511,8 @@ class adminstrationView {
         ?>        
         <body>
             <?php
-                $userView->header();
-                $userView->HeaderImage("assets/slide/slide-2.jpg", "ajpouter nutrition in", "Delcious");
-                $this->Menu();
-                $userView->TitleSection("Ajouter", "nutrition", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem."); 
+                $this->Menu(4);
+                $userView->TitleSection("Gestion de", "nutrition", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem."); 
                 $this->table(["ingredient","calorie","healthy","saison",'modifier','supprimer'],0,$ingrs);
                 $this->formNurtition();
 
@@ -509,9 +557,7 @@ class adminstrationView {
         ?>        
         <body>
             <?php
-                $userView->header();
-                $userView->HeaderImage("assets/slide/slide-2.jpg", "Gestion Recettes in", "Delcious");
-                $this->Menu();
+                $this->Menu(2);
                 $userView->TitleSection("Gestion de", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $userView->FilterButtons($feteFilter,0,"fete");
                 $userView->FilterButtons($catgFilter,0,"categorie");
@@ -528,6 +574,21 @@ class adminstrationView {
                 crossorigin="anonymous"></script>
         </body>
         <?php
+    }
+
+    public function showCategorieAdmin(){
+      $userView = new userView();
+          $this->Entete_Page();
+      ?>        
+      <body>
+          <?php
+          $this->categorieAdmin();
+        ?>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+              integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+              crossorigin="anonymous"></script>
+      </body>
+      <?php
     }
 }
 ?>
