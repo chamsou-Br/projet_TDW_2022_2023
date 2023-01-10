@@ -85,7 +85,7 @@ class recetteModal {
 
   public function getRecetteByCategorieModal($categorie) {
     $db = $this->Connexion();
-    $_REQUEST = $db->prepare("SELECT * FROM recette JOIN image ON recette.idRecette = image.idRecette where recette.idCategorie = :categorie");
+    $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,fetes.nom as nomFete  FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete  where recette.idCategorie = :categorie");
     $_REQUEST->bindParam("categorie",$categorie);
     $_REQUEST->execute();
     $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
@@ -158,6 +158,17 @@ public function valideRecetteModal($id){
   $this->Deconexion($db);
   return $res;
 }
+
+public function bloquerRecetteModal($id){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("UPDATE recette SET valid = 0 where idRecette = :id");
+  $_REQUEST->bindParam("id", $id);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
 
 public function getSearchRecetteModal($search){
   $db = $this->Connexion();

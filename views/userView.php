@@ -5,6 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/recetteControlle
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/ingredientController.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/parametreController.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/newsController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/views/adminstrationView.php';
 class userView
 {
 
@@ -33,14 +34,7 @@ class userView
 
     private function LoginScreen()
     {
-        $auth = new AuthController();
-        if (isset($_POST['login'])) {
-            $res = $auth->AuthUser_Controller($_POST['email'], $_POST["password"]);
-            if(count($res) > 0){
-                echo "true";
-            } else
-                echo "false";
-        }
+
         ?>
         <div class="box-form">
             <div class="left">
@@ -131,13 +125,30 @@ class userView
         <!-- partial -->
         <?php
     }
+    public function TrieButtons($tris)
+    {
+        ?>
+
+            <div class="row" style="margin-left : 20px" >  
+                <div class="col-lg-4">
+                <select  class="form-select tri-select"  aria-label="Default select example">
+                    <option selected>Trier par</option>
+                    <?php foreach ($tris as $key=> $tri) { ?>
+                      <option value="<?php echo $key ?> "><?php echo $tri ?></option>
+                    <?php }?>
+                    </select>
+                </div>          
+
+            </div>
+            <?php
+    }
 
 
     public function HeaderImage($img, $title1, $title2)
     {
         ?>
         <div style="background-image: url(<?php echo $img ?>);" class="header-img">
-            <h1>
+            <h1 style="margin-top : 80px" >
                 <?php echo $title1 ?><span><?php echo ' ' . $title2 ?></span>
             </h1>
         </div>
@@ -164,7 +175,7 @@ class userView
             <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
                 <div class="logo me-auto">
-                    <h1><a href="index.html">Delicious</a></h1>
+                    <img src="./assets/logo.jpg" class="logo-img" />
                 </div>
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
@@ -247,7 +258,7 @@ class userView
             <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
                 <div class="logo me-auto">
-                    <h1><a href="index.html" class="active">accueil</a></h1>
+                    <h1><a href="./" class="active">accueil</a></h1>
                 </div>
 
                 <nav id="navbar" class="navbar order-last order-lg-0">
@@ -277,7 +288,7 @@ class userView
                 </nav>
                 <!-- navbar -->
 
-                <a href="#contact-btn" class="contact-btn scrollto">Contact us</a>
+                <a href="./profile" class="contact-btn scrollto">Profile</a>
 
             </div>
         </header><!-- End Header -->
@@ -541,6 +552,10 @@ class userView
                         <div class="profile-img">
                             <img src="https://ptetutorials.com/images/user-profile.png" />
                         </div>
+                        <form method="post" style=" width: 100%;display : flex; justify-content: center;"">
+                        <button style="margin: auto;" class="submit"   name="logout" type="submit">Deconexion</button>
+                        </form>
+                        
                     </div>
                     <form method="post"  class="col-lg-8 row profile-info" >
 
@@ -771,8 +786,6 @@ class userView
         $this->Entete_Page();
         ?>
 
-
-
             <body>
                 <?php
                 $this->header();
@@ -781,7 +794,6 @@ class userView
                 $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->inputAutoComplete();
                 $this->cardsContainer($values)
-
 
                 ?>
                 <script src="./views/script/hero.js"></script>
@@ -796,12 +808,23 @@ class userView
 
     public function cardsContainer($values)
     {
+
         ?>
             <div style="display: flex;  flex-wrap: wrap;">
-                <?php foreach ($values as $key => $value) { ?>
-                    <div style="margin : 20px" categorie="<?php echo $value["nomCategorie"] ?>"
+                <?php foreach ($values as $key => $value) { 
+                            $prep = isset($value["tempsPreparation"]) ? $value["tempsPreparation"] : 0;
+                            $repo = isset($value["tempsReposint"]) ? $value["tempsReposint"] : 0;
+                            $cuis = isset($value["tempsCuisson"]) ? $value["tempsCuisson"] : 0;
+                            $tot = $repo + $prep + $cuis;?>
+                    <div class="cardInfo" style="margin : 20px" categorie="<?php echo $value["nomCategorie"] ?>"
                         fete="<?php echo $value["nomFete"] ?>" saison="<?php if(isset($value['saison'])) echo $value['saison'] ?>" 
                         calories="<?php if(isset($value['calories'])) echo $value['calories'] ?>" >
+                        <input type="hidden" value="<?php echo $prep ?>" />
+                        <input type="hidden" value="<?php echo $repo ?>" />
+                        <input type="hidden" value="<?php echo $cuis ?>" />
+                        <input type="hidden" value="<?php echo $tot?>" />
+                        <input type="hidden" value="<?php echo $value['notation'] ?>" />
+                        <input type="hidden" value="<?php if(isset($value['calories'])) echo $value['calories']?>" />
                         <?php $this->CardRecette($key, $value); ?>
                     </div>
                 <?php } ?>
@@ -939,6 +962,14 @@ class userView
             <?php
 
     }
+
+    public function seeAll($href){
+        ?>
+                <div class="viewAllContainer" >
+                    <a class="viewAll" href="<?php echo $href ?>" style=""> view tous</a>
+                </div>
+        <?php
+    }
     public function ShowAcceilPage()
     {
         ?>
@@ -948,16 +979,11 @@ class userView
             $par = new parametreController();
             $diapo = $par->getDiaporamaController();
             ?>
-
-
-
             <body>
                 <?php
                 $this->header();
                 $this->Hero($diapo);
                 $this->Menu(0);
-                // $this->DetaialsRecette();
-                // $this->Gallerie("Bourek ");
         
                 $recetteController = new recetteController();
                 $values0 = $recetteController->getRecetteByCategorieController(0);
@@ -965,12 +991,19 @@ class userView
                 $values2 = $recetteController->getRecetteByCategorieController(2);
                 $values3 = $recetteController->getRecetteByCategorieController(3);
                 $this->TitleSection("check our", "entrées", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+                ?>
+
+                <?php
+                $this->seeAll("./categorie?id=0");
                 $this->Carousel("id1", $values0);
                 $this->TitleSection("check our", "plats", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+                $this->seeAll("./categorie?id=1");
                 $this->Carousel("id2", $values1);
                 $this->TitleSection("check our", "desserts", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+                $this->seeAll("./categorie?id=2");
                 $this->Carousel("id3", $values2);
                 $this->TitleSection("check our", "boissons", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+                $this->seeAll("./categorie?id=3");
                 $this->Carousel("id4", $values3);
                 ?>
                 <script src="./views/script/hero.js"></script>
@@ -988,7 +1021,7 @@ class userView
                 <?php
                 
                 $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Chercher Recettes avec", "Delcious");
+                $this->HeaderImage("assets/slide/slide-2.jpg", "preparation", "Recette");
                 $this->Menu(-1);
                 $recette = new recetteController();
                 $ingredient = new ingredientController();
@@ -1011,18 +1044,26 @@ class userView
 
         $recetteCtrl = new recetteController();
         $authCtrl = new AuthController();
+        if(isset($_POST["logout"])) {
+            $authCtrl->LogOut_Controller();
+        }
         if(isset($_POST["save-profile"])){
             $authCtrl->updateUserController();
         }
-        $user = $authCtrl->getUserController('user1@gmail.com');
-        $recette = $recetteCtrl->getFavoriteRecetteController("user1@gmail.com");
+        $is = $authCtrl->VerifyIfAuthDoneAlready_Controller();
+        if ($is != false) {
+            $user = $is[0];
+        }else {
+            $user = $authCtrl->getUserController('user1@gmail.com');
+        }
+        $recette = $recetteCtrl->getFavoriteRecetteController($user["email"]);
 
         $this->Entete_Page();
         ?>
         <body>
             <?php
 
-            $this->Menu();
+            $this->Menu(-1);
             $this->ProfileUser($user);
             $this->TitleSection("Votre favorites", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
             $this->cardsContainer($recette);
@@ -1034,15 +1075,57 @@ class userView
     <?php
     }
 
-    public function showLoginPage(){
-        
+    public function showCategoriePage(){
 
+        $adminView = new adminstrationView();
+        $id = $_GET["id"] ?? 0;
+        $recetteCtrl = new recetteController();
+        $catgrs = $recetteCtrl->getAllCategoriesController();
+        $recette = $recetteCtrl->getRecetteByCategorieController($id);
+        $saisons = $recetteCtrl->getAllSaisonController();
+        $saisonFilter = ["All"];
+        foreach($saisons as $saison) {
+            array_push($saisonFilter, $saison["nomSaison"]);
+        }
+        unset($saisonFilter[count($saisons) ]) ;
         $this->Entete_Page();
         ?>
         <body>
             <?php
 
-            $this->RegistreScreen();
+            $this->header();
+            $this->HeaderImage("assets/slide/slide-2.jpg", $catgrs[$id]["nom"].' in', "Delcious");
+            $this->Menu(-1);
+            $this->TitleSection($catgrs[$id]["nom"] , " Recttes",  "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+            $this->FilterButtons($saisonFilter,0,"saison");
+            $this->TrieButtons(["temp prep","temp repos",'temp cuiss',"temp total",'notation',"calories"]);
+            $this->cardsContainer($recette);
+            ?>
+            <script src="./views/script/filterSaison.js"></script>
+            <script src="./views/script/categorieTri.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        </body>
+    <?php
+    }
+
+    public function showLoginPage(){
+        
+        $auth = new AuthController();
+        if (isset($_POST['login'])) {
+            $res = $auth->AuthUser_Controller($_POST['email'], $_POST["password"]);
+            if(count($res) > 0){
+                header("Location:./profile");
+            } else
+                echo "false";
+        }
+        $this->Entete_Page();
+
+        ?>
+        <body>
+            <?php
+            $this->LoginScreen();
             ?>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

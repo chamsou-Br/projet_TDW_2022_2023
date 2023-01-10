@@ -8,5 +8,7 @@ $User = new userView();
 $Admin = new adminstrationView();
 
 
-$User->ShowAcceilPage()
+$request = $_SERVER['REQUEST_URI'];
+
+$User->showCategoriePage()
 ?>

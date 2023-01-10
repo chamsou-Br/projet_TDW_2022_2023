@@ -184,7 +184,7 @@ class adminstrationView {
           }?>
         <td><?php echo $value["saison"] ?></td>
         <td><a>modifier</a></td>
-        <td><a href="?idIngredientSupp=<?php echo $value['nom'] ?>">Supprimer</a></td>
+        <td><a style="color: red;" href="?idIngredientSupp=<?php echo $value['nom'] ?>">Supprimer</a></td>
 
       </tr>
       <?php
@@ -201,7 +201,7 @@ class adminstrationView {
           <td><?php echo $value["descr"] ?></td>
           <td><?php if ($value["idRecette"] != NULL)
             echo $value["nom"]; else echo '-' ?></td>
-           <td> <a href="?idNewsSupp=<?php echo $value['idNews'] ?>" >supprimer</a> </td>
+           <td> <a style="color: red;" href="?idNewsSupp=<?php echo $value['idNews'] ?>" >supprimer</a> </td>
           <?php
           }?>
         </tr>
@@ -220,10 +220,10 @@ class adminstrationView {
           <td><?php echo $value["email"] ?></td>
           <td><?php echo $value["age"] ?></td>
           <?php if ($value["valid"] == 1) { ?>
-            <td><i class="bi bi-check2"></i></td>
+            <td> <a style="color : red" href="?idUserBloque=<?php echo $value['email'] ?>" >bloquer</a> </td>
           <?php
           } else { ?> 
-           <td> <a href="./?idUserValid=<?php echo $value['email'] ?>" >valider</a> </td>
+           <td> <a style="color : green" href="?idUserValid=<?php echo $value['email'] ?>" >valider</a> </td>
           <?php
           }?>
         </tr>
@@ -235,6 +235,7 @@ class adminstrationView {
     private function bodyRecetteTable($values){
 
         foreach ($values as $value) {
+      $tot = $value["tempsPreparation"] + $value["tempsReposint"] + $value["tempsCuisson"];
           ?>     
           <tr categorie="<?php if (isset($value["nomCategorie"])) echo $value["nomCategorie"] ?>" fete="<?php if(isset($value["nomFete"])) echo $value["nomFete"] ?>">
             <th scope="row"><?php echo $value["nom"] ?></th>
@@ -244,17 +245,18 @@ class adminstrationView {
             <td><?php echo $value["tempsPreparation"]." min" ?></td>
             <td><?php echo $value["tempsReposint"]." min" ?></td>
             <td><?php echo $value["tempsCuisson"]." min" ?></td>
+            <td><?php echo $tot." min" ?></td>
             <td><?php echo $value["calories"] ?></td>
             <?php if ($value["valid"] == 1) { ?>
-              <td><i class="bi bi-check2"></i></td>
+              <td> <a style="color : orange" href="?idRecetteBloque=<?php echo $value['idRecette'] ?>" >Bloquer</a> </td>
             <?php
             } else { ?> 
-             <td> <a href="?idRecetteValide=<?php echo $value['idRecette'] ?>" >valider</a> </td>
+             <td> <a style="color:  green;" href="?idRecetteValide=<?php echo $value['idRecette'] ?>" >valider</a> </td>
             <?php
   
             }?>
               <td><a>modifier</a></td>
-              <td><a href="?idRecetteSupp=<?php echo $value['idRecette'] ?>">Supprimer</a></td>
+              <td><a style="color: red;" href="?idRecetteSupp=<?php echo $value['idRecette'] ?>">Supprimer</a></td>
           </tr>
           <?php
   
@@ -474,6 +476,9 @@ class adminstrationView {
         if (isset($_GET['idUserValid'])) {
           $auth->valideuserController($_GET['idUserValid']);     
         }
+        if (isset($_GET['idUserBloque'])) {
+          $auth->bloquerUserController($_GET['idUserBloque']);     
+        }
         // get users info for table
         $users = [];
         if (isset($_POST["searchSubmit"])){
@@ -490,7 +495,7 @@ class adminstrationView {
                 $userView->TitleSection("Consulter", "Utilisateurs", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->SearchBar('chercher utilisateur par nom');
                 $userView->FilterButtons(['nom', 'prenom',"email",'age',] ,0,'');
-                $this->table(["utilisateur","name","prenom","email","age","valider"],2,$users);
+                $this->table(["utilisateur","name","prenom","email","age","validation"],2,$users);
           ?>
             <script src="./views/script/hero.js"></script>
             <script src="./views/script/sort.js"></script>
@@ -533,6 +538,9 @@ class adminstrationView {
         if (isset($_GET['idRecetteValide'])) {
           $recetteCtrl->valideRecetteController($_GET['idRecetteValide']);     
         }
+        if (isset($_GET['idRecetteBloque'])) {
+          $recetteCtrl->bloquerRecetteController($_GET['idRecetteBloque']);     
+        }
         if (isset($_POST["ajouter-recette"])) {
           $recetteCtrl->addRecette();
         }
@@ -562,8 +570,8 @@ class adminstrationView {
                 $userView->FilterButtons($feteFilter,0,"fete");
                 $userView->FilterButtons($catgFilter,0,"categorie");
                 $this->SearchBar("search recette");
-                $this->TrieButtons(["temp prep","temp repos",'temp cuiss',"calories"]);
-                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','calories',"valider","modifier" , "supprimer"],1,$recs);
+                $this->TrieButtons(["temp prep","temp repos",'temp cuiss','temp total',"calories"]);
+                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','temp total','calories',"validation","modifier" , "supprimer"],1,$recs);
                 $this->formRecette(count($recs));
           ?>
             <script src="./views/script/autoComplete.js"></script>

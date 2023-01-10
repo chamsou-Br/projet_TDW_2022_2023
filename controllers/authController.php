@@ -21,7 +21,7 @@ class AuthController
         $AuthModal = new AuthModal();
         $isAuth =$AuthModal->VerifyIfAuthDoneAlready();
         if ($isAuth == false) {
-            header("Location:./login.php");
+            //header("Location:./");
         }
         return $isAuth;
     }
@@ -35,6 +35,12 @@ class AuthController
     public function valideuserController($id){
         $AuthModal = new AuthModal();
         $res = $AuthModal->valideUserModal($id);
+        return $res;
+    }
+
+    public function bloquerUserController($id){
+        $AuthModal = new AuthModal();
+        $res = $AuthModal->bloquerUserModal($id);
         return $res;
     }
 

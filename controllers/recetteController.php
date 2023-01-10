@@ -34,9 +34,13 @@ class  recetteController{
     }
     public function getRecetteByCategorieController($categorie){
         $recetteModal = new recetteModal();
-        $res = $recetteModal->getRecetteByCategorieModal($categorie);
+        $recettes = $recetteModal->getRecetteByCategorieModal($categorie);
+        $res = [];
+        $res = $this->getCalories($recettes);
+        $res = $this->GetSaison($res);
         return $res;
     }
+    
     public function getRecetteByFeteController($fete){
         $recetteModal = new recetteModal();
         $res = $recetteModal->getRecetteByFeteModal($fete);
@@ -87,27 +91,17 @@ class  recetteController{
         $res = $recette->valideRecetteModal($id);
         return $res;
     }
+    public function bloquerRecetteController($id){
+        $recette = new recetteModal();
+        $res = $recette->bloquerRecetteModal($id);
+        return $res;
+    }
 
     public function getSearchRecetteController($search){
         $recette = new recetteModal();
         $recettes = $recette->getSearchRecetteModal($search);
-        $ingrModal = new ingredientModal();
         $res = [];
-        foreach($recettes as $key =>$rec ) {
-            $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
-            $i = 0;
-            $c = 0;
-            foreach( $ingrs as $ingr) {
-                if ($ingr["Healthy"] == 1) {
-                    $i = $i + 1;
-                }
-                $c = $c + $ingr["calories"];
-            }
-
-                $rec["Healthy"] = 1;
-                $rec["calories"] = $c;
-                array_push($res, $rec);
-        }
+        $res = $this->getCalories($recettes);
         return $res;
     }
 
@@ -136,11 +130,60 @@ class  recetteController{
         return $res; 
     }
 
+    
+
     public function getrecetteSaisonController(){
+        $res = [];
+        $recetteModal = new recetteModal();
+        $recettes = $recetteModal->getAllRecetteModal();
+        $res = $this->GetSaison($recettes);
+        return $res; 
+    }
+
+    public function getRecetteHealthyController(){
         $res = [];
         $recetteModal = new recetteModal();
         $ingrModal = new ingredientModal();
         $recettes = $recetteModal->getAllRecetteModal();
+        foreach($recettes as $key =>$rec ) {
+            $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
+            $i = 0;
+            $c = 0;
+            foreach( $ingrs as $ingr) {
+                if ($ingr["Healthy"] == 1) {
+                    $i = $i + 1;
+                }
+                $c = $c + $ingr["calories"];
+            }
+
+            if ($i >= 0.7 * count($ingrs ) && $c > 0){
+                $rec["Healthy"] = 1;
+                $rec["calories"] = $c;
+                array_push($res, $rec);
+            }
+        }
+        return $res; 
+
+    }
+
+    public function addFavoriteRecetteControlle($idUser,$idRecette){
+        $recetteModal = new recetteModal();
+        $recetteModal->addFavoriteRecetteModal($idUser, $idRecette);
+    }
+    public function deleteFavoriteRecetteController($idUser,$idRecette){
+        $recetteModal = new recetteModal();
+        $recetteModal->deleteFavoriteRecetteModal($idUser, $idRecette);
+    }
+
+    public function getFavoriteRecetteController($id){
+        $recetteModal = new recetteModal();
+        $res = $recetteModal->getFavoriteRecetteModal($id);
+        return $res;
+    }
+
+    private function GetSaison($recettes){
+        $ingrModal = new ingredientModal();
+        $res = [];
         foreach($recettes as $key =>$rec ) {
             $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
             $ete = 0;
@@ -187,11 +230,9 @@ class  recetteController{
         return $res; 
     }
 
-    public function getRecetteHealthyController(){
-        $res = [];
-        $recetteModal = new recetteModal();
+    private function getCalories($recettes){
         $ingrModal = new ingredientModal();
-        $recettes = $recetteModal->getAllRecetteModal();
+        $res = [];
         foreach($recettes as $key =>$rec ) {
             $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
             $i = 0;
@@ -205,27 +246,11 @@ class  recetteController{
 
             if ($i >= 0.7 * count($ingrs ) && $c > 0){
                 $rec["Healthy"] = 1;
-                $rec["calories"] = $c;
-                array_push($res, $rec);
             }
+            $rec["calories"] = $c;
+            array_push($res, $rec);
         }
         return $res; 
-
-    }
-
-    public function addFavoriteRecetteControlle($idUser,$idRecette){
-        $recetteModal = new recetteModal();
-        $recetteModal->addFavoriteRecetteModal($idUser, $idRecette);
-    }
-    public function deleteFavoriteRecetteController($idUser,$idRecette){
-        $recetteModal = new recetteModal();
-        $recetteModal->deleteFavoriteRecetteModal($idUser, $idRecette);
-    }
-
-    public function getFavoriteRecetteController($id){
-        $recetteModal = new recetteModal();
-        $res = $recetteModal->getFavoriteRecetteModal($id);
-        return $res;
     }
 
 
