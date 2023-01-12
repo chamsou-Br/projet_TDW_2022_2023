@@ -9,7 +9,7 @@ class recetteModal {
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "test";
+        $this->databasename = "TDW";
     }
 
     public function Connexion()
@@ -79,6 +79,7 @@ class recetteModal {
       $_REQUEST_INSTR->bindParam("instr",$instr);
       $_REQUEST_INSTR->execute();
     }
+
     $this->Deconexion($db);
     return $res;   
   }
@@ -142,6 +143,9 @@ public function getAllFeteModal(){
 public function deleteRecetteModal($id){
   $db = $this->Connexion();
   $_REQUEST = $db->prepare("DELETE FROM `recette` WHERE idRecette = :id");
+  $_REQUEST = $db->prepare("DELETE FROM `ingredient_recette` WHERE idRecette = :id");
+  $_REQUEST = $db->prepare("DELETE FROM `etape` WHERE idRecette = :id");
+  $_REQUEST = $db->prepare("DELETE FROM `image` WHERE idRecette = :id");
   $_REQUEST->bindParam("id", $id);
   $_REQUEST->execute();
   $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);

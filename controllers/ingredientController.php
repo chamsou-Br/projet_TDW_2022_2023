@@ -48,6 +48,23 @@ class ingredientController {
         $res = $ingr->deleteIngredientModal($id);
         return $res;
     }
+
+    public function addIngredientController(){
+        $ingr = new ingredientModal();
+        $res = $ingr->addIngredientModal($_POST["nom"],$_POST["desc"],$_POST["calorie"],$_POST["Healthy"] > 70 ? 1 : 0,$_POST["saison"],$_POST['vits'],$_POST['mins']);
+        return $res;
+    }
+
+    public function validIngredientController($id){
+        $ingr = new ingredientModal();
+        $res = $ingr->valideIngredientModal($id);
+        return $res;
+    }
+    public function bloqueIngredientController($id){
+        $ingr = new ingredientModal();
+        $res = $ingr->bloqueIngredientModal($id);
+        return $res;
+    }
     
 }
 ?>

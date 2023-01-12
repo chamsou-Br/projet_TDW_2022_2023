@@ -10,7 +10,7 @@ class newsModal{
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "test";
+        $this->databasename = "TDW";
     }
 
     public function Connexion()

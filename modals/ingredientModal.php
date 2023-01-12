@@ -10,7 +10,7 @@ class ingredientModal{
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "test";
+        $this->databasename = "TDW";
     }
 
     public function Connexion()
@@ -130,5 +130,25 @@ class ingredientModal{
         $this->Deconexion($db);
         return $res;
     }
+
+    public function valideIngredientModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("UPDATE ingredient SET valide = 1 where nom = :id");
+        $_REQUEST->bindParam("id", $id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+      }
+
+      public function bloqueIngredientModal($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("UPDATE ingredient SET valide = 0 where nom = :id");
+        $_REQUEST->bindParam("id", $id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+      }
 }
 ?>

@@ -9,6 +9,18 @@ class parametreController{
         return $res;
     }
 
+    public function addDiaporamaController($idRecette,$idNews){
+        $par = new parametreModal();
+        $res = $par->addDiaporamaModal($idRecette,$idNews);
+        return $res;
+    }
+    public function deleteDiaporamaController($id){
+        $par = new parametreModal();
+        $res = $par->deleteDiaporamaModal($id);
+        return $res;
+    }
+
+
 }
 
 ?>

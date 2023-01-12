@@ -6,10 +6,11 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/authController.p
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/recetteController.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/ingredientController.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/newsController.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/parametreController.php';
 
 class adminstrationView {
 
-    private function Entete_Page()
+    public function Entete_Page()
     {
 ?>
 
@@ -34,7 +35,7 @@ class adminstrationView {
 <?php
     }
 
-    private function Menu($key)
+    public function Menu($key)
     {
 ?>
 <header id="nav" class=" d-flex align-items-center header-transparent">
@@ -58,20 +59,23 @@ class adminstrationView {
                 <li><a style="<?php if ($key == 4) echo "color: #cfa671;" ?>" class="nav-link scrollto " href="./gestionNutrition">
                 nutrition
                     </a></li>
+                    <li><a style="<?php if ($key == 5) echo "color: #cfa671;" ?>" class="nav-link scrollto " href="./parametre">
+                parametre
+                    </a></li>
 
             </ul>
 
         </nav>
         <!-- navbar -->
 
-        <a href="" class="contact-btn scrollto">Deconexion</a>
+        <a href="./connexion" class="contact-btn scrollto">Deconexion</a>
 
     </div>
 </header><!-- End Header -->
 <?php
     }
 
-    private function SearchBar($title){
+    public function SearchBar($title){
         ?>
         <form action="" style="margin : 0px;margin-left : 110px;" method="post" role="form" class="addForm">
           <div class="row" style="display: flex;align-items: center;">
@@ -103,7 +107,7 @@ class adminstrationView {
     }
 
 
-    private function formNews(){
+    public function formNews(){
         ?>
         <form method="post" role="form" class="addForm">
           <div class="row">
@@ -132,7 +136,7 @@ class adminstrationView {
 
     }
 
-    private function table($thead,$type,$values){
+    public function table($thead,$type,$values){
         ?>
         <section style="width: 80%;margin : auto;border : 2px solid #cfa671;padding: 0;margin-top : 30px">
      <div class="table-responsive">
@@ -159,6 +163,9 @@ class adminstrationView {
       if($type == 3) {
         $this->bodyNewsTable($values);
         }
+        if($type == 4) {
+          $this->bodyDiapoTable($values);
+          }
 
        ?>
     </tbody>
@@ -168,7 +175,7 @@ class adminstrationView {
         <?php
     }
 
-    private function bodyIngredientTable($values){
+    public function bodyIngredientTable($values){
     foreach ($values as $value) {
       ?>     
       <tr >
@@ -183,6 +190,12 @@ class adminstrationView {
 
           }?>
         <td><?php echo $value["saison"] ?></td>
+        <?php if ($value["valide"] == 1) { ?>
+            <td> <a style="color : green" href="?idIngrBloque=<?php echo $value['nom'] ?>" >valider</a> </td>
+          <?php
+        } else { ?> 
+           <td> <a style="color : orange" href="?idIngrValid=<?php echo $value['nom'] ?>" >bloquer</a> </td>
+          <?php }?>
         <td><a>modifier</a></td>
         <td><a style="color: red;" href="?idIngredientSupp=<?php echo $value['nom'] ?>">Supprimer</a></td>
 
@@ -191,7 +204,7 @@ class adminstrationView {
     }
     }
     
-    private function bodyNewsTable($values){
+    public function bodyNewsTable($values){
 
       foreach ($values as $key=> $value) {
         ?>     
@@ -209,7 +222,7 @@ class adminstrationView {
 
       }
       
-    private function bodyUserTable($values){
+    public function bodyUserTable($values){
 
       foreach ($values as $key=> $value) {
         ?>     
@@ -220,10 +233,10 @@ class adminstrationView {
           <td><?php echo $value["email"] ?></td>
           <td><?php echo $value["age"] ?></td>
           <?php if ($value["valid"] == 1) { ?>
-            <td> <a style="color : red" href="?idUserBloque=<?php echo $value['email'] ?>" >bloquer</a> </td>
+            <td> <a style="color : green" href="?idUserBloque=<?php echo $value['email'] ?>" >valider</a> </td>
           <?php
           } else { ?> 
-           <td> <a style="color : green" href="?idUserValid=<?php echo $value['email'] ?>" >valider</a> </td>
+           <td> <a style="color : red" href="?idUserValid=<?php echo $value['email'] ?>" >bloquer</a> </td>
           <?php
           }?>
         </tr>
@@ -232,7 +245,22 @@ class adminstrationView {
       }
       }
 
-    private function bodyRecetteTable($values){
+      public function bodyDiapoTable($values){
+
+        foreach ($values as $key=> $value) {
+          ?>     
+          <tr>
+            <th scope="row"><?php echo $value["idDiaporama"] ?></th>
+            <td><?php echo $value["nom"] ?></td>
+            <td><?php echo $value["idNews"] ?></td>
+            <td><a style="color: red;" href="?idDiapoSupp=<?php echo $value['idDiaporama'] ?>">Supprimer</a></td>
+          </tr>
+          <?php
+  
+        }
+        }
+
+    public function bodyRecetteTable($values){
 
         foreach ($values as $value) {
       $tot = $value["tempsPreparation"] + $value["tempsReposint"] + $value["tempsCuisson"];
@@ -248,10 +276,10 @@ class adminstrationView {
             <td><?php echo $tot." min" ?></td>
             <td><?php echo $value["calories"] ?></td>
             <?php if ($value["valid"] == 1) { ?>
-              <td> <a style="color : orange" href="?idRecetteBloque=<?php echo $value['idRecette'] ?>" >Bloquer</a> </td>
+              <td> <a style="color : green" href="?idRecetteBloque=<?php echo $value['idRecette'] ?>" >valider</a> </td>
             <?php
             } else { ?> 
-             <td> <a style="color:  green;" href="?idRecetteValide=<?php echo $value['idRecette'] ?>" >valider</a> </td>
+             <td> <a style="color:  orange;" href="?idRecetteValide=<?php echo $value['idRecette'] ?>" >bloquer</a> </td>
             <?php
   
             }?>
@@ -282,15 +310,16 @@ class adminstrationView {
     </section>
         <?php
     }
+
     public function categorieAdmin(){
     $path = ["gestionRecette", "gestionNews", "gestionUtilisateur", "gestionNutrition", "parametre"];
-    $values = ["Gestion des recettes", "Gestion des News", "La gestion des utilisateurs", "Gestion de la nutrition", "Paramètres :"];
+    $values = ["Gestion des recettes", "Gestion des News", "La gestion des utilisateurs", "Gestion de la nutrition", "Paramètres"];
     $pictures = ["./assets/slide/slide-1.jpg", "./assets/slide/slide-2.jpg", "./assets/slide/slide-3.jpg", "./assets/slide/slide-1.jpg", "./assets/slide/slide-3.jpg"];
               ?>
       <div style="display: flex;  flex-wrap: wrap;background : #FFF;height : 100%;justify-content : center;align-items : center">
           <?php foreach ($values as $key => $value) { ?>
               <div style="margin : 40px" >
-              <a href="./<?php echo $path[$key] ?>" class="card" style="width: 18rem;">
+              <a href="./<?php echo $path[$key] ?>" class="card card-admin" style="width: 18rem;">
                 <div class="card-image" style="background-image: url(<?php echo ($pictures[$key]) ?>)"></div>
                 <div class="box">
                     <span>
@@ -304,14 +333,14 @@ class adminstrationView {
       </div>
       <?php
     }
-    private function formNurtition(){
+    public function formNurtition(){
     $ingrsCtrl = new ingredientController();
     $recetteCtrl = new recetteController();
     $saisons = $recetteCtrl->getAllSaisonController();
     $vits = $ingrsCtrl->getVitaminsController();
     $mins = $ingrsCtrl->getMineralsController();
         ?>
-         <form action="forms/contact.php" method="post" role="form" class="addForm">
+         <form  method="post" role="form" class="addForm">
           <div class="row">
             <div class="col-md-6 form-group">
               <input type="text" name="nom" class="form-control" id="name" placeholder="Ingredient" required>
@@ -322,8 +351,8 @@ class adminstrationView {
           </div>
           <div class="row mt-3">
             <div class="col-md-6 form-group">
-                <select class="form-select" aria-label="Default select example">
-                <option selected>choisi un saison</option>
+                <select class="form-select" name="saison" aria-label="Default select example">
+                <option value="" selected>choisi un saison</option>
                 <?php foreach ($saisons as $saison) { ?>
                   <option value="<?php echo $saison["nomSaison"] ?>"><?php echo $saison["nomSaison"] ?></option>
                 <?php } ?>
@@ -360,19 +389,49 @@ class adminstrationView {
           <div class="form-group mt-3">
             <textarea class="form-control" name="desc" rows="5" placeholder="description d'ingredient" required></textarea>
           </div>
-          <div class="text-center"><button type="submit">Ajouter Ingredient</button></div>
+          <div class="text-center"><button name="ajouter_ingredient" type="submit">Ajouter Ingredient</button></div>
         </form>
         <?php
 
 
     }
-    private function formRecette($id){
+
+    public function formDiapo(){
+      $recetteCtrl = new recetteController();
+      $newsCtrl = new newsController();
+      $news = $newsCtrl->getNewsController();
+      $recs = $recetteCtrl->getAllRecetteController();
+      ?>
+              <form  method="post" role="form" class="addForm">
+          <div class="row">
+          <div class="col-md-6 form-group">
+                <select name="recette" class="form-select mins-select" aria-label="Default select example">
+                <option value="" selected>Select Recette</option>
+                <?php foreach ($recs as $rec) { ?>
+                  <option value="<?php echo $rec["idRecette"] ?>"><?php echo $rec["nom"] ?></option>
+                <?php } ?>
+                </select>
+            </div>
+            <div class="col-md-6 form-group">
+                <select name="news" class="form-select mins-select" aria-label="Default select example">
+                <option value="0" selected>Select News</option>
+                <?php foreach ($news as $new) { ?>
+                  <option value="<?php echo $new["idNews"] ?>"><?php echo $new["title"] ?></option>
+                <?php } ?>
+                </select>
+            </div>
+          </div>
+          <button style="margin: auto;" class="submit " name="diapoSubmit" type="submit">Ajouter Recette</button>   </form>
+      <?php
+    }
+    public function formRecette($id,$user){
       $recette = new recetteController();
+
 
         ?>
         <form action="" method="post" role="form" class="addForm">
          <input type="hidden" name="idRecette" value="<?php echo $id ?>"  class="form-control" id="name"  >
-         <input type="hidden" name="idUser" value="user1@gmail.com"  class="form-control" id="name"  >
+         <input type="hidden" name="idUser" value="<?php echo $user ?>"  class="form-control" id="name"  >
           <div class="row">
 
             <div class="col-md-6 form-group">
@@ -493,10 +552,12 @@ class adminstrationView {
         $auth = new AuthController();
         
         if (isset($_GET['idUserValid'])) {
-          $auth->valideuserController($_GET['idUserValid']);     
+          $auth->valideuserController($_GET['idUserValid']);
+      header("Location:./gestionUtilisateur"); 
         }
         if (isset($_GET['idUserBloque'])) {
           $auth->bloquerUserController($_GET['idUserBloque']);     
+          header("Location:./gestionUtilisateur"); 
         }
         // get users info for table
         $users = [];
@@ -514,7 +575,7 @@ class adminstrationView {
                 $userView->TitleSection("Consulter", "Utilisateurs", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->SearchBar('chercher utilisateur par nom');
                 $userView->FilterButtons(['nom', 'prenom',"email",'age',] ,0,'');
-                $this->table(["utilisateur","name","prenom","email","age","validation"],2,$users);
+                $this->table(["utilisateur","name","prenom","email","age","états"],2,$users);
           ?>
             <script src="./views/script/hero.js"></script>
             <script src="./views/script/sort.js"></script>
@@ -528,7 +589,20 @@ class adminstrationView {
         $userView = new userView();
         $ingredient = new ingredientController();
         if (isset($_GET['idIngredientSupp'])) {
-        $ingredient->deleteIngredientController($_GET['idIngredientSupp']);     
+        $ingredient->deleteIngredientController($_GET['idIngredientSupp']);  
+        header("Location:./gestionNutrition");
+        }
+        if (isset($_GET["idIngrValid"])) {
+          $ingredient->validIngredientController($_GET['idIngrValid']);
+          header("Location:./gestionNutrition");
+        }
+        if (isset($_GET["idIngrBloque"])) {
+          $ingredient->bloqueIngredientController($_GET['idIngrBloque']);
+          header("Location:./gestionNutrition");
+        }
+
+        if (isset($_POST["ajouter_ingredient"])) {
+          $ingredient->addIngredientController();
         }
         $ingrs = $ingredient->getAllIngredientsController();
         $this->Entete_Page();
@@ -537,7 +611,7 @@ class adminstrationView {
             <?php
                 $this->Menu(4);
                 $userView->TitleSection("Gestion de", "nutrition", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem."); 
-                $this->table(["ingredient","calorie","healthy","saison",'modifier','supprimer'],0,$ingrs);
+                $this->table(["ingredient","calorie","healthy","saison",'états','modifier','supprimer'],0,$ingrs);
                 $this->formNurtition();
 
           ?>
@@ -552,14 +626,18 @@ class adminstrationView {
     public function shownGestionRecettePage() {
         $userView = new userView();
         $recetteCtrl = new recetteController();
+
         if (isset($_GET['idRecetteSupp'])) {
-        $recetteCtrl->deleteRecetteController($_GET['idRecetteSupp']);     
+        $recetteCtrl->deleteRecetteController($_GET['idRecetteSupp']);
+      header("Location:./gestionRecette");
         }
         if (isset($_GET['idRecetteValide'])) {
-          $recetteCtrl->valideRecetteController($_GET['idRecetteValide']);     
+          $recetteCtrl->valideRecetteController($_GET['idRecetteValide']);    
+          header("Location:./gestionRecette"); 
         }
         if (isset($_GET['idRecetteBloque'])) {
           $recetteCtrl->bloquerRecetteController($_GET['idRecetteBloque']);     
+          header("Location:./gestionRecette");
         }
         if (isset($_POST["ajouter-recette"]) && isset($_POST['ingredient']) && isset($_POST["instruction"])) {
           $recetteCtrl->addRecette();
@@ -591,8 +669,8 @@ class adminstrationView {
                 $userView->FilterButtons($catgFilter,0,"categorie");
                 $this->SearchBar("search recette");
                 $this->TrieButtons(["temp prep","temp repos",'temp cuiss','temp total',"calories"]);
-                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','temp total','calories',"validation","modifier" , "supprimer"],1,$recs);
-                $this->formRecette(count($recs));
+                $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','temp total','calories',"états","modifier" , "supprimer"],1,$recs);
+                $this->formRecette(count($recs),"user6@gmail.com");
           ?>
             <script src="./views/script/autoComplete.js"></script>
             <script src="./views/script/filterGestionRecette.js"></script>

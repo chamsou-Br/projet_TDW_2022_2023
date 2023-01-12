@@ -32,7 +32,7 @@ class userView
         <?php
     }
 
-    private function LoginScreen()
+    public function LoginScreen()
     {
 
         ?>
@@ -52,14 +52,13 @@ class userView
             <div class="right">
                 <h5>connecter</h5>
                 <p>Vous n'aves pas un compte ? <a style="color: #cfa671;" href="./registre">Creer nouvelle compte</a> Cela prend moins d’une minute</p>
-                <form method="post">
+                <p><a style="color: #cfa671;" href="./">Consulter les recettes comme un Visiteur</a></p>
+                <form  style="margin-top: -10px;" method="post">
                     <div class="inputs">
                         <input required type="text" name="email" placeholder="email">
                         <br>
                         <input required type="password" name="password" placeholder="mot de passe">
                     </div>
-
-                    <br>
                     <div class="remember-me--forget-password">
                         <!-- Angular -->
                         <p>Mot de passe oublié ?</p>
@@ -77,7 +76,7 @@ class userView
         <?php
     }
 
-    private function RegistreScreen()
+    public function RegistreScreen()
     {
         $auth = new AuthController();
         if (isset($_POST['register'])) {
@@ -101,21 +100,21 @@ class userView
             <div class="right" style="width: 50%;">
                 <h5>connecter</h5>
                 <p>Vous aves  un compte ? <a style="color: #cfa671;" href="./connexion">connectez avec nous </a></p>
-                <form method="post">
+                <p style="margin-top: -10px;"><a style="color: #cfa671;" href="./">Consulter les recettes comme un Visiteur</a></p>
+                <form style="margin-top: -20px;" method="post">
                     <div class="inputs">
                         <input type="text" required name="nom" placeholder="nome">
-                        <br>
+                  
                         <input type="text" required name="prenom" placeholder="prenom">
-                        <br>
+                       
                         <input type="email" required name="email" placeholder="email">
-                        <br>
+                       
                         <input type="number" required name="age" placeholder="age">
-                        <br>
+                       
                         <input type="password" required name="password" placeholder="mot de passe">
                     </div>
                     <br>
                     <button type="submit" class="submitInput" name="register">connexion</button>
-                    <br>
                 </form>
 
 
@@ -203,7 +202,7 @@ class userView
         <?php
     }
 
-    private function Hero($values)
+    public function Hero($values)
     {
         ?>
         <!-- ======= Hero Section ======= -->
@@ -221,8 +220,7 @@ class userView
                                     <h2 class="animate__animated animate__fadeInDown"><span><?php echo $value["nom"] ?></span> </h2>
                                     <p class="animate__animated animate__fadeInUp"><?php echo $value["descr"] ?></p>
                                     <div>
-                                        <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Our
-                                            Menu</a>
+                                        <a href="./ajouterRecette" class="btn-menu animate__animated animate__fadeInUp scrollto">ajouter recette</a>
                                         <a href="./recette?id=<?php echo $value["idRecette"] ?>"
                                             class="btn-book animate__animated animate__fadeInUp scrollto">Consulter</a>
                                     </div>
@@ -251,7 +249,7 @@ class userView
 
 
 
-    private function Menu($key)
+    public function Menu($key)
     {
 
         ?>
@@ -295,7 +293,7 @@ class userView
         <?php
     }
 
-    private function Carousel($title2, $values)
+    public function Carousel($title2, $values)
     {
 
         ?>
@@ -389,7 +387,7 @@ class userView
     }
 
 
-    private function Gallerie($nom)
+    public function Gallerie($nom)
     {
         ?>
             <div class="gallery">
@@ -438,7 +436,7 @@ class userView
             </div>
             <?php
     }
-    private function CardRecette($i, $value)
+    public function CardRecette($i, $value)
     {
         ?>
 
@@ -462,7 +460,7 @@ class userView
             <?php
     }
     
-    private function SearchBar($title){
+    public function SearchBar($title){
         ?>
         <form action="" style="width :80%;margin:auto" method="post" role="form" class="addForm">
           <div class="row" style="display: flex;align-items: center;">
@@ -475,7 +473,7 @@ class userView
         <?php
     }
 
-    private function News($value)
+    public function News($value)
     {
         ?>
 
@@ -509,7 +507,7 @@ class userView
             <?php
     }
 
-    private function Diaporama($values)
+    public function Diaporama($values)
     {
 
         ?>
@@ -886,7 +884,7 @@ class userView
             </body>
             <?php
     }
-    private function CardIngredient($values)
+    public function CardIngredient($values)
     {
         $ingredient = new ingredientController();
         ?>

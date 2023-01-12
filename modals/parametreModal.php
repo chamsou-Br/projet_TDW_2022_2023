@@ -10,7 +10,7 @@ class parametreModal{
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "test";
+        $this->databasename = "TDW";
     }
 
     public function Connexion()
@@ -36,6 +36,27 @@ class parametreModal{
         $this->Deconexion($db);
         return $res;
     }
+    public function addDiaporamaModal($idRecette,$idNews){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("INSERT INTO  `diaporama` (`idRecette`,`idNews`) VALUES ( :idRecette , :idNews) ");
+        $_REQUEST->bindParam("idRecette", $idRecette);
+        $_REQUEST->bindParam("idNews", $idNews);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+    public function deleteDiaporamaModal ($id){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("DELETE FROM diaporama WHERE idDiaporama = :id");
+        $_REQUEST->bindParam("id", $id);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+    
+    
     
 }
 
