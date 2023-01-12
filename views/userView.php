@@ -51,7 +51,7 @@ class userView
             </div>
             <div class="right">
                 <h5>connecter</h5>
-                <p>Vous n'aves pas un compte ? <a href="#">Creer nouvelle compte</a> Cela prend moins d’une minute</p>
+                <p>Vous n'aves pas un compte ? <a style="color: #cfa671;" href="./registre">Creer nouvelle compte</a> Cela prend moins d’une minute</p>
                 <form method="post">
                     <div class="inputs">
                         <input required type="text" name="email" placeholder="email">
@@ -100,7 +100,7 @@ class userView
             </div>
             <div class="right" style="width: 50%;">
                 <h5>connecter</h5>
-                <p>Vous aves  un compte ? <a href="#">connectez avec nous </a></p>
+                <p>Vous aves  un compte ? <a style="color: #cfa671;" href="./connexion">connectez avec nous </a></p>
                 <form method="post">
                     <div class="inputs">
                         <input type="text" required name="nom" placeholder="nome">
@@ -253,6 +253,7 @@ class userView
 
     private function Menu($key)
     {
+
         ?>
         <header id="nav" class=" d-flex align-items-center header-transparent">
             <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
@@ -281,14 +282,13 @@ class userView
                         <li><a style="<?php if ($key == 6) echo "color: #cfa671;" ?>" class="nav-link scrollto" href="./nutrition">
                                 nutrition
                             </a></li>
-
-
                     </ul>
 
                 </nav>
                 <!-- navbar -->
 
-                <a href="./profile" class="contact-btn scrollto">Profile</a>
+                <a href="./profile" class="contact-btn scrollto">
+               connexion</a>
 
             </div>
         </header><!-- End Header -->
@@ -582,7 +582,7 @@ class userView
             </div>
         <?php
     }
-    public function DetaialsRecette($details, $ingrs, $instrs)
+    public function DetaialsRecette($details, $ingrs, $instrs,$isAuth,$isFav)
     {
         $prep = isset($details["tempsPreparation"]) ? $details["tempsPreparation"] : 0;
         $repo = isset($details["tempsReposint"]) ? $details["tempsReposint"] : 0;
@@ -597,15 +597,34 @@ class userView
             <div>
                 <div class="row">
                     <div class="col-lg-4 ingredient">
-                        <div class="recette-img">
+                        <div style="position: relative;" class="recette-img">
+                            <?php if ($isAuth != false) { ?>
+                                <div style="position : absolute;top : 20px ;left : 20px;z-index : 20">
+                                    <a href="?id=<?php echo $details["idRecette"] ?>&idUser=<?php echo $isAuth[0]["email"] ?>&fav=<?php echo $isFav ?>">
+                                        <i style="<?php if ($isFav== 0)
+                                        echo 'color: #FFF';
+                                         else
+                                        echo 'color: #ff002b' ?>;font-size : 36px" class="bi  bi-heart-fill"></i>
+                                    </a>    
+                                </div>
+                        <?php } else {?>
+                            <div style="position : absolute;top : 20px ;left : 20px;z-index : 20">
+                                    <a href="./connexion">
+                                        <i style="color: #FFF;font-size : 36px" class="bi  bi-heart-fill"></i>
+                                    </a>    
+                                </div>
+                        <?php }?>
                             <img src="<?php echo $details["path"] ?>" />
                         </div>
                         <div class="userInfo">
                             <h5><i style="color: #6c665c;" class="bi bi-person-circle"></i>
                                 <?php echo $user ?>
                             </h5>
+                            <?php if ($isAuth != false) { ?>
                             <h5><?php echo $details['notation'] ?><i class="bi bi-star-fill"></i></h5>
+                            <?php } ?>
                         </div>
+
                         <h1>Ingredient</h1>
                         <?php
                         foreach ($ingrs as $key => $ingr) {
@@ -646,6 +665,10 @@ class userView
                             <div>
                                 Total : <span><?php echo $tot . ' min' ?></span>
                             </div>
+                            <div>
+                                Difficulté : <span><?php if (count($instrs) > 7)
+                                    echo "difficile"; else echo "facile" ?></span>
+                            </div>
                         </div>
                         <div class="recette-calorie">
                             <div>
@@ -654,6 +677,9 @@ class userView
                                 </span> calories
                             </div>
                             <i class="bi bi-lightbulb-fill"></i>
+                        </div>
+                        <div class="userInfo">
+
                         </div>
                         <h1>Instructions</h1>
                         <?php
@@ -1016,6 +1042,32 @@ class userView
     public function showDetailRecettePage()
     {
             $this->Entete_Page();
+            $recette = new recetteController();
+            $ingredient = new ingredientController();
+            $auth = new AuthController();
+            $isAuth = $auth->VerifyIfAuthDoneAlready_Controller();
+            if(isset($_GET["id"])&& isset($_GET["idUser"]) && $isAuth != false) {
+                echo $_GET["idUser"] . ' ' . $_GET["fav"];
+                if( intval($_GET["fav"]) == 1){
+                    header("location:./recette?id=".$_GET["id"]);
+                    $recette->defavoriserRecetteController($_GET["idUser"], $_GET["id"]);
+                }else {
+                    header("location:./recette?id=".$_GET["id"]);
+                    $recette->favoriserRecetteController($_GET["idUser"], $_GET["id"]);
+                }
+            }
+            if ($isAuth != false ) {
+
+                $isFav = $recette->isFavoriserRecetteController($isAuth[0]["email"], $_GET["id"] ?? 0);
+            }else {
+                $isFav = 0;
+            }
+
+            $recetteDetails = $recette->getRecetteByIdController($_GET["id"] ?? 0);
+            $ingrs = $ingredient->getIngredientRecettController($_GET["id"] ?? 0);
+            $instrs = $recette->getInstructionsRecettesController($_GET["id"] ?? 0);
+            $isAuth = $auth->VerifyIfAuthDoneAlready_Controller();
+
             ?>
             <body>
                 <?php
@@ -1023,12 +1075,7 @@ class userView
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "preparation", "Recette");
                 $this->Menu(-1);
-                $recette = new recetteController();
-                $ingredient = new ingredientController();
-                $recetteDetails = $recette->getRecetteByIdController($_GET["id"] ?? 0);
-                $ingrs = $ingredient->getIngredientRecettController($_GET["id"] ?? 0);
-                $instrs = $recette->getInstructionsRecettesController($_GET["id"] ?? 0);
-                $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs);
+                $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs ,$isAuth,$isFav);
                 ?>
                 <script src="./views/script/hero.js"></script>
                 <script src="./views/script/autoComplete2.js"></script>
@@ -1054,7 +1101,7 @@ class userView
         if ($is != false) {
             $user = $is[0];
         }else {
-            $user = $authCtrl->getUserController('user1@gmail.com');
+            header("Location:./connexion");
         }
         $recette = $recetteCtrl->getFavoriteRecetteController($user["email"]);
 
@@ -1118,7 +1165,12 @@ class userView
             if(count($res) > 0){
                 header("Location:./profile");
             } else
+                $isAdmin = $auth->authAdminController($_POST['email'], $_POST["password"]);
+                if ($isAdmin ==1) {
+                    header("Location:./admin");
+            } else
                 echo "false";
+               
         }
         $this->Entete_Page();
 
@@ -1126,6 +1178,28 @@ class userView
         <body>
             <?php
             $this->LoginScreen();
+            ?>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        </body>
+    <?php
+    }
+    public function showRegistrePage(){
+        
+        $auth = new AuthController();
+        if (isset($_POST['register'])) {
+            $res = $auth->RegisterUserController();
+            
+            header("Location:./profile");
+
+        }
+        $this->Entete_Page();
+
+        ?>
+        <body>
+            <?php
+            $this->RegistreScreen();
             ?>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

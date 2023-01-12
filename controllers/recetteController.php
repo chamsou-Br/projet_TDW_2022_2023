@@ -253,6 +253,22 @@ class  recetteController{
         return $res; 
     }
 
+    public function favoriserRecetteController($idUser,$idRecette){
+        $recette = new recetteModal();
+        $res = $recette->favoriseRecetteModal($idUser, $idRecette);
+        return $res;
+    }
+    public function defavoriserRecetteController($idUser,$idRecette){
+        $recette = new recetteModal();
+        $res = $recette->defavoriserRecetteModal($idUser, $idRecette);
+        return $res;
+    }
+    public function isFavoriserRecetteController($idUser,$idRecette){
+        $recette = new recetteModal();
+        $res = $recette->isFavoriserRecette($idUser, $idRecette);
+        return $res;
+    }
+
 
 
 }

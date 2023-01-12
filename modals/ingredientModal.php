@@ -1,5 +1,6 @@
 <?php 
 
+
 class ingredientModal{
     private $username;
     private $password;
@@ -9,7 +10,7 @@ class ingredientModal{
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "projtest2";
+        $this->databasename = "test";
     }
 
     public function Connexion()
@@ -103,5 +104,31 @@ class ingredientModal{
         $this->Deconexion($db);
         return $res;
       }
+
+    public function addIngredientModal($nom , $descr,$cal,$healthy,$saison,$vits,$mins){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("INSERT INTO  `ingredient` values ( :nom , :descr , :cal , :healthy , :saison , 0 )");
+        $_REQUEST->bindParam("nom", $nom);
+        $_REQUEST->bindParam("descr", $descr);
+        $_REQUEST->bindParam("cal", $cal);
+        $_REQUEST->bindParam("healthy", $healthy);
+        $_REQUEST->bindParam("saison", $saison);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        foreach($vits as $vit) {
+            $_REQUEST1 = $db->prepare('INSERT INTO `vitamine_ingredient` VALUES ( :idIngredient , :idVitamine )');
+            $_REQUEST1->bindParam("idIngredient", $nom);
+            $_REQUEST1->bindParam("idVitamine", $vit);
+            $_REQUEST1->execute();
+        }
+        foreach($mins as $min) {
+            $_REQUEST2 = $db->prepare('INSERT INTO `mineral_ingredient` VALUES ( :idIngredient , :idMineral )');
+            $_REQUEST2->bindParam("idIngredient", $nom);
+            $_REQUEST2->bindParam("idMineral", $min);
+            $_REQUEST2->execute();
+        }
+        $this->Deconexion($db);
+        return $res;
+    }
 }
 ?>

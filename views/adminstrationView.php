@@ -26,7 +26,7 @@ class adminstrationView {
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link href="./views/styleSheet/admin.css" rel="stylesheet" type="text/css" />
-    <link href="./views/styleSheet/hero2.css" rel="stylesheet" type="text/css" />
+    <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -238,7 +238,7 @@ class adminstrationView {
       $tot = $value["tempsPreparation"] + $value["tempsReposint"] + $value["tempsCuisson"];
           ?>     
           <tr categorie="<?php if (isset($value["nomCategorie"])) echo $value["nomCategorie"] ?>" fete="<?php if(isset($value["nomFete"])) echo $value["nomFete"] ?>">
-            <th scope="row"><?php echo $value["nom"] ?></th>
+            <th scope="row"><a style="color: #cfa671;" href="./recette?id=<?php echo $value["idRecette"] ?>"><?php echo $value["nom"] ?></a></th>
             <td><?php echo $value["nomUser"] ?></td>
             <td><?php echo $value["nomCategorie"] ?></td>
             <td><?php echo $value["nomFete"] ?></td>
@@ -305,8 +305,13 @@ class adminstrationView {
       <?php
     }
     private function formNurtition(){
+    $ingrsCtrl = new ingredientController();
+    $recetteCtrl = new recetteController();
+    $saisons = $recetteCtrl->getAllSaisonController();
+    $vits = $ingrsCtrl->getVitaminsController();
+    $mins = $ingrsCtrl->getMineralsController();
         ?>
-                <form action="forms/contact.php" method="post" role="form" class="addForm">
+         <form action="forms/contact.php" method="post" role="form" class="addForm">
           <div class="row">
             <div class="col-md-6 form-group">
               <input type="text" name="nom" class="form-control" id="name" placeholder="Ingredient" required>
@@ -319,25 +324,39 @@ class adminstrationView {
             <div class="col-md-6 form-group">
                 <select class="form-select" aria-label="Default select example">
                 <option selected>choisi un saison</option>
-                <option value="1">le printemps</option>
-                <option value="2">l'été</option>
-                <option value="3">l'automne</option>
-                <option value="3">l'hiver</option>
+                <?php foreach ($saisons as $saison) { ?>
+                  <option value="<?php echo $saison["nomSaison"] ?>"><?php echo $saison["nomSaison"] ?></option>
+                <?php } ?>
+
                 </select>
             </div>
-                 <div class="col-md-6 form-group">
-                <div class="form-check">
-                    <input class="form-check-input-healthy" type="checkbox" name="healthy" value="" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        Healthy
-                    </label>
+              <div class="col-md-6 form-group">
+                <input type="number" class="form-control" name="Healthy" id="email" placeholder=" proportion Healthy d'ingredient %" required>
                 </div>
+                <div class="col-md-6 form-group">
+                <select class="form-select vits-select" aria-label="Default select example">
+                <option selected>Select Vitamines</option>
+                <?php foreach ($vits as $vit) { ?>
+                  <option value="<?php echo $vit["sign"] ?>"><?php echo $vit["nom"] ?></option>
+                <?php } ?>
+                </select>
                 </div>
+                <div class="col-md-6 form-group">
+                <select class="form-select mins-select" aria-label="Default select example">
+                <option selected>Select Minerals</option>
+                <?php foreach ($mins as $min) { ?>
+                  <option value="<?php echo $min["sign"] ?>"><?php echo $min["nom"] ?></option>
+                <?php } ?>
+                </select>
             </div>
-            <?php
-                $this->Selected("vitamine[]","Vitamine");
-                $this->Selected('mineral[]',"Minerale")
-            ?>
+            <div class="ingredient-select search-vits">
+
+            </div>
+            <div class="ingredient-select search-mins">
+
+            </div>
+            </div>
+
           <div class="form-group mt-3">
             <textarea class="form-control" name="desc" rows="5" placeholder="description d'ingredient" required></textarea>
           </div>
@@ -357,18 +376,18 @@ class adminstrationView {
           <div class="row">
 
             <div class="col-md-6 form-group">
-              <input type="text" name="nom" class="form-control" id="name" placeholder="Recette" >
+              <input type="text" name="nom" required class="form-control" id="name" placeholder="Recette" >
             </div>
 
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" name="tprep" id="email" placeholder="temps de Préparation" >
+              <input type="number" class="form-control" required name="tprep" id="email" placeholder="temps de Préparation" >
             </div>
 
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" name="trepo" id="email" placeholder="temps de Reposint" >
+              <input type="number" class="form-control" required name="trepo" id="email" placeholder="temps de Reposint" >
             </div>
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" name="tcuis" id="email" placeholder="temps de Cuisson" >
+              <input type="number" class="form-control" required name="tcuis" id="email" placeholder="temps de Cuisson" >
             </div>
 
             <div class="col-md-3 form-group mt-3 mt-md-0" style="display: flex;">
@@ -377,7 +396,7 @@ class adminstrationView {
                     </div>           
             </div>
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="text" class="form-control ingredientDescr" name="ingredientDescr" id="email" placeholder="ingredient quantite" >
+              <input type="text" class="form-control ingredientDescr"  name="ingredientDescr" id="email" placeholder="ingredient quantite" >
             </div>
             <div class="col-md-3 form-group mt-3 mt-md-0">
                  <button class="submitIngredient" type="submit">Ajouter Ingredient</button>   
@@ -399,8 +418,8 @@ class adminstrationView {
 
           <div class="row mt-3">
             <div class="col-md-6 form-group">
-                <select class="form-select" name="categorie"  aria-label="Default select example">
-                <option selected>select categorie</option>
+                <select class="form-select" name="categorie" required  aria-label="Default select example">
+                <option value="" selected>select categorie</option>
                 <?php
                 $res = $recette->getAllCategoriesController();
                 foreach($res as $value) {
@@ -412,8 +431,8 @@ class adminstrationView {
                 </select>
             </div>
             <div class="col-md-6 form-group">
-                <select class="form-select" name="fete" aria-label="Default select example">
-                <option selected>select Fete</option>
+                <select class="form-select" name="fete" required  aria-label="Default select example">
+                <option value=""  selected>select Fete</option>
                 <?php
                 $fetes = $recette->getAllFeteController();
                 foreach($fetes as $value) {
@@ -426,14 +445,14 @@ class adminstrationView {
             </div>
             
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="text" class="form-control" name="picture" id="email" placeholder="picture" >
+              <input type="text" class="form-control" required name="picture" id="email" placeholder="picture" >
             </div>
               
             </div>
             <?php
             ?>
           <div class="form-group mt-3">
-            <textarea class="form-control" name="descr" rows="5" placeholder="description Recette" ></textarea>
+            <textarea class="form-control" required name="descr" rows="5" placeholder="description Recette" ></textarea>
           </div>
          <button style="margin: auto;" class="submit " name="ajouter-recette" type="submit">Ajouter Recette</button>   
         </form>
@@ -523,6 +542,7 @@ class adminstrationView {
 
           ?>
             <script src="./views/script/hero.js"></script>
+            <script src="./views/script/addVitsMins.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                 crossorigin="anonymous"></script>
@@ -541,7 +561,7 @@ class adminstrationView {
         if (isset($_GET['idRecetteBloque'])) {
           $recetteCtrl->bloquerRecetteController($_GET['idRecetteBloque']);     
         }
-        if (isset($_POST["ajouter-recette"])) {
+        if (isset($_POST["ajouter-recette"]) && isset($_POST['ingredient']) && isset($_POST["instruction"])) {
           $recetteCtrl->addRecette();
         }
         // get recette info for table

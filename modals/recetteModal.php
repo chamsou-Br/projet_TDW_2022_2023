@@ -9,7 +9,7 @@ class recetteModal {
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "projtest2";
+        $this->databasename = "test";
     }
 
     public function Connexion()
@@ -209,6 +209,45 @@ public function getFavoriteRecetteModal($id){
   $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
   $this->Deconexion($db);
   return $res;
+}
+
+public function favoriseRecetteModal($idUser , $idRecette){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("INSERT INTO recettefavoris values ( :idUser , :idRecette) ");
+  $_REQUEST->bindParam("idUser", $idUser);
+  $_REQUEST->bindParam("idRecette", $idRecette);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+public function defavoriserRecetteModal($idUser , $idRecette){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("DELETE FROM recettefavoris where  idUser = :idUser AND idRecette = :idRecette ");
+  $_REQUEST->bindParam("idUser", $idUser);
+  $_REQUEST->bindParam("idRecette", $idRecette);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+  $this->Deconexion($db);
+  return $res;
+}
+
+public function isFavoriserRecette($idUser,$idRecette){
+  $db = $this->Connexion();
+  $_REQUEST = $db->prepare("SELECT * FROM recettefavoris where  idUser = :idUser AND idRecette = :idRecette ");
+  $_REQUEST->bindParam("idUser", $idUser);
+  $_REQUEST->bindParam("idRecette", $idRecette);
+  $_REQUEST->execute();
+  $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+    if ($_REQUEST->rowCount() == 1) {
+      $is = 1;
+    }
+    else {
+      $is = 0;
+    }
+  $this->Deconexion($db);
+  return $is;
 }
 
 

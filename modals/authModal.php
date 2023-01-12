@@ -11,7 +11,7 @@ class AuthModal
     {
         $this->username = "root";
         $this->password = "";
-        $this->databasename = "projtest2";
+        $this->databasename = "test";
     }
 
     public function Connexion()
@@ -68,6 +68,26 @@ class AuthModal
         }
     }
 
+    public function AuthAdmin($id,$password) {
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * from `Admin` where idAdmin=:idAdmin AND motdepass=:hash_pwd");
+        $_REQUEST->bindParam("idAdmin",$id);
+        $_REQUEST->bindParam("hash_pwd",$password);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        if($_REQUEST->rowCount()==1){  
+            if(session_id() == ''){
+                session_start();
+             }
+            $_SESSION["admin"] = $id;    
+            $this->Deconexion($db);       
+            return 1;
+        }else{
+            $this->Deconexion($db);
+            return 0;
+        }
+    }
+
     public function VerifyIfAuthDoneAlready() {
         $db = $this->Connexion();
         if(session_id() == ''){
@@ -83,13 +103,12 @@ class AuthModal
                 $this->Deconexion($db);
                 return $res;
             }else {
-                header("Location:./connexion"); 
+
                 $this->Deconexion($db);   
                 return false;
             }
         }
         else {
-            header("Location:./connexion"); 
             $this->Deconexion($db);   
             return false;
         }

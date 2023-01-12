@@ -1,7 +1,5 @@
 <?php 
 
-
-
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/ingredientModal.php';
 class ingredientController {
     public function getAllIngredientsController(){

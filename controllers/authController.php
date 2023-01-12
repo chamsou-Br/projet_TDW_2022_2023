@@ -20,9 +20,6 @@ class AuthController
     public function VerifyIfAuthDoneAlready_Controller() {
         $AuthModal = new AuthModal();
         $isAuth =$AuthModal->VerifyIfAuthDoneAlready();
-        if ($isAuth == false) {
-            //header("Location:./");
-        }
         return $isAuth;
     }
 
@@ -63,6 +60,12 @@ class AuthController
     public function updateUserController(){
         $auth = new AuthModal();
         $auth->ubdateuserModal($_POST["nom"],$_POST["prenom"],$_POST['email'],$_POST["age"],$_POST["motdepass"]);
+    }
+
+    public function authAdminController($idAdmin,$pass){
+        $AuthModal = new AuthModal();
+        $isAuth = $AuthModal->AuthAdmin($idAdmin,$pass);
+        return $isAuth;
     }
 
 }

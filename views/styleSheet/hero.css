@@ -1055,6 +1055,7 @@ each of the slides */
 .addForm textarea,
 .addForm select {
   border-radius: 0;
+  padding: 10px 10px;
   box-shadow: none;
   font-size: 14px;
 }
