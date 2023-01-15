@@ -51,7 +51,7 @@ class ingredientController {
 
     public function addIngredientController(){
         $ingr = new ingredientModal();
-        $res = $ingr->addIngredientModal($_POST["nom"],$_POST["desc"],$_POST["calorie"],$_POST["Healthy"] > 70 ? 1 : 0,$_POST["saison"],$_POST['vits'],$_POST['mins']);
+        $res = $ingr->addIngredientModal($_POST["nom"],$_POST["desc"],$_POST["calorie"],$_POST["Healthy"] > 70 ? 1 : 0,$_POST["saison"],$_POST['vits'] ?? [] ,$_POST['mins'] ?? [] );
         return $res;
     }
 
@@ -65,6 +65,10 @@ class ingredientController {
         $res = $ingr->bloqueIngredientModal($id);
         return $res;
     }
-    
+    public function modifierIngredientController($id){
+        $ingr = new ingredientModal();
+        $res = $ingr->modifierInredientModal($id,$_POST["desc"],$_POST["calorie"],$_POST["Healthy"] > 70 ? 1 : 0,$_POST["saison"],$_POST['vits'] ?? [] ,$_POST['mins'] ?? []  );
+        return $res;
+    }
 }
 ?>

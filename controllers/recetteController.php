@@ -63,6 +63,14 @@ class  recetteController{
         }
     }
 
+    public function modifierRecette() {
+        if (isset($_POST['ajouter-recette'])) {
+            $recetteModal = new recetteModal();
+            $res = $recetteModal->modifierRecetteModal($_POST["idRecette"],$_POST["idUser"],$_POST["nom"],$_POST["descr"],$_POST["tprep"],$_POST["trepo"],$_POST["tcuis"],$_POST["categorie"],$_POST["fete"],$_POST["picture"],$_POST['ingredient'] ?? [],$_POST["instruction"] ?? [],$_POST['ingrDescr'] ?? []);
+            return $res;
+        }
+    }
+
     public function getAllCategoriesController(){
         $recetteModal = new recetteModal();
         $res = $recetteModal->getAllCategorieModal();
@@ -266,6 +274,24 @@ class  recetteController{
     public function isFavoriserRecetteController($idUser,$idRecette){
         $recette = new recetteModal();
         $res = $recette->isFavoriserRecette($idUser, $idRecette);
+        return $res;
+    }
+
+
+    public function noterRecetteController($idRecette,$idUser,$note){
+        $recette = new recetteModal();
+        $recette->getNoteRecette($idRecette, $note);
+       $recette->noterRecetteModal( $idRecette,$idUser,$note);
+    }
+
+    public function updatenoteRecetteController($idRecette,$idUser,$note){
+        $recette = new recetteModal();
+        $recette->getNoteRecette($idRecette, $note);
+       $recette->ubdateRecetteModal( $idRecette,$idUser,$note);
+    }
+    public function getNoteRecetteByUserController($idRecette,$idUser){
+        $recette = new recetteModal();
+        $res = $recette->getNoteRecetteByUser($idRecette,$idUser);
         return $res;
     }
 

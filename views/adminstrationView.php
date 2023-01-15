@@ -37,7 +37,17 @@ class adminstrationView {
 
     public function Menu($key)
     {
+      if (isset($_GET["deconnect"])) {
+        unset($_SESSION["admin"]);
+        header('Location:./connexion');
+      }
+      if(isset($_POST["logoutAdmin"])){
+      $aut = new AuthController();
+      $aut->LogOut_Controller();
+      header("Location:./connexion");
+      }
 ?>
+
 <header id="nav" class=" d-flex align-items-center header-transparent">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
@@ -67,8 +77,9 @@ class adminstrationView {
 
         </nav>
         <!-- navbar -->
-
-        <a href="./connexion" class="contact-btn scrollto">Deconexion</a>
+        <form method="post" style="">
+         <button style="width :150px;height : 50px;font-size:16px;border-radius:20px;margin-top : 10px" class="submit"   name="logoutAdmin" type="submit">Deconexion</button>
+       </form>
 
     </div>
 </header><!-- End Header -->
@@ -80,9 +91,9 @@ class adminstrationView {
         <form action="" style="margin : 0px;margin-left : 110px;" method="post" role="form" class="addForm">
           <div class="row" style="display: flex;align-items: center;">
             <div class="col-md-4 form-group" >
-              <input type="text"  name="search" class="form-control" id="name" placeholder="<?php echo $title ?>" required>
+              <input type="text"  name="search" class="form-control inputSearch" id="name" placeholder="<?php echo $title ?>" required>
             </div>
-            <div class="col-md-6 text-center"><button name="searchSubmit" type="submit">Search</button></div>
+            <div class="col-md-6 text-center"><button class="submitSearch" name="searchSubmit" type="submit">Search</button></div>
           </div>
         </form>
         <?php
@@ -196,7 +207,7 @@ class adminstrationView {
         } else { ?> 
            <td> <a style="color : orange" href="?idIngrValid=<?php echo $value['nom'] ?>" >bloquer</a> </td>
           <?php }?>
-        <td><a>modifier</a></td>
+        <td><a style="color: #000000BB;" href="./modifierNutrition?id=<?php echo $value["nom"] ?>">modifier</a></td>
         <td><a style="color: red;" href="?idIngredientSupp=<?php echo $value['nom'] ?>">Supprimer</a></td>
 
       </tr>
@@ -283,7 +294,7 @@ class adminstrationView {
             <?php
   
             }?>
-              <td><a>modifier</a></td>
+              <td><a href="./modifierRecette?id=<?php echo $value["idRecette"] ?>" style="color: #000;"  >modifier</a></td>
               <td><a style="color: red;" href="?idRecetteSupp=<?php echo $value['idRecette'] ?>">Supprimer</a></td>
           </tr>
           <?php
@@ -333,36 +344,52 @@ class adminstrationView {
       </div>
       <?php
     }
-    public function formNurtition(){
+    public function formNurtition($id,$title){
     $ingrsCtrl = new ingredientController();
     $recetteCtrl = new recetteController();
     $saisons = $recetteCtrl->getAllSaisonController();
     $vits = $ingrsCtrl->getVitaminsController();
     $mins = $ingrsCtrl->getMineralsController();
+    if ($id != false) {
+      $value = $ingrsCtrl->getIngredientByIdController($id)[0];
+      $vitsIngr = $ingrsCtrl->getVitaminsIngredientController($id);
+      $minsIngr = $ingrsCtrl->getMinealsIngredientController($id);
+    } 
+
+      
+    
+   
         ?>
          <form  method="post" role="form" class="addForm">
           <div class="row">
             <div class="col-md-6 form-group">
-              <input type="text" name="nom" class="form-control" id="name" placeholder="Ingredient" required>
+            <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">ingrediet</label> 
+              <input  <?php if ( $id != false ) echo "disabled" ?> value="<?php if ( $id != false ) echo $value["nom"] ?>" type="text" name="nom" class="form-control" id="name" placeholder="Ingredient" required>
             </div>
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" name="calorie" id="email" placeholder="calories" required>
+            <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">calories</label> 
+              <input type="number" value="<?php if ( $id != false ) echo $value["calories"] ?>" class="form-control" name="calorie" id="email" placeholder="calories" required>
             </div>
           </div>
           <div class="row mt-3">
             <div class="col-md-6 form-group">
-                <select class="form-select" name="saison" aria-label="Default select example">
-                <option value="" selected>choisi un saison</option>
+            <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">saison</label> 
+                <select   class="form-select" name="saison" aria-label="Default select example">
+                <option value="" selected="<?php if ($id != false)
+                echo false; else echo true ?>" >choisi un saison</option>
                 <?php foreach ($saisons as $saison) { ?>
-                  <option value="<?php echo $saison["nomSaison"] ?>"><?php echo $saison["nomSaison"] ?></option>
+                  <option <?php if ($id != false && $value["saison"] == $saison["nomSaison"])
+                    echo "selected" ?> value="<?php echo $saison["nomSaison"] ?>"><?php echo $saison["nomSaison"] ?></option>
                 <?php } ?>
 
                 </select>
             </div>
               <div class="col-md-6 form-group">
+              <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">proportion healthy</label> 
                 <input type="number" class="form-control" name="Healthy" id="email" placeholder=" proportion Healthy d'ingredient %" required>
                 </div>
                 <div class="col-md-6 form-group">
+                <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">vitamine</label> 
                 <select class="form-select vits-select" aria-label="Default select example">
                 <option selected>Select Vitamines</option>
                 <?php foreach ($vits as $vit) { ?>
@@ -371,6 +398,7 @@ class adminstrationView {
                 </select>
                 </div>
                 <div class="col-md-6 form-group">
+                <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">mineral</label> 
                 <select class="form-select mins-select" aria-label="Default select example">
                 <option selected>Select Minerals</option>
                 <?php foreach ($mins as $min) { ?>
@@ -378,18 +406,42 @@ class adminstrationView {
                 <?php } ?>
                 </select>
             </div>
-            <div class="ingredient-select search-vits">
-
+            <div <?php if ($id == false) echo "hidden" ?> class="ingredient-select search-vits ">
+                  <?php if ($id != false) {
+                    foreach ($vitsIngr as $key=> $vitIngr) { ?>
+                      <div style="position: relative;" class="ingredient-item vits-item">
+                      <input type="hidden"  name="vits[]" value="<?php echo $vitIngr['idVitamine'] ?>" >
+                      <i  style="position : absolute  ;top:-20px;left:-10px" class="bi bi-x-circle vit-close"></i>
+                      <div>
+                        <span><?php echo $key+1 ?></span>
+                      </div>
+                        <h5><?php echo $vitIngr["idVitamine"] ?></h5>
+                      </div>
+                  <?php } }?>
             </div>
-            <div class="ingredient-select search-mins">
+            <div <?php if ($id == false) echo "hidden" ?>  class="ingredient-select search-mins">
+            <?php if ($id != false) {
+                    foreach ($minsIngr as $key=> $minIngr) { ?> 
 
+                      <div style="position: relative;" class="ingredient-item mins-item">
+                      <input type="hidden" name="mins[]" value="<?php echo $minIngr['idMineral'] ?>" >  
+                      <i  style="position : absolute  ;top:-20px;left:-10px" class="bi bi-x-circle min-close"></i>
+                      <div>
+                        <span><?php echo $key+1 ?></span>
+                      </div>
+                        <h5><?php echo $minIngr["idMineral"] ?></h5>
+                      </div>
+                  <?php } }?>
             </div>
             </div>
 
           <div class="form-group mt-3">
-            <textarea class="form-control" name="desc" rows="5" placeholder="description d'ingredient" required></textarea>
+          <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">description</label> 
+            <textarea   class="form-control" name="desc" rows="5" placeholder="description d'ingredient" required>
+            <?php if ( $id != false )  echo $value["descr"] ?>
+            </textarea>
           </div>
-          <div class="text-center"><button name="ajouter_ingredient" type="submit">Ajouter Ingredient</button></div>
+          <div class="text-center"><button name="ajouter_ingredient" type="submit"><?php echo $title ?></button></div>
         </form>
         <?php
 
@@ -421,82 +473,75 @@ class adminstrationView {
                 </select>
             </div>
           </div>
-          <button style="margin: auto;" class="submit " name="diapoSubmit" type="submit">Ajouter Recette</button>   </form>
+          <button style="margin: auto;" class="submit " name="diapoSubmit" type="submit">Ajouter Diapo</button>   </form>
       <?php
     }
-    public function formRecette($id,$user){
+    public function formRecette($id,$user,$modifier,$title){
       $recette = new recetteController();
-
+    $ingrCtrl = new ingredientController();
+      if ($modifier != false) {
+        $value = $recette->getRecetteByIdController($modifier);
+        if (count($value) > 0){
+        $value = $value[0];
+        }else{
+          $modifier = false;
+        }
+        $instrs = $recette->getInstructionsRecettesController($modifier);
+        $ingrs = $ingrCtrl->getIngredientRecettController($modifier);
+      } 
 
         ?>
         <form action="" method="post" role="form" class="addForm">
-         <input type="hidden" name="idRecette" value="<?php echo $id ?>"  class="form-control" id="name"  >
+         <input type="hidden" name="idRecette" value="<?php if ($modifier == false)
+           echo $id; else echo $modifier ?>"  class="form-control" id="name"  >
          <input type="hidden" name="idUser" value="<?php echo $user ?>"  class="form-control" id="name"  >
           <div class="row">
 
             <div class="col-md-6 form-group">
-              <input type="text" name="nom" required class="form-control" id="name" placeholder="Recette" >
+              <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">nom Recette</label>
+              <input value="<?php if($modifier!=false) echo $value["nom"] ?>" type="text" name="nom" required class="form-control" id="name" placeholder="Recette" >
             </div>
 
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" required name="tprep" id="email" placeholder="temps de Préparation" >
+              <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">temps Preparation</label>
+              <input value="<?php if($modifier!=false) echo $value["tempsPreparation"] ?>" type="number" class="form-control" required name="tprep" id="email" placeholder="temps de Préparation" >
             </div>
 
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" required name="trepo" id="email" placeholder="temps de Reposint" >
+            <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">temps Repos</label>
+              <input value="<?php if($modifier!=false) echo $value["tempsReposint"] ?>" type="number" class="form-control" required name="trepo" id="email" placeholder="temps de Reposint" >
             </div>
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number" class="form-control" required name="tcuis" id="email" placeholder="temps de Cuisson" >
-            </div>
-
-            <div class="col-md-3 form-group mt-3 mt-md-0" style="display: flex;">
-                    <div class="autocomplete" style="width: 100%;">
-                        <input id="myInput" type="text"   class="form-control" name="ingredient"  placeholder="Ingreedients">           
-                    </div>           
-            </div>
-            <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="text" class="form-control ingredientDescr"  name="ingredientDescr" id="email" placeholder="ingredient quantite" >
-            </div>
-            <div class="col-md-3 form-group mt-3 mt-md-0">
-                 <button class="submitIngredient" type="submit">Ajouter Ingredient</button>   
-            </div>
-            <div class="ingredient-select search-recette">
-
-            </div>
-
-            <div class="col-md-6 form-group mt-3 mt-md-0" style="display: flex;">
-                    <input id="instruction" type="text" class="form-control" name="etape" id="email" placeholder="instruction" >
-            </div>
-            <div class="col-md-6 form-group mt-3 mt-md-0">
-                 <button class="submitInstruction" type="submit">Ajouter Instruction</button>   
-            </div>
-            <div class="instruction-select search-recette" style="display: block;">
-            
+            <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">temps Cuisson</label>
+              <input value="<?php if($modifier!=false) echo $value["tempsCuisson"] ?>" type="number" class="form-control" required name="tcuis" id="email" placeholder="temps de Cuisson" >
             </div>
           </div>
 
           <div class="row mt-3">
             <div class="col-md-6 form-group">
+            <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">categorie</label>
                 <select class="form-select" name="categorie" required  aria-label="Default select example">
-                <option value="" selected>select categorie</option>
+                <option value="" <?php if($modifier==false) echo "selected" ?> >select categorie</option>
                 <?php
                 $res = $recette->getAllCategoriesController();
-                foreach($res as $value) {
+                foreach($res as $key=> $cat) {
+                echo $key;
                   ?>
-                  <option  value="<?php echo $value["idCategorie"] ?>"><?php echo $value["nom"] ?></option>
+                  <option <?php if($modifier!=false && $value["idCategorie"] == $cat["idCategorie"] ) echo "selected" ?>  value="<?php echo $cat["idCategorie"] ?>"><?php echo $cat["nom"] ?></option>
                   <?php
                 }
                 ?>
                 </select>
             </div>
             <div class="col-md-6 form-group">
+            <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">fete</label>
                 <select class="form-select" name="fete" required  aria-label="Default select example">
-                <option value=""  selected>select Fete</option>
+                <option value=""  <?php if($modifier==false) echo "selected" ?> >select Fete</option>
                 <?php
                 $fetes = $recette->getAllFeteController();
-                foreach($fetes as $value) {
+                foreach($fetes as $fete) {
                   ?>
-                  <option value="<?php echo $value["idFete"] ?>"><?php echo $value["nom"] ?></option>
+                  <option <?php if($modifier!=false && $value["idFete"] == $fete["idFete"] ) echo "selected" ?> value="<?php echo $fete["idFete"] ?>"><?php echo $fete["nom"] ?></option>
                   <?php
                 }
                 ?>
@@ -504,17 +549,77 @@ class adminstrationView {
             </div>
             
             <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="text" class="form-control" required name="picture" id="email" placeholder="picture" >
+            <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">image</label>
+              <input type="text" value="<?php if ($modifier!=false) echo $value["path"] ?>" class="form-control" required name="picture" id="email" placeholder="picture" >
             </div>
               
             </div>
             <?php
             ?>
           <div class="form-group mt-3">
-            <textarea class="form-control" required name="descr" rows="5" placeholder="description Recette" ></textarea>
+          <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">Description</label>
+            <textarea class="form-control" required name="descr" rows="5" placeholder="description Recette" >
+            <?php if ($modifier!=false) echo $value["descr"] ?>
+            </textarea>
           </div>
-         <button style="margin: auto;" class="submit " name="ajouter-recette" type="submit">Ajouter Recette</button>   
+          <div class="row mt-3">
+
+
+          <div class="col-md-3 form-group mt-3 mt-md-0" style="display: flex;">
+                    <div class="autocomplete" style="width: 100%;">
+                        <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">Ingredient</label>
+                        <input id="myInput" type="text"   class="form-control" name="ingredient"  placeholder="Ingreedients">           
+                    </div>           
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+               <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">Quantite Ingredient</label>
+              <input type="text" class="form-control ingredientDescr"  name="ingredientDescr" id="email" placeholder="ingredient quantite" >
+            </div>
+            <div class="col-md-3 form-group mt-3 mt-md-0">
+                 <label hidden style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA"> ss</label> <br />
+                 <button class="submitIngredient" type="submit">Ajouter Ingredient</button>   
+            </div>
+            <div class="ingredient-select search-recette">
+            <?php if ($modifier != false) {
+                    foreach ($ingrs as $key=> $ing) { ?>
+                      <div style="position: relative;" class="ingredient-item ing-item">
+                      <input type="hidden"  name="ingredient[]" value="<?php echo $ing['nom'] ?>" >
+                      <input type="hidden"  name="ingrDescr[]" value="<?php echo $ing['quan'] ?>" >
+                      <i  style="position : absolute  ;top:-20px;left:-10px" class="bi bi-x-circle ing-close"></i>
+                      <div>
+                        <span><?php echo $key+1 ?></span>
+                      </div>
+                        <h5><?php echo $ing["nom"] ?></h5>
+                      </div>
+                  <?php } }?>
+            </div>
+
+            <div class="col-md-6 form-group mt-3 mt-md-0" style="display: flex;">
+                   
+                    <input id="instruction" type="text" class="form-control" name="etape" id="email" placeholder="instruction" >
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+                 <button class="submitInstruction" type="submit">Ajouter Instruction</button>   
+            </div>
+            <div class="instruction-select search-recette" style="display: block;">
+            <?php if ($modifier != false) {
+                    foreach ($instrs as $key=> $inst) { ?>
+                      <div style="position: relative;" class="etape-item ">
+                      <input type="hidden"  name="instruction[]" value="<?php echo $inst['instruction'] ?>" >
+                      <i  style="position : absolute  ;top:5px;left:-10px" class="bi bi-x-circle inst-close"></i>
+                      <div>
+                        <span><?php echo $key+1 ?></span>
+                      </div>
+                        <h5><?php echo $inst["instruction"] ?></h5>
+                      </div>
+                  <?php } }?>
+            </div>
+          </div>
+          
+         <button style="margin-bottom : 20px" class="submit " name="ajouter-recette" type="submit"><?php echo $title ?></button>   
+        
         </form>
+
         <?php
 
 
@@ -611,8 +716,10 @@ class adminstrationView {
             <?php
                 $this->Menu(4);
                 $userView->TitleSection("Gestion de", "nutrition", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem."); 
+                $this->SearchBar("search Ingredient");
+                $this->TrieButtons(["nom","calories"]);
                 $this->table(["ingredient","calorie","healthy","saison",'états','modifier','supprimer'],0,$ingrs);
-                $this->formNurtition();
+                $this->formNurtition(false,"ajouter");
 
           ?>
             <script src="./views/script/hero.js"></script>
@@ -670,7 +777,7 @@ class adminstrationView {
                 $this->SearchBar("search recette");
                 $this->TrieButtons(["temp prep","temp repos",'temp cuiss','temp total',"calories"]);
                 $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','temp total','calories',"états","modifier" , "supprimer"],1,$recs);
-                $this->formRecette(count($recs),"user6@gmail.com");
+                $this->formRecette(count($recs),"user6@gmail.com",false,"ajouter Recette");
           ?>
             <script src="./views/script/autoComplete.js"></script>
             <script src="./views/script/filterGestionRecette.js"></script>
@@ -684,11 +791,19 @@ class adminstrationView {
 
     public function showCategorieAdmin(){
       $userView = new userView();
+      session_start();
+      if(!isset($_SESSION['admin'])){
+      header("Location:./connexion");
+      }
+
+
+
           $this->Entete_Page();
       ?>        
       <body>
           <?php
           $this->categorieAdmin();
+
         ?>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
               integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

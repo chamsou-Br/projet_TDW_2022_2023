@@ -120,33 +120,40 @@ if (SubmitBtn) {
     let span = document.createElement("span");
     let h5 = document.createElement("h5");
     h5.innerText = val
-    // get number of item
-    let items = document.querySelectorAll(".ingredient-item")
-    console.log(items)
-    span.innerText =  items.length +1 ;
-    div.appendChild(span)
-    ingredient_item.appendChild(div)
-    ingredient_item.appendChild(h5)
-    let ingredient_select = document.querySelector(".ingredient-select")
-    ingredient_select.appendChild(ingredient_item)
+    let i = document.createElement("i");
+    i.style = "position : absolute  ;top:-20px;left:-10px"
+    i.className =  "bi bi-x-circle ing-close"
+    i.addEventListener("click",(e=>{
+      i.parentElement.parentNode.removeChild( i.parentElement)
+    }))
     // add input 
     let input = document.createElement('input')
     input.type = "hidden"
     input.value = val
     input.name = "ingredient[]"
-    document.querySelector(".search-recette").appendChild(input)
-    document.querySelector("#myInput").value  =""
-
+    // get number of item
+    let items = document.querySelectorAll(".ingredient-item")
+    span.innerText =  items.length +1 ;
+    div.appendChild(span)
+    ingredient_item.appendChild(div)
+    ingredient_item.appendChild(i);
+    ingredient_item.appendChild(h5)
+    ingredient_item.appendChild(input)
     // description ingr
-    $ingredientdescr = document.querySelector(".ingredientDescr")
-    if ($ingredientdescr) {
+    let ingredientdescr = document.querySelector(".ingredientDescr")
+    if (ingredientdescr) {
       let input = document.createElement('input')
       input.type = "hidden"
-      input.value = $ingredientdescr.value
+      input.value = ingredientdescr.value
       input.name = "ingrDescr[]"
-      document.querySelector(".search-recette").appendChild(input)
-      $ingredientdescr.value = "";
-    }
+      ingredient_item.appendChild(input)
+      ingredientdescr.value = "";
+    }    
+    let ingredient_select = document.querySelector(".ingredient-select")
+    ingredient_select.appendChild(ingredient_item)
+    document.querySelector("#myInput").value  =""
+
+
   })
 
   document.querySelector(".submitInstruction").addEventListener('click' , (e)=> {
@@ -159,23 +166,55 @@ if (SubmitBtn) {
         let span = document.createElement("span");
         let h5 = document.createElement("h5");
         h5.innerText = val
+        // add input 
+        let input = document.createElement('input')
+        input.type = "hidden"
+        input.value = val
+        input.name = "instruction[]"   
+        instr_item.appendChild(input)
+        let i = document.createElement("i");
+        i.style = "position : absolute  ;top:5px;left:-10px"
+        i.className =  "bi bi-x-circle inst-close"
+        i.addEventListener("click",(e=>{
+          i.parentElement.parentNode.removeChild( i.parentElement)
+        }))
+        instr_item.appendChild(i);
         // get number of item
         let items = document.querySelectorAll(".etape-item")
-        console.log(items)
         span.innerText =  items.length +1 ;
         div.appendChild(span)
         instr_item.appendChild(div)
         instr_item.appendChild(h5)
         let ingredient_select = document.querySelector(".instruction-select")
         ingredient_select.appendChild(instr_item)
-        // add input 
-        let input = document.createElement('input')
-        input.type = "hidden"
-        input.value = val
-        input.name = "instruction[]"
-        document.querySelector(".instruction-select").appendChild(input)
         document.querySelector("#instruction").value  =""
 
   })
 }
+let vitsClose = document.querySelectorAll('.ing-close');
 
+if (vitsClose.length> 0) {
+
+  vitsClose.forEach((v,i) => {
+    v.addEventListener("click",(e)=> {
+      console.log(i,document.querySelectorAll(".ingredient-item")[i])
+      e.preventDefault();
+      document.querySelectorAll(".ingredient-item")[i].parentNode.removeChild(document.querySelectorAll(".ingredient-item")[i]);
+    })
+    
+  })
+}
+
+let minsClose = document.querySelectorAll('.inst-close');
+
+if (minsClose.length> 0) {
+
+  minsClose.forEach((v,i) => {
+    v.addEventListener("click",(e)=> {
+      console.log(i,document.querySelectorAll(".etape-item")[i])
+      e.preventDefault();
+      document.querySelectorAll(".etape-item")[i].parentNode.removeChild(document.querySelectorAll(".etape-item")[i]);
+    })
+    
+  })
+}

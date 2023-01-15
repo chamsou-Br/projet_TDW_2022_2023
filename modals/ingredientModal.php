@@ -150,5 +150,38 @@ class ingredientModal{
         $this->Deconexion($db);
         return $res;
       }
+
+      public function modifierInredientModal($nom , $descr,$cal,$healthy,$saison,$vits,$mins){
+        $db = $this->Connexion();
+        echo $nom . ' ' . $descr . " " . $cal . " " . $healthy . ' ' . $saison . ' #';
+        $_REQUEST = $db->prepare("UPDATE ingredient SET nom = :nom , descr = :descr , calories = :calories , saison = :saison , Healthy = :Healthy where nom = :nom");
+        $_REQUEST->bindParam("nom", $nom);
+        $_REQUEST->bindParam("descr", $descr);
+        $_REQUEST->bindParam("calories", $cal);
+        $_REQUEST->bindParam("saison", $saison);
+        $_REQUEST->bindParam("Healthy", $healthy);
+        $_REQUEST->execute();
+        $_REQUEST1 = $db->prepare("DELETE FROM mineral_ingredient where idIngredient = :nom");
+        $_REQUEST1->bindParam("nom", $nom);
+        $_REQUEST1->execute();
+        $_REQUEST2 = $db->prepare("DELETE FROM vitamine_ingredient where idIngredient = :nom");
+        $_REQUEST2->bindParam("nom", $nom);
+        $_REQUEST2->execute();
+        foreach($vits as $vit) {
+            $_REQUEST1 = $db->prepare('INSERT INTO `vitamine_ingredient` VALUES ( :idIngredient , :idVitamine )');
+            $_REQUEST1->bindParam("idIngredient", $nom);
+            $_REQUEST1->bindParam("idVitamine", $vit);
+            $_REQUEST1->execute();
+        }
+        foreach($mins as $min) {
+            $_REQUEST2 = $db->prepare('INSERT INTO `mineral_ingredient` VALUES ( :idIngredient , :idMineral )');
+            $_REQUEST2->bindParam("idIngredient", $nom);
+            $_REQUEST2->bindParam("idMineral", $min);
+            $_REQUEST2->execute();
+        }
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+      }
 }
 ?>

@@ -161,6 +161,9 @@ class AuthModal
             unset($_SESSION["email"]);
             unset($_SESSION["password"]);
         }
+        if (isset($_POST["logoutAdmin"])){
+            unset($_SESSION["admin"]);
+        }
 
     }
 

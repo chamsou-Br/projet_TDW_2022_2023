@@ -11,6 +11,9 @@ class userView
 
     public function Entete_Page()
     {
+        if(session_id() == ''){
+            session_start();
+         }
         ?>
 
         <head>
@@ -147,7 +150,7 @@ class userView
     {
         ?>
         <div style="background-image: url(<?php echo $img ?>);" class="header-img">
-            <h1 style="margin-top : 80px" >
+            <h1  >
                 <?php echo $title1 ?><span><?php echo ' ' . $title2 ?></span>
             </h1>
         </div>
@@ -195,7 +198,7 @@ class userView
                 </nav>
                 <!-- navbar -->
 
-                <a href="#contact-btn" class="contact-btn scrollto">Contact us</a>
+                <a href="mailto:jc_berkane@esi.dz" class="contact-btn scrollto">Contact us</a>
 
             </div>
         </header><!-- End Header -->
@@ -252,6 +255,8 @@ class userView
     public function Menu($key)
     {
 
+        
+
         ?>
         <header id="nav" class=" d-flex align-items-center header-transparent">
             <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
@@ -286,7 +291,8 @@ class userView
                 <!-- navbar -->
 
                 <a href="./profile" class="contact-btn scrollto">
-               connexion</a>
+                <?php  if (!isset($_SESSION["email"]))
+                            echo "connexion"; else echo "profile" ?></a>
 
             </div>
         </header><!-- End Header -->
@@ -580,13 +586,14 @@ class userView
             </div>
         <?php
     }
-    public function DetaialsRecette($details, $ingrs, $instrs,$isAuth,$isFav)
+    public function DetaialsRecette($details, $ingrs, $instrs,$isAuth,$isFav,$note)
     {
         $prep = isset($details["tempsPreparation"]) ? $details["tempsPreparation"] : 0;
         $repo = isset($details["tempsReposint"]) ? $details["tempsReposint"] : 0;
         $cuis = isset($details["tempsCuisson"]) ? $details["tempsCuisson"] : 0;
         $tot = $repo + $prep + $cuis;
-        $user = isset($details["idUser"]) ? "@" . explode("@", $details["idUser"])[0] : "@undifined";
+        // $user = isset($details["idUser"]) ? "@" . explode("@", $details["idUser"])[0] : "@undifined";
+        $user = $details["firstName"] . '_' . $details["lastName"];
         $calorie = 0;
         foreach ($ingrs as $ingr) {
             $calorie = $calorie + $ingr["calories"];
@@ -676,6 +683,26 @@ class userView
                             </div>
                             <i class="bi bi-lightbulb-fill"></i>
                         </div>
+                        <div class="notation">
+                        <?php if ($note == -1) { ?>
+                        <a href="?id=<?php echo $details["idRecette"]?>&note=1" ><i value="1" class="bi bi-star notationIcon"></i></a>
+                        <a href="?id=<?php echo $details["idRecette"]?>&note=2"><i value="2" class="bi bi-star notationIcon"></i></a>
+                        <a href="?id=<?php echo $details["idRecette"]?>&note=3"><i value="3" class="bi bi-star notationIcon"></i></a>
+                        <a href="?id=<?php echo $details["idRecette"]?>&note=4"><i value="4" class="bi bi-star notationIcon"></i></a>
+                        <a href="?id=<?php echo $details["idRecette"]?>&note=5 "><i value="5" class="bi bi-star notationIcon"></i></a>
+                        <?php } else { 
+                            for ($j  =0 ; $j < $note ; $j ++) {
+                                ?>
+                                <a href="?id=<?php echo $details["idRecette"]?>&noteUbdate=<?php echo $j+1 ?>" ><i  value="1" class="bi bi-star-fill notationIcon note"></i></a>
+                                <?php
+                            }
+                            for ($j  = $note ; $j < 5 ; $j ++) {
+                                ?>
+                                <a href="?id=<?php echo $details["idRecette"]?>&noteUbdate=<?php echo $j+1 ?>" ><i value="1" class="bi bi-star notationIcon "></i></a>
+                                <?php
+                            }
+                             } ?>
+                        </div>
                         <div class="userInfo">
 
                         </div>
@@ -711,7 +738,6 @@ class userView
 
             <body>
                 <?php
-                $this->header();
                 $this->Menu(1);
                 $this->Diaporama($news);
                 $this->TitleSection("check our", "new recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
@@ -893,9 +919,9 @@ class userView
                     <div class="row">
                         <?php
                         foreach ($values as $value) {
-                            if ($value["valide"] == 0) {
+                           
                                 ?>
-                                <div class="col-lg-4 col-md-6 col-12">
+                                <div class="col-lg-4 col-md-6 col-12 cardIngredient">
                                     <div class="blog-box-inner">
                                         <div class="blog-img-box">
                                             <img class="img-fluid" src="./assets/slide/slide-1.jpg" alt="">
@@ -952,7 +978,7 @@ class userView
                                     </div>
                                 </div>
                                 <?php
-                            }
+                            
                         }
                         ?>
 
@@ -963,7 +989,7 @@ class userView
     public function ShowNutritionPage()
     {
         ?>
-            ?>
+            
             <?php
             $this->Entete_Page();
             ?>
@@ -974,11 +1000,13 @@ class userView
                 $this->HeaderImage("assets/slide/slide-2.jpg", "Ingredients in", "Delcious");
                 $this->Menu(6);
                 $this->TitleSection("check our", "Ingredients", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+                $this->SearchBar("search Ingredient");
                 $ingredient = new ingredientController();
                 $ingrs = $ingredient->getAllIngredientsController();
                 $this->CardIngredient($ingrs);
                     ?>
                 <script src="./views/script/hero.js"></script>
+                <script src="./views/script/Ingredient.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
                     crossorigin="anonymous"></script>
@@ -1045,7 +1073,6 @@ class userView
             $auth = new AuthController();
             $isAuth = $auth->VerifyIfAuthDoneAlready_Controller();
             if(isset($_GET["id"])&& isset($_GET["idUser"]) && $isAuth != false) {
-                echo $_GET["idUser"] . ' ' . $_GET["fav"];
                 if( intval($_GET["fav"]) == 1){
                     header("location:./recette?id=".$_GET["id"]);
                     $recette->defavoriserRecetteController($_GET["idUser"], $_GET["id"]);
@@ -1054,12 +1081,27 @@ class userView
                     $recette->favoriserRecetteController($_GET["idUser"], $_GET["id"]);
                 }
             }
+            if (isset($_GET["note"])  ) {
+                if ($isAuth !=false) {
+                    $recette->noterRecetteController($_GET["id"], $isAuth[0]["email"], $_GET["note"]);
+                    header("location:./recette?id=".$_GET["id"]);
+                }else {
+                    header("location:./connexion");
+                }
+            }
+            if (isset($_GET["noteUbdate"])){
+                $recette->updatenoteRecetteController($_GET["id"], $isAuth[0]["email"], $_GET["noteUbdate"]);
+                header("location:./recette?id=".$_GET["id"]);
+            }
             if ($isAuth != false ) {
-
                 $isFav = $recette->isFavoriserRecetteController($isAuth[0]["email"], $_GET["id"] ?? 0);
+                $note = $recette->getNoteRecetteByUserController($_GET['id'], $isAuth[0]["email"]);
             }else {
                 $isFav = 0;
-            }
+                $note = [];
+            }            
+
+
 
             $recetteDetails = $recette->getRecetteByIdController($_GET["id"] ?? 0);
             $ingrs = $ingredient->getIngredientRecettController($_GET["id"] ?? 0);
@@ -1073,7 +1115,7 @@ class userView
                 $this->header();
                 $this->HeaderImage("assets/slide/slide-2.jpg", "preparation", "Recette");
                 $this->Menu(-1);
-                $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs ,$isAuth,$isFav);
+                $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs ,$isAuth,$isFav,count($note)> 0 ? $note[0]["note"] :-1 );
                 ?>
                 <script src="./views/script/hero.js"></script>
                 <script src="./views/script/autoComplete2.js"></script>

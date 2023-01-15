@@ -30,7 +30,31 @@ window.addEventListener("beforeunload", function (e) {
     sessionStorage.setItem('scrollpos', window.scrollY);
 });
 
+let stars = document.querySelectorAll(".notationIcon");
 
+if (stars.length> 0) {
+  stars.forEach((star,index) => {
+    star.addEventListener("mouseover",(e) => {
+      for (let i = 0 ; i <= index ; i++) {
+        let starFill = document.querySelectorAll(".notationIcon")[i];
+        if (!starFill.classList.contains("note")){
+        starFill.classList.remove("bi-star");
+        starFill.classList.add("bi-star-fill");
+        }
+      }
+    })
+    star.addEventListener("mouseleave",(e) => {
+      for (let i = 0 ; i <= index ; i++) {
+        let starFill = document.querySelectorAll(".notationIcon")[i];
+        if (!starFill.classList.contains("note")){
+          starFill.classList.add("bi-star");
+          starFill.classList.remove("bi-star-fill");
+        }
+
+      }
+    })
+  })
+}
 
 
 }
