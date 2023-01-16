@@ -743,83 +743,7 @@ class userView
             </div>
             <?php
     }
-    public function ShowNewsScreen()
-    {
-        $newCtrl = new newsController();
-        $news = $newCtrl->getNewsController();
-        $recette = $newCtrl->getNewsRecetteController();
-            $this->Entete_Page();
-            ?>
 
-
-
-            <body>
-                <?php
-                $this->Menu(1);
-                $this->Diaporama($news);
-                $this->TitleSection("check our", "new recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->cardsContainer($recette);
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-            <?php
-    }
-    public function ShowHealthyScreen()
-    {
-        $recetteCtrl = new recetteController();
-        $values =  $recetteCtrl->getRecetteHealthyController();
-            $this->Entete_Page();
-            ?>
-            <body>
-                <?php
-                $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Bonne santé avec", "Delcious");
-                $this->Menu(3);
-                $this->TitleSection("check our", "Healthy Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->SearchBar("taper number de calories");
-                $this->cardsContainer($values);
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="./views/script/calories.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-            <?php
-    }
-    public function ShowSaisonScreen()
-    {
-        $recetteCtrl = new recetteController();
-        $saisons = $recetteCtrl->getAllSaisonController();
-        $saisonFilter = ["All"];
-        foreach($saisons as $saison) {
-            array_push($saisonFilter, $saison["nomSaison"]);
-        }
-        unset($saisonFilter[count($saisons) ]) ;
-            $this->Entete_Page();
-
-        $values = $recetteCtrl->getrecetteSaisonController();
-        ?>
-            <body>
-                <?php
-                $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Recettes natural avec", "Delcious");
-                $this->Menu(4);
-                $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->FilterButtons($saisonFilter,0,"saison");
-                $this->cardsContainer($values);
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="./views/script/filterSaison.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-            <?php
-    }
 
 
     public function inputAutoComplete()
@@ -840,41 +764,6 @@ class userView
             </form>
             <br/><br>
             <?php
-    }
-    public function ShowIdeeRecettesPage()
-    {
-
-        $recetteController = new recetteController();
-        if (isset($_POST["submit"])) {
-            $values = $recetteController->getrecetteIdeeController();
-        } else {
-            $values = $recetteController->getAllRecetteController();
-        }
-
-        
-
-        $this->Entete_Page();
-        ?>
-
-            <body>
-                <?php
-                $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Chercher Recettes avec", "Delcious");
-                $this->Menu(2);
-                $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->inputAutoComplete();
-
-                $this->cardsContainer($values)
-
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="./views/script/autoComplete.js"></script>
-
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-        <?php
     }
 
     public function cardsContainer($values)
@@ -902,35 +791,7 @@ class userView
             </div>
             <?php
     }
-    public function ShowFeteScreen()
-    {
-        $recetteController = new recetteController();
-        $values = $recetteController->getAllRecetteController();
-        $fetes = $recetteController->getAllFeteController();
-        $this->Entete_Page();
-        $feteFiter = [];
-        foreach ($fetes as $fete) {
-            array_push($feteFiter, $fete["nom"]);
-        }
-        ?>
 
-            <body>
-                <?php
-                $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Fetes avec", "Delcious");
-                $this->Menu(5);
-                $this->TitleSection("check our", "Fetes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->FilterButtons($feteFiter, 0,"fete");
-                $this->cardsContainer($values);
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="./views/script/filterFete.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-            <?php
-    }
     public function CardIngredient($values)
     {
         $ingredient = new ingredientController();
@@ -1007,34 +868,7 @@ class userView
                 </div>
             </div><?php
     }
-    public function ShowNutritionPage()
-    {
-        ?>
-            
-            <?php
-            $this->Entete_Page();
-            ?>
 
-            <body>
-                <?php
-                $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "Ingredients in", "Delcious");
-                $this->Menu(6);
-                $this->TitleSection("check our", "Ingredients", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->SearchBar("search Ingredient");
-                $ingredient = new ingredientController();
-                $ingrs = $ingredient->getAllIngredientsController();
-                $this->CardIngredient($ingrs);
-                    ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="./views/script/Ingredient.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-            <?php
-
-    }
 
     public function seeAll($href){
         ?>
@@ -1043,237 +877,13 @@ class userView
                 </div>
         <?php
     }
-    public function ShowAcceilPage()
-    {
-        ?>
-
-            <?php
-            $this->Entete_Page();
-            $par = new parametreController();
-            $diapo = $par->getDiaporamaController();
-            ?>
-            <body>
-                <?php
-                $this->header();
-                $this->Hero($diapo);
-                $this->Menu(0);
-        
-                $recetteController = new recetteController();
-                $values0 = $recetteController->getRecetteByCategorieController(0);
-                $values1 = $recetteController->getRecetteByCategorieController(1);
-                $values2 = $recetteController->getRecetteByCategorieController(2);
-                $values3 = $recetteController->getRecetteByCategorieController(3);
-                $this->TitleSection("check our", "entrées", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                
-                ?>
-
-                <?php
-                $this->seeAll("./categorie?id=0");
-                $this->Carousel("id1", $values0);
-                $this->TitleSection("check our", "plats", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->seeAll("./categorie?id=1");
-                $this->Carousel("id2", $values1);
-                $this->TitleSection("check our", "desserts", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->seeAll("./categorie?id=2");
-                $this->Carousel("id3", $values2);
-                $this->TitleSection("check our", "boissons", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-                $this->seeAll("./categorie?id=3");
-                $this->Carousel("id4", $values3);
-                $this->Menu(0);
-                $this->header();
-
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-            <?php
-    }
-    public function showDetailRecettePage()
-    {
-            $this->Entete_Page();
-            $recette = new recetteController();
-            $ingredient = new ingredientController();
-            $auth = new AuthController();
-            $isAuth = $auth->VerifyIfAuthDoneAlready_Controller();
-            if(isset($_GET["id"])&& isset($_GET["idUser"]) && $isAuth != false) {
-                if( intval($_GET["fav"]) == 1){
-                    header("location:./recette?id=".$_GET["id"]);
-                    $recette->defavoriserRecetteController($_GET["idUser"], $_GET["id"]);
-                }else {
-                    header("location:./recette?id=".$_GET["id"]);
-                    $recette->favoriserRecetteController($_GET["idUser"], $_GET["id"]);
-                }
-            }
-            if (isset($_GET["note"])  ) {
-                if ($isAuth !=false) {
-                    $recette->noterRecetteController($_GET["id"], $isAuth[0]["email"], $_GET["note"]);
-                    header("location:./recette?id=".$_GET["id"]);
-                }else {
-                    header("location:./connexion");
-                }
-            }
-            if (isset($_GET["noteUbdate"])){
-                $recette->updatenoteRecetteController($_GET["id"], $isAuth[0]["email"], $_GET["noteUbdate"]);
-                header("location:./recette?id=".$_GET["id"]);
-            }
-            if ($isAuth != false ) {
-                $isFav = $recette->isFavoriserRecetteController($isAuth[0]["email"], $_GET["id"] ?? 0);
-                $note = $recette->getNoteRecetteByUserController($_GET['id'], $isAuth[0]["email"]);
-            }else {
-                $isFav = 0;
-                $note = [];
-            }            
 
 
 
-            $recetteDetails = $recette->getRecetteByIdController($_GET["id"] ?? 0);
-            $ingrs = $ingredient->getIngredientRecettController($_GET["id"] ?? 0);
-            $instrs = $recette->getInstructionsRecettesController($_GET["id"] ?? 0);
-            $isAuth = $auth->VerifyIfAuthDoneAlready_Controller();
 
-            ?>
-            <body>
-                <?php
-                
-                $this->header();
-                $this->HeaderImage("assets/slide/slide-2.jpg", "preparation", "Recette");
-                $this->Menu(-1);
-                $this->DetaialsRecette($recetteDetails[0], $ingrs, $instrs ,$isAuth,$isFav,count($note)> 0 ? $note[0]["note"] :-1 );
-                ?>
-                <script src="./views/script/hero.js"></script>
-                <script src="./views/script/autoComplete2.js"></script>
 
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            </body>
-        <?php
-    }
 
-    public function showProfilePage(){
 
-        $recetteCtrl = new recetteController();
-        $authCtrl = new AuthController();
-        if(isset($_POST["logout"])) {
-            $authCtrl->LogOut_Controller();
-        }
-        if(isset($_POST["save-profile"])){
-            $authCtrl->updateUserController();
-        }
-        $is = $authCtrl->VerifyIfAuthDoneAlready_Controller();
-        if ($is != false) {
-            $user = $is[0];
-        }else {
-            header("Location:./connexion");
-        }
-        $recette = $recetteCtrl->getFavoriteRecetteController($user["email"]);
-        $recetteUser  =$recetteCtrl->getRecetteByUserController($user["email"]);
 
-        $this->Entete_Page();
-        ?>
-        <body>
-            <?php
-
-            $this->Menu(-1);
-            $this->ProfileUser($user);
-            $this->TitleSection("Votre favorites", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-            $this->cardsContainer($recette);
-            $this->TitleSection("Votre", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-            $this->cardsContainer($recetteUser);
-            ?>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-        </body>
-    <?php
-    }
-
-    public function showCategoriePage(){
-
-        $adminView = new adminstrationView();
-        $id = $_GET["id"] ?? 0;
-        $recetteCtrl = new recetteController();
-        $catgrs = $recetteCtrl->getAllCategoriesController();
-        $recette = $recetteCtrl->getRecetteByCategorieController($id);
-        $saisons = $recetteCtrl->getAllSaisonController();
-        $saisonFilter = ["All"];
-        foreach($saisons as $saison) {
-            array_push($saisonFilter, $saison["nomSaison"]);
-        }
-        unset($saisonFilter[count($saisons) ]) ;
-        $this->Entete_Page();
-        ?>
-        <body>
-            <?php
-
-            $this->header();
-            $this->HeaderImage("assets/slide/slide-2.jpg", $catgrs[$id]["nom"].' in', "Delcious");
-            $this->Menu(-1);
-            $this->TitleSection($catgrs[$id]["nom"] , " Recttes",  "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-            $this->FilterButtons($saisonFilter,0,"saison");
-            $this->TrieButtons(["temp prep","temp repos",'temp cuiss',"temp total",'notation',"calories"]);
-            $this->cardsContainer($recette);
-            ?>
-            <script src="./views/script/filterSaison.js"></script>
-            <script src="./views/script/categorieTri.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-        </body>
-    <?php
-    }
-
-    public function showLoginPage(){
-        
-        $auth = new AuthController();
-        if (isset($_POST['login'])) {
-            $res = $auth->AuthUser_Controller($_POST['email'], $_POST["password"]);
-            if(count($res) > 0){
-                header("Location:./profile");
-            } else
-                $isAdmin = $auth->authAdminController($_POST['email'], $_POST["password"]);
-                if ($isAdmin ==1) {
-                    header("Location:./admin");
-            } else
-                echo "false";
-               
-        }
-        $this->Entete_Page();
-
-        ?>
-        <body>
-            <?php
-            $this->LoginScreen();
-            ?>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-        </body>
-    <?php
-    }
-    public function showRegistrePage(){
-        
-        $auth = new AuthController();
-        if (isset($_POST['register'])) {
-            $res = $auth->RegisterUserController();
-            
-            header("Location:./profile");
-
-        }
-        $this->Entete_Page();
-
-        ?>
-        <body>
-            <?php
-            $this->RegistreScreen();
-            ?>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-        </body>
-    <?php
-    }
 }
 ?>
