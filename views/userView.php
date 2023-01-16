@@ -31,6 +31,12 @@ class userView
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
             <link rel="stylesheet" href="./views/styleSheet/login.css">
             <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+            <style>
+            body {
+            font-family: "Amarante";
+            }
+            </style>
         </head>
         <?php
     }
@@ -484,9 +490,9 @@ class userView
         ?>
 
             <div class="swiper-slide events">
-                <div class="row event-item">
+                <div class="row event-item" style="margin-top: -10px;">
                     <div class="col-lg-5">
-                        <img src="<?php echo $value["img"] ?>" style="z-index: 20;width :100%;height : 90%;border : 3px solid #FFF;border-radius : 20px;margin : 0 20px" class="img-fluid" alt="">
+                        <img src="<?php echo $value["img"] ?>" style="z-index: 20;width :100%;max-height : 400px;  object-fit: cover;border : 3px solid #FFF;border-radius : 20px;margin : 0 20px" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0 content" style="margin-left: 20px;">
                         <h3><?php echo $value["title"] ?></h3>
@@ -503,9 +509,7 @@ class userView
 
                         </ul>
                         <p>
-                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate
-                            velit esse cillum dolore eu fugiat nulla pariatur
+
                         </p>
                     </div>
                 </div>
@@ -525,7 +529,9 @@ class userView
                         <!-- Define each of the slides
                and write the content -->
 
-                        <?php foreach ($values as $value) {
+                        <?php
+                        $array = array_slice($values, 0,3);
+                         foreach ($array as $value) {
                             ?>
                             <div class="slide" style="background-image: url(<?php echo ($value["img"])?>); background-size: cover;">
                                 <div class="slide-cover">
@@ -629,8 +635,8 @@ class userView
                             <h5><?php echo $details['notation'] ?><i class="bi bi-star-fill"></i></h5>
                             <?php } ?>
                         </div>
-
-                        <h1>Ingredient</h1>
+                        
+                        <h1 >Ingredient</h1>
                         <?php
                         foreach ($ingrs as $key => $ingr) {
                             ?>
@@ -639,7 +645,7 @@ class userView
                                     <span><?php echo $key + 1 ?></span>
                                 </div>
                                 <h5>
-                                    <?php echo $ingr["quan"] ?>
+                                    <?php echo $ingr["quan"].' - '.$ingr["nom"].' -'  ?>
                                 </h5>
                             </div>
                             <?php
@@ -703,6 +709,17 @@ class userView
                             }
                              } ?>
                         </div>
+                        <?php if ( $isAuth[0]["email"] == $details["idUser"]) { ?>
+                        <div class="recette-calorie" style="width: 110px;">
+                        <a href="./modifierRecette?id=<?php echo $details["idRecette"] ?>">
+                            <div>
+                                <i style="margin-right: 5px;color:#FFF" class="bi bi-dash-circle-fill"></i><span style="color: #FFF;">
+                                    modifier
+                                </span>
+                            </div>
+                            </a>
+                        </div>
+                        <?php } ?>
                         <div class="userInfo">
 
                         </div>
@@ -804,6 +821,7 @@ class userView
             <?php
     }
 
+
     public function inputAutoComplete()
     {
         ?>
@@ -813,12 +831,14 @@ class userView
                 </div>
                 <button type="submit" class="submit">Ajouter</button>
             </form>
-            <div class="ingredient-select">
+
+            <form style="display: block;" method="post" class="search-recette">
+            <div style="display: flex;" class="ingredient-select">
 
             </div>
-            <form method="post" class="search-recette">
-                <button type="submit" name="submit" class="submit">Chercher</button>
+                <button style="margin-left : 40%;display : block" sty type="submit" name="submit" class="submit">Chercher</button>
             </form>
+            <br/><br>
             <?php
     }
     public function ShowIdeeRecettesPage()
@@ -843,6 +863,7 @@ class userView
                 $this->Menu(2);
                 $this->TitleSection("check our", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->inputAutoComplete();
+
                 $this->cardsContainer($values)
 
                 ?>
@@ -1043,6 +1064,7 @@ class userView
                 $values2 = $recetteController->getRecetteByCategorieController(2);
                 $values3 = $recetteController->getRecetteByCategorieController(3);
                 $this->TitleSection("check our", "entrées", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+                
                 ?>
 
                 <?php
@@ -1057,6 +1079,9 @@ class userView
                 $this->TitleSection("check our", "boissons", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
                 $this->seeAll("./categorie?id=3");
                 $this->Carousel("id4", $values3);
+                $this->Menu(0);
+                $this->header();
+
                 ?>
                 <script src="./views/script/hero.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -1144,6 +1169,7 @@ class userView
             header("Location:./connexion");
         }
         $recette = $recetteCtrl->getFavoriteRecetteController($user["email"]);
+        $recetteUser  =$recetteCtrl->getRecetteByUserController($user["email"]);
 
         $this->Entete_Page();
         ?>
@@ -1154,6 +1180,8 @@ class userView
             $this->ProfileUser($user);
             $this->TitleSection("Votre favorites", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
             $this->cardsContainer($recette);
+            $this->TitleSection("Votre", "Recettes", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
+            $this->cardsContainer($recetteUser);
             ?>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

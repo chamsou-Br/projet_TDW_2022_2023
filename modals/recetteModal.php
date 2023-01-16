@@ -46,6 +46,15 @@ class recetteModal {
         $this->Deconexion($db);
         return $res;
     }
+    public function getRecetteByUserModal($idUser){
+      $db = $this->Connexion();
+      $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email  where recette.idUser = :idUser");
+      $_REQUEST->bindParam("idUser",$idUser);
+      $_REQUEST->execute();
+      $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+      $this->Deconexion($db);
+      return $res;
+  }
 
   public function addRecetteModal($idRecette,$idUser,$nom,$descr,$tprep,$tempsReposint,$tempsCuisson,$idCategorie,$idFete,$picture,$ingrs,$instrs,$ingrDesc) {
     $db = $this->Connexion();
@@ -264,10 +273,12 @@ public function isFavoriserRecette($idUser,$idRecette){
 
 public function modifierRecetteModal($idRecette,$idUser,$nom,$descr,$tprep,$tempsReposint,$tempsCuisson,$idCategorie,$idFete,$picture,$ingrs,$instrs,$ingrDesc){
   $db = $this->Connexion();
-  $_REQUEST_PICTURE = $db->prepare("UPDATE  `image` set `path` = :pathimage  where idRecette = :idRecette");
-  $_REQUEST_PICTURE->bindParam("pathimage",$picture);
-  $_REQUEST_PICTURE->bindParam("idRecette",$idRecette);
-  $_REQUEST_PICTURE->execute();
+  if ($picture != false) {
+    $_REQUEST_PICTURE = $db->prepare("UPDATE  `image` set `path` = :pathimage  where idRecette = :idRecette");
+    $_REQUEST_PICTURE->bindParam("pathimage",$picture);
+    $_REQUEST_PICTURE->bindParam("idRecette",$idRecette);
+    $_REQUEST_PICTURE->execute();
+  }
   $_REQUEST = $db->prepare("UPDATE recette SET nom = :nom , descr = :descr , tempsPreparation = :tempsPreparation , tempsReposint = :tempsReposint , tempsCuisson = :tempsCuisson , idCategorie = :idCategorie, idFete = :idFete where idRecette = :idRecette");
   $_REQUEST->bindParam("idRecette", $idRecette);
   $_REQUEST->bindParam("nom", $nom);

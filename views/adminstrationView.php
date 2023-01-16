@@ -28,7 +28,12 @@ class adminstrationView {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link href="./views/styleSheet/admin.css" rel="stylesheet" type="text/css" />
     <link href="./views/styleSheet/hero.css" rel="stylesheet" type="text/css" />
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+            <style>
+            body {
+            font-family: "EB Garamond";
+            }
+            </style>
 
 
 </head>
@@ -117,20 +122,46 @@ class adminstrationView {
             <?php
     }
 
+    public function formImage(){
+      ?>
+        <form method="post" enctype="multipart/form-data" role="form" class="addForm">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <input type="file" name="image" class="form-control" id="name" placeholder="titre de news" >
+            </div>
+          </div>
+          <div class="text-center"><button name="imagepost" type="submit">ajouter News</button></div>
+        </form>
+        <?php
+    }
+
 
     public function formNews(){
         ?>
-        <form method="post" role="form" class="addForm">
+        <form method="post" role="form" class="addForm" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-6 form-group">
               <input type="text" name="title" class="form-control" id="name" placeholder="titre de news" >
             </div>
-            <div class="col-md-6 form-group mt-3 mt-md-0">
-              <input type="number"  class="form-control" name="recette" id="email" placeholder="recette" >
+            <div class="col-md-6 form-group">
+            
+                <select class="form-select" name="recette"   aria-label="Default select example">
+                <option value="" selected >select recette</option>
+                <?php
+                $recette = new recetteController();
+                $res = $recette->getAllRecetteController();
+                foreach($res as $key=> $cat) {
+                echo $key;
+                  ?>
+                  <option  value="<?php echo $cat["idRecette"] ?>"><?php echo $cat["nom"] ?></option>
+                  <?php
+                }
+                ?>
+                </select>
             </div>
           </div>
-          <div class="form-group mt-3">
-            <input type="text" class="form-control" name="img" id="subject" placeholder="image de news" >
+          <div class="col-md-6 form-group">
+              <input type="file" name="image" class="form-control" id="name" placeholder="image" >
           </div>
           <div class="form-group mt-3">
             <textarea class="form-control" name="descr" rows="5" placeholder="description" ></textarea>
@@ -277,7 +308,7 @@ class adminstrationView {
       $tot = $value["tempsPreparation"] + $value["tempsReposint"] + $value["tempsCuisson"];
           ?>     
           <tr categorie="<?php if (isset($value["nomCategorie"])) echo $value["nomCategorie"] ?>" fete="<?php if(isset($value["nomFete"])) echo $value["nomFete"] ?>">
-            <th scope="row"><a style="color: #cfa671;" href="./recette?id=<?php echo $value["idRecette"] ?>"><?php echo $value["nom"] ?></a></th>
+            <th scope="row"><a style="color: #000;font-size : 12px" href="./recette?id=<?php echo $value["idRecette"] ?>"><?php echo $value["nom"] ?></a></th>
             <td><?php echo $value["nomUser"] ?></td>
             <td><?php echo $value["nomCategorie"] ?></td>
             <td><?php echo $value["nomFete"] ?></td>
@@ -355,9 +386,7 @@ class adminstrationView {
       $vitsIngr = $ingrsCtrl->getVitaminsIngredientController($id);
       $minsIngr = $ingrsCtrl->getMinealsIngredientController($id);
     } 
-
-      
-    
+ 
    
         ?>
          <form  method="post" role="form" class="addForm">
@@ -491,7 +520,7 @@ class adminstrationView {
       } 
 
         ?>
-        <form action="" method="post" role="form" class="addForm">
+        <form action="" method="post" role="form" class="addForm" enctype="multipart/form-data">
          <input type="hidden" name="idRecette" value="<?php if ($modifier == false)
            echo $id; else echo $modifier ?>"  class="form-control" id="name"  >
          <input type="hidden" name="idUser" value="<?php echo $user ?>"  class="form-control" id="name"  >
@@ -547,11 +576,14 @@ class adminstrationView {
                 ?>
                 </select>
             </div>
-            
-            <div class="col-md-6 form-group mt-3 mt-md-0">
+            <div class="col-md-6 form-group">
             <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">image</label>
+              <input type="file" name="image" class="form-control" id="name" placeholder="image" >
+          </div>
+            <!-- <div class="col-md-6 form-group mt-3 mt-md-0">
+            
               <input type="text" value="<?php if ($modifier!=false) echo $value["path"] ?>" class="form-control" required name="picture" id="email" placeholder="picture" >
-            </div>
+            </div> -->
               
             </div>
             <?php
@@ -777,7 +809,7 @@ class adminstrationView {
                 $this->SearchBar("search recette");
                 $this->TrieButtons(["temp prep","temp repos",'temp cuiss','temp total',"calories"]);
                 $this->table(["recette","utilisateur","categorie","fete","temp prep","temp repo",'temp cuiss','temp total','calories',"états","modifier" , "supprimer"],1,$recs);
-                $this->formRecette(count($recs),"user6@gmail.com",false,"ajouter Recette");
+                $this->formRecette(count($recs),"admin",false,"ajouter Recette");
           ?>
             <script src="./views/script/autoComplete.js"></script>
             <script src="./views/script/filterGestionRecette.js"></script>
@@ -790,7 +822,7 @@ class adminstrationView {
     }
 
     public function showCategorieAdmin(){
-      $userView = new userView();
+
       session_start();
       if(!isset($_SESSION['admin'])){
       header("Location:./connexion");

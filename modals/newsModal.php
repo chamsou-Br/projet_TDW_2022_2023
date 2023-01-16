@@ -30,7 +30,7 @@ class newsModal{
 
     public function getNewsModal (){
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("SELECT * FROM `news` WHERE idRecette IS NULL");
+        $_REQUEST = $db->prepare("SELECT * FROM `news`  WHERE idRecette IS NULL order by idnews DESC ");
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         $this->Deconexion($db);

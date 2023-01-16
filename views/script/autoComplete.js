@@ -98,7 +98,7 @@ function autocomplete(inp, arr) {
 
 /*An array containing all the country names in the world:*/
 var countries = ["sucre glace","the","farine","viande hachee","fromage rapechiche","feuilles de yufka","cumin moulu","piment doux","oignon","coriandre","sel","poivre","oufs ","pain","beurre","vignes","citron","Persil","riz","pignons de pin","bouillon de volaille","huile d'olive","pois ","pommes de terre","courgettes ","cannelle","sardines","ail","poivre rouge doux","poivre noir",'Huile pour friture',"pois chiche","moules","levure","orange","sucre","fleur d'oranger","tomates","menthe","semoule de ble","sucre vanille","margarine","smen","eau","amandes","Miel","arottes","navets","gingembre","raz-el-hanout","paleron de boeuf","citrouille","carottes",'celeri'];
-console.log(countries.length,"lll")
+
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("myInput"), countries);
 
@@ -156,7 +156,7 @@ if (SubmitBtn) {
 
   })
 
-  document.querySelector(".submitInstruction").addEventListener('click' , (e)=> {
+  document.querySelector(".submitInstruction") ? document.querySelector(".submitInstruction").addEventListener('click' , (e)=> {
     e.preventDefault();
         //add child 
         let val =document.querySelector("#instruction").value
@@ -189,7 +189,7 @@ if (SubmitBtn) {
         ingredient_select.appendChild(instr_item)
         document.querySelector("#instruction").value  =""
 
-  })
+  }) :null
 }
 let vitsClose = document.querySelectorAll('.ing-close');
 

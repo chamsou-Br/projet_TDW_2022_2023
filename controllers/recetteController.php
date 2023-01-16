@@ -3,7 +3,20 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/recetteModal.php';
 require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/modals/ingredientModal.php';
 class  recetteController{
-    
+
+
+    public function uploadPicture(){
+        $target_dir = "assets/upload/";
+        $target_file = $target_dir.basename($_FILES["image"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            echo "The file ".htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
+          }
+        return $target_dir.htmlspecialchars(basename($_FILES["image"]["name"]));
+    }
+
     
     public function getAllRecetteController() {
         $recetteModal = new recetteModal();
@@ -47,6 +60,13 @@ class  recetteController{
         return $res;
     }
 
+    
+    public function getRecetteByUserController($user){
+        $recetteModal = new recetteModal();
+        $res = $recetteModal->getRecetteByUserModal($user);
+        return $res;
+    }
+
     public function getInstructionsRecettesController($id){
         $recetteModal = new recetteModal();
         $res = $recetteModal->getInstuctionRecetteModal($id);
@@ -58,7 +78,8 @@ class  recetteController{
     public function addRecette() {
         if (isset($_POST['ajouter-recette'])) {
             $recetteModal = new recetteModal();
-            $res = $recetteModal->addRecetteModal($_POST["idRecette"],$_POST["idUser"],$_POST["nom"],$_POST["descr"],$_POST["tprep"],$_POST["trepo"],$_POST["tcuis"],$_POST["categorie"],$_POST["fete"],$_POST["picture"],$_POST['ingredient'],$_POST["instruction"],$_POST['ingrDescr']);
+
+            $res = $recetteModal->addRecetteModal($_POST["idRecette"],$_POST["idUser"],$_POST["nom"],$_POST["descr"],$_POST["tprep"],$_POST["trepo"],$_POST["tcuis"],$_POST["categorie"],$_POST["fete"],$this->uploadPicture(),$_POST['ingredient'],$_POST["instruction"],$_POST['ingrDescr']);
             return $res;
         }
     }
@@ -66,7 +87,12 @@ class  recetteController{
     public function modifierRecette() {
         if (isset($_POST['ajouter-recette'])) {
             $recetteModal = new recetteModal();
-            $res = $recetteModal->modifierRecetteModal($_POST["idRecette"],$_POST["idUser"],$_POST["nom"],$_POST["descr"],$_POST["tprep"],$_POST["trepo"],$_POST["tcuis"],$_POST["categorie"],$_POST["fete"],$_POST["picture"],$_POST['ingredient'] ?? [],$_POST["instruction"] ?? [],$_POST['ingrDescr'] ?? []);
+            if ($_FILES["image"]["size"]> 0) {
+                $image = $this->uploadPicture();
+            }else {
+                $image = false;
+            }
+            $res = $recetteModal->modifierRecetteModal($_POST["idRecette"],$_POST["idUser"],$_POST["nom"],$_POST["descr"],$_POST["tprep"],$_POST["trepo"],$_POST["tcuis"],$_POST["categorie"],$_POST["fete"],$image,$_POST['ingredient'] ?? [],$_POST["instruction"] ?? [],$_POST['ingrDescr'] ?? []);
             return $res;
         }
     }
