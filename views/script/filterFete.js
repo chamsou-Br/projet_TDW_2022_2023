@@ -3,7 +3,6 @@
 let filterButtons = document.querySelectorAll(".filter-button-group button");
 const initFilter = (value)=> {
     document.querySelectorAll(".card").forEach((card) => {
-        console.log(card.parentElement.getAttribute("fete"), value);
         if (card.parentElement.getAttribute("fete") != value) {
             card.parentElement.hidden = true
         }else{

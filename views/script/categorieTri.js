@@ -34,7 +34,7 @@ function sort(id) {
         }
     }
 }
-console.log("^^^^^^")
+
 document.querySelector('.tri-select').onchange = function(e){
     e.preventDefault();
     let val = document.querySelector('.tri-select').value;

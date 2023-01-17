@@ -78,6 +78,7 @@ body{
   .addForm textarea {
 
     padding: 10px 12px;
+
   }
 
   .addForm input:focus , .addForm textarea:focus ,  .addForm select:focus{

@@ -399,6 +399,7 @@ class userView
     }
 
 
+
     public function Gallerie($nom)
     {
         ?>
@@ -465,6 +466,10 @@ class userView
                     <p>
                         <?php echo substr($value["descr"], 0, 100) ?>
                     </p>
+              
+                    <p style="color :#cfa671;margin-top : 30px;font-size :12px" >Afficher les details</p>
+
+
                 </div>
 
     </a>
@@ -749,20 +754,22 @@ class userView
     public function inputAutoComplete()
     {
         ?>
-            <form class="autocomplete-container" autocomplete="off" action="">
+        <form method="post">
+            <div></div>
+            <div class="autocomplete-container" autocomplete="off" action="">
                 <div class="autocomplete" style="width:300px;">
                     <input id="myInput" type="text" name="myCountry" placeholder="Ingreedients">
                 </div>
-                <button type="submit" class="submit">Ajouter</button>
-            </form>
-
-            <form style="display: block;" method="post" class="search-recette">
-            <div style="display: flex;" class="ingredient-select">
-
+                <div type="submit" class="submitPlus" ><i  style="margin-left: 20px;color: #cfa671;font-size: 25px" class="bi bi-plus-circle submitPlus"></i></div>
+                <button style=";display : block" sty type="submit" name="submit" class="submit">Chercher</button>
             </div>
-                <button style="margin-left : 40%;display : block" sty type="submit" name="submit" class="submit">Chercher</button>
-            </form>
-            <br/><br>
+
+            <div style="display: block;"  class="search-recette">
+                <div style="display: flex;" class="ingredient-select">
+                </div>
+           </div>
+    </form>
+            
             <?php
     }
 
@@ -770,7 +777,7 @@ class userView
     {
 
         ?>
-            <div style="display: flex;  flex-wrap: wrap;">
+            <div class="cardsContainer" style="display: flex;  flex-wrap: wrap;">
                 <?php foreach ($values as $key => $value) { 
                             $prep = isset($value["tempsPreparation"]) ? $value["tempsPreparation"] : 0;
                             $repo = isset($value["tempsReposint"]) ? $value["tempsReposint"] : 0;

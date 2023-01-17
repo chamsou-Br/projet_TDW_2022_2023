@@ -10,27 +10,33 @@ require_once('./controllers/parametreController.php');
         $auth = new AuthController();
         $pars = new parametreController();
         if (isset($_POST['diapoSubmit'])) {
-            $pars->addDiaporamaController($_POST["recette"], $_POST["news"] ?? "0");
+            $pars->addDiaporamaController($_POST["recette"] , $_POST["news"]);
         }
+        if (isset($_POST['seilmodifier'])) {
+            $pars->ubdateSeilIdeeRecetteController($_POST["seilIngredient"]);
+        }   
         if (isset($_GET["idDiapoSupp"])) {
             $pars->deleteDiaporamaController($_GET["idDiapoSupp"]);
-    header("Location:./parametre");
+            header("Location:./parametre");
         }
+        $params = $pars->getParamatreController()[0];
         $diapos = $pars->getDiaporamaController();
+        $news = $pars->getDiaporamaNewsController();
         $userView = new userView();
         $recetteCtrl = new recetteController();
         if (isset($_POST["ajouter-recette"]) && isset($_POST['ingredient']) && isset($_POST["instruction"])) {
           $recetteCtrl->addRecette();
         }
-        $recs = $recetteCtrl->getAllRecetteController();
+
             $Admin->Entete_Page();
         ?>        
         <body>
             <?php
                 $Admin->Menu(5);
                 $userView->TitleSection("Modifier", "parametre", "Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.");
-            $Admin->table(["Diaporama", "Recette", 'News', "Supprimer"], 4, $diapos);
+            $Admin->table(["Diaporama", "Recette", 'News', "Supprimer"], 4, array_merge($diapos,$news));
                 $Admin->formDiapo();
+            $Admin->formSeil($params);
           ?>
           <br /><br />
             <script src="./views/script/autoComplete.js"></script>
@@ -41,4 +47,5 @@ require_once('./controllers/parametreController.php');
                 crossorigin="anonymous"></script>
         </body>
         <?php
+
 ?>

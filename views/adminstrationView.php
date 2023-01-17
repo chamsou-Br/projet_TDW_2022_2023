@@ -292,15 +292,19 @@ class adminstrationView {
         foreach ($values as $key=> $value) {
           ?>     
           <tr>
-            <th scope="row"><?php echo $value["idDiaporama"] ?></th>
-            <td><?php echo $value["nom"] ?></td>
-            <td><?php echo $value["idNews"] ?></td>
+            <th scope="row"><?php echo $key+1 ?></th>
+            <td><?php if (isset($value["nom"]))
+              echo $value["nom"];else echo "-"  ?></td>
+            <td><?php if (isset($value["title"]))
+              echo $value["title"]; else echo "-"  ?></td>
             <td><a style="color: red;" href="?idDiapoSupp=<?php echo $value['idDiaporama'] ?>">Supprimer</a></td>
           </tr>
           <?php
   
         }
         }
+
+        
 
     public function bodyRecetteTable($values){
 
@@ -495,14 +499,31 @@ class adminstrationView {
             </div>
             <div class="col-md-6 form-group">
                 <select name="news" class="form-select mins-select" aria-label="Default select example">
-                <option value="0" selected>Select News</option>
+                <option value="" selected>Select News</option>
                 <?php foreach ($news as $new) { ?>
                   <option value="<?php echo $new["idNews"] ?>"><?php echo $new["title"] ?></option>
                 <?php } ?>
                 </select>
             </div>
           </div>
-          <button style="margin: auto;" class="submit " name="diapoSubmit" type="submit">Ajouter Diapo</button>   </form>
+          <button style="margin : 20px 0;padding : 0px;" class="submit " name="diapoSubmit" type="submit">Ajouter Diapo</button>  </form>
+      <?php
+    }
+
+    public function formSeil($seilideeRecette){
+
+      ?>
+              <form style="margin-top: 50px;" method="post" role="form" class="addForm">
+          <div class="row" style="display: flex;align-items:end">
+          <div class="col-md-6 form-group">
+          <label  style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">Le pourcentage des ingrédients pour idee de recette </label> 
+                <input type="number" value="<?php echo $seilideeRecette["seilIdeeRecette"] ?>" class="form-control" name="seilIngredient" id="email" placeholder="Le pourcentage des ingrédients  %" required>
+            </div>
+            <div class="col-md-6 form-group">
+            <button style="margin: auto;padding : 0px" class="submit " name="seilmodifier" type="submit">Modifier</button>  
+            </div>
+          </div>
+           </form>
       <?php
     }
     public function formRecette($id,$user,$modifier,$title){

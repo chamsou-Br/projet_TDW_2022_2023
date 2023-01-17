@@ -108,7 +108,7 @@ if ( window.history.replaceState ) {
 
 
 
-let SubmitBtn = document.querySelector(".autocomplete-container .submit") || document.querySelector(".submitIngredient")
+let SubmitBtn = document.querySelector(".submitPlus") || document.querySelector(".submitIngredient")  || document.querySelector(".autocomplete-container .submit")  
 if (SubmitBtn) {
   SubmitBtn.addEventListener("click",(e)=> {
     e.preventDefault();

@@ -36,10 +36,27 @@ class parametreModal{
         $this->Deconexion($db);
         return $res;
     }
-    public function addDiaporamaModal($idRecette,$idNews){
+
+    public function getDiaporamaNewsModal (){
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("INSERT INTO  `diaporama` (`idRecette`,`idNews`) VALUES ( :idRecette , :idNews) ");
+        $_REQUEST = $db->prepare("SELECT * FROM diaporama join news on news.idNews = diaporama.idNews ");
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+    public function addDiaporamaRecetteModal($idRecette){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("INSERT INTO  `diaporama` (`idRecette`) VALUES ( :idRecette ) ");
         $_REQUEST->bindParam("idRecette", $idRecette);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+    public function addDiaporamaNewsModal($idNews){
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("INSERT INTO  `diaporama` (`idNews`) VALUES ( :idNews) ");
         $_REQUEST->bindParam("idNews", $idNews);
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
@@ -55,6 +72,27 @@ class parametreModal{
         $this->Deconexion($db);
         return $res;
     }
+
+    public function ubdateSeilIdeeRecette($seilIdeeRecette) {
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("UPDATE parametre set seilIdeeRecette = :seilIdeeRecette WHERE idparametre = 1");
+        $_REQUEST->bindParam("seilIdeeRecette", $seilIdeeRecette);
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+    public function getParametresModal() {
+        $db = $this->Connexion();
+        $_REQUEST = $db->prepare("SELECT * from parametre");
+        $_REQUEST->execute();
+        $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
+        $this->Deconexion($db);
+        return $res;
+    }
+
+
     
     
     
