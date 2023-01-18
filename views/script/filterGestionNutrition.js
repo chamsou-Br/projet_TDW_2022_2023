@@ -19,8 +19,11 @@ function sort(id) {
             let val2 = li[i+1].getElementsByTagName("td")[id].innerHTML.toLowerCase().split(" ")[0];
             console.log(parseInt(val1),'  ',parseInt(val2))
             if (parseInt(val1) > parseInt(val2)) {
+                console.log(parseInt(val1),'  ',parseInt(val2),"supp")
                 stop = true;
                 break;
+            }else {
+                console.log(parseInt(val1),'  ',parseInt(val2),"inf")
             }
         }
 

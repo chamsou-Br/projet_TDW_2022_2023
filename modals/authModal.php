@@ -38,10 +38,7 @@ class AuthModal
         $_REQUEST->bindParam("prenom",$prenom);
         $_REQUEST->bindParam("age",$age);
         $_REQUEST->bindParam("motdepass",$password);
-        $_REQUEST->execute();
-        session_start();
-        $_SESSION["email"] = $email;
-        $_SESSION["password"] = $password;    
+        $_REQUEST->execute();  
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
@@ -55,11 +52,15 @@ class AuthModal
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         if($_REQUEST->rowCount()==1){  
-            if(session_id() == ''){
-                session_start();
+
+             if ($res[0]["valid"] == 1){
+                if(session_id() == ''){
+                    session_start();
+                 }
+                $_SESSION["email"] = $res[0]['email'] ;
+                $_SESSION["password"] = $res[0]['motdepass'];   
              }
-            $_SESSION["email"] = $res[0]['email'];
-            $_SESSION["password"] = $res[0]['motdepass'];       
+    
             $this->Deconexion($db);       
             return $res[0];
         }else{

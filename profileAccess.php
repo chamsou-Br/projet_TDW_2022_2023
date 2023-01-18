@@ -4,6 +4,6 @@ require_once $_SERVER['DOCUMENT_ROOT'].'/projet_php/controllers/showPagesControl
 
 $showPagesController = new showPages();
 
-$showPagesController->showSaisonPage();
+$showPagesController->showProfileAccessPage();
 
 ?>

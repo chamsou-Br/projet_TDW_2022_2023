@@ -134,8 +134,8 @@ vit.addEventListener("change",(e)=> {
               val1 = li[i].getElementsByTagName("th")[0].innerHTML.toLowerCase();
               val2 = li[i+1].getElementsByTagName("th")[0].innerHTML.toLowerCase();
             }else {
-              val1 = li[i].getElementsByTagName("td")[0].innerHTML;
-              val2 = li[i+1].getElementsByTagName("td")[0].innerHTML;
+              val1 = parseInt( li[i].getElementsByTagName("td")[0].innerHTML );
+              val2 = parseInt(li[i+1].getElementsByTagName("td")[0].innerHTML);
             }
 
             console.log(val1,val2)

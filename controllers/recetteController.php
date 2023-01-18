@@ -78,7 +78,6 @@ class  recetteController{
     public function addRecette() {
         if (isset($_POST['ajouter-recette'])) {
             $recetteModal = new recetteModal();
-
             $res = $recetteModal->addRecetteModal($_POST["idRecette"],$_POST["idUser"],$_POST["nom"],$_POST["descr"],$_POST["tprep"],$_POST["trepo"],$_POST["tcuis"],$_POST["categorie"],$_POST["fete"],$this->uploadPicture(),$_POST['ingredient'],$_POST["instruction"],$_POST['ingrDescr']);
             return $res;
         }
@@ -170,7 +169,26 @@ class  recetteController{
         $res = [];
         $recetteModal = new recetteModal();
         $recettes = $recetteModal->getAllRecetteModal();
-        $res = $this->GetSaison($recettes);
+        $ingrModal = new ingredientModal();
+        $res = [];
+        foreach($recettes as $key =>$rec ) {
+            $ingrs = $ingrModal->getIngredintRecette($rec["idRecette"]);
+            $i = 0;
+            $c = 0;
+            foreach( $ingrs as $ingr) {
+                if ($ingr["Healthy"] == 1) {
+                    $i = $i + 1;
+                }
+                $c = $c + $ingr["calories"];
+            }
+
+            if ($i >= 0.7 * count($ingrs ) && $c > 0){
+                $rec["Healthy"] = 1;
+                $rec["calories"] = $c;
+                array_push($res, $rec);
+            }
+        }
+        $res = $this->GetSaison($res);
         return $res; 
     }
 
