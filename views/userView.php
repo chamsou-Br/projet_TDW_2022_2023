@@ -25,7 +25,7 @@ class userView
             <meta charset="ISO-8859-1">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
+            <title>Chef Delecios</title>
             <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -35,10 +35,10 @@ class userView
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
             <link rel="stylesheet" href="./views/styleSheet/login.css">
             <link href="./views/styleSheet/user.css" rel="stylesheet" type="text/css" />
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+            <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans">
             <style>
             body {
-            font-family: "Amarante";
+                font-family: "Josefin Sans"
             }
             </style>
         </head>
@@ -51,7 +51,7 @@ class userView
         <div class="box-form">
             <div class="left">
                 <div class="overlay">
-                    <h1>Bienvenue avec nous</h1>
+                    <h1>Bienvenue chez nous</h1>
                     <p>Chef master un site web algerien pour proposer une variete de recettes différentes a la demande , et
                         partager les plus délicieux plats algériens .</p>
                     <span>
@@ -102,14 +102,14 @@ class userView
         <div class="box-form">
             <div class="left">
                 <div class="overlay">
-                    <h1>Bienvenue avec nous</h1>
-                    <p>Chef master un site web algerien pour proposer une variete de recettes différentes a la demande , et
+                    <h1>Bienvenue ches nous</h1>
+                    <p>Chef delecios un site web algerien pour proposer une variete de recettes différentes a la demande , et
                         partager les plus délicieux plats algériens .</p>
                     <span>
                         <p>conexion avec réseau sociaux</p>
                         <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
                         <a href="#"><i class="fa fa-google" aria-hidden="true"></i></a>
-                    </span>
+        </span>
                 </div>
             </div>
             <div class="right" style="width: 50%;">
@@ -186,7 +186,7 @@ class userView
                 <?php echo $title1; ?><span><?php echo ' ' . $title2; ?></span>
             </h2>
             <p>
-                <?php echo $desc; ?>
+        Chef Delicios un site web algerien pour proposer une variete de recettes différentes a la demande , et partager les plus délicieux plats algériens .
             </p>
         </div><?php
     }
@@ -485,16 +485,13 @@ class userView
             <a href="./recette?id=<?php echo $value[
                 'idRecette'
             ]; ?>" class="card" style="width: 18rem;">
-                <div class="card-image" style="background-image: url(<?php echo $value[
-                    'path'
-                ]; ?>)"></div>
+                <div class="card-image"  style="overflow: hidden;">
+                <img class="" src="<?php echo $value['path']; ?>" style="object-fit: cover;" />
+                </div>
                 <div class="box">
-                    <span>
-                        <?php if ($i + 1 < 10) {
-                            echo '0' . ($i + 1);
-                        } else {
-                            echo $i + 1;
-                        } ?>
+                    <span style="font-size: 16;">
+                    <?php echo $value["notation"] ?>
+                    <i class="bi bi-star-fill"></i>
                     </span>
                     <h4><?php echo $value['nom']; ?></h4>
                     <p>
@@ -632,11 +629,14 @@ class userView
                             'age'
                         ]; ?>" class="form-control" id="name" placeholder="age" >
                     </div>
+                    <?php if ($edit != false) { ?>
                     <div class="col-md-6 form-group">
-                        <input type="password" <?php if ($edit == false) echo "disabled" ?>  name="motdepass" value="<?php echo $value[
+                        <input type="password" <?php if ($edit == false)
+                            echo "disabled" ?>  name="motdepass" value="<?php echo $value[
                             'motdepass'
-                        ]; ?>" class="form-control" id="name" placeholder="nouvelle password" >
+                            ]; ?>" class="form-control" id="name" placeholder="nouvelle password" >
                     </div>
+                    <?php } ?>
                     <?php if ($edit != false) { ?>
                     <div class="col-md-6 form-group">
                     <button style="margin: auto;" class="submit "  name="save-profile" type="submit">Sauvgarder</button>
@@ -860,25 +860,27 @@ class userView
             <div class="cardsContainer" style="display: flex;  flex-wrap: wrap;">
                 <?php foreach ($values as $key => $value) {
 
-                    $prep = isset($value['tempsPreparation'])
-                        ? $value['tempsPreparation']
-                        : 0;
-                    $repo = isset($value['tempsReposint'])
-                        ? $value['tempsReposint']
-                        : 0;
-                    $cuis = isset($value['tempsCuisson'])
-                        ? $value['tempsCuisson']
-                        : 0;
-                    $tot = $repo + $prep + $cuis;
-                    ?>
+                    if ($value["valid"] == 1) {
+
+                        $prep = isset($value['tempsPreparation'])
+                            ? $value['tempsPreparation']
+                            : 0;
+                        $repo = isset($value['tempsReposint'])
+                            ? $value['tempsReposint']
+                            : 0;
+                        $cuis = isset($value['tempsCuisson'])
+                            ? $value['tempsCuisson']
+                            : 0;
+                        $tot = $repo + $prep + $cuis;
+                        ?>
                     <div class="cardInfo" style="margin : 20px" categorie="<?php echo $value[
                         'nomCategorie'
-                    ]; ?>"
+                        ]; ?>"
                         fete="<?php echo $value[
                             'nomFete'
-                        ]; ?>" saison="<?php if (isset($value['saison'])) {
-    echo $value['saison'];
-} ?>" 
+                            ]; ?>" saison="<?php if (isset($value['saison'])) {
+                             echo $value['saison'];
+                         } ?>" 
                         calories="<?php if (isset($value['calories'])) {
                             echo $value['calories'];
                         } ?>" >
@@ -888,7 +890,7 @@ class userView
                         <input type="hidden" value="<?php echo $tot; ?>" />
                         <input type="hidden" value="<?php echo $value[
                             'notation'
-                        ]; ?>" />
+                            ]; ?>" />
                         <input type="hidden" value="<?php if (
                             isset($value['calories'])
                         ) {
@@ -897,7 +899,8 @@ class userView
                         <?php $this->CardRecette($key, $value); ?>
                     </div>
                 <?php
-                } ?>
+                    }
+                }?>
             </div>
             <?php
     }

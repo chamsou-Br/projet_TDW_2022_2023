@@ -30,7 +30,7 @@ class recetteModal {
 
     public function getAllRecetteModal(){
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email order by recette.nom ");
+        $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,utilisateur.email,fetes.nom as nomFete , utilisateur.nom as nomUser FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete INNER JOIN utilisateur on   recette.idUser = utilisateur.email  order by recette.nom ");
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         $this->Deconexion($db);
@@ -95,7 +95,7 @@ class recetteModal {
 
   public function getRecetteByCategorieModal($categorie) {
     $db = $this->Connexion();
-    $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,fetes.nom as nomFete  FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete  where recette.idCategorie = :categorie");
+    $_REQUEST = $db->prepare("SELECT image.*, recette.*,categorie.nom as nomCategorie,categorie.idCategorie,fetes.idFete,fetes.nom as nomFete  FROM recette JOIN image ON recette.idRecette = image.idRecette JOIN categorie on recette.idCategorie = categorie.idCategorie JOIN fetes on recette.idFete = fetes.idFete  where recette.idCategorie = :categorie and valid = 1");
     $_REQUEST->bindParam("categorie",$categorie);
     $_REQUEST->execute();
     $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);

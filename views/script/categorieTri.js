@@ -18,7 +18,7 @@ function sort(id) {
             let val1 = li[i].getElementsByTagName("input")[id].value;
             let val2 = li[i+1].getElementsByTagName("input")[id].value;
             console.log(parseInt(val1),'  ',parseInt(val2))
-            if (parseInt(val1) > parseInt(val2)) {
+            if ( (id!= 4 && parseInt(val1) > parseInt(val2) ) || (id == 4 && parseInt(val1) < parseInt(val2))) {
                 stop = true;
                 break;
             }

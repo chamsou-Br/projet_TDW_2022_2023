@@ -355,6 +355,13 @@ a {
   transition: all ease-in-out 0.4s;
 }
 
+.card .card-image img {
+  background-size: cover;
+  height: 100px;
+  width: 100%;
+  transition: all ease-in-out 0.4s;
+}
+
 .card:hover .box {
   background: #cfa671;
   padding: 20px 20px 50px 30px;

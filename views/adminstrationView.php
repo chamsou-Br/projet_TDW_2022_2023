@@ -22,7 +22,7 @@ class adminstrationView
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chef Delecios</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -32,10 +32,10 @@ class adminstrationView
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link href="./views/styleSheet/admin.css" rel="stylesheet" type="text/css" />
     <link href="./views/styleSheet/user.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans">
             <style>
             body {
-            font-family: "EB Garamond";
+                font-family: "Josefin Sans"
             }
             </style>
 
@@ -294,11 +294,10 @@ class adminstrationView
         <tr>
         
           <th scope="row"><?php echo $key; ?></th>
-          <td><a style="color: #000;" href="./profileAccess?id=<?php echo $value["email"] ?>"><?php echo $value['nom']; ?></a></td>
-          <td><a style="color: #000;" href="./profileAccess?id=<?php echo $value["email"] ?>"><?php echo $value['prenom']; ?></a></td>
-          <td><a style="color: #000;" href="./profileAccess?id=<?php echo $value["email"] ?>"><?php echo $value['email']; ?></a></td>
-          <td><a style="color: #000;" href="./profileAccess?id=<?php echo $value["email"] ?>"><?php echo $value['age']; ?></a></td>
-          
+          <td><?php echo $value['nom']; ?></td>
+          <td><?php echo $value['prenom']; ?></td>
+          <td><?php echo $value['email']; ?></td>
+          <td><?php echo $value['age']; ?></td>
           <?php if ($value['valid'] == 1) { ?>
             <td> <a style="color : green" href="?idUserBloque=<?php echo $value[
                 'email'
@@ -308,6 +307,7 @@ class adminstrationView
                'email'
            ]; ?>" >bloquer</a> </td>
           <?php } ?>
+          <td><a style="color: #000;" href="./profileAccess?id=<?php echo $value["email"] ?>">consulter</a></td>
         </tr>
         <?php }
     }
@@ -357,7 +357,7 @@ class adminstrationView
             <td><?php echo $value['tempsCuisson'] . ' min'; ?></td>
             <td><?php echo $tot . ' min'; ?></td>
             <td><?php echo $value['calories']; ?></td>
-            <?php if ($value['valid'] == 1) { ?>
+            <?php if (intval($value['valid']) == 1) { ?>
               <td> <a style="color : green" href="?idRecetteBloque=<?php echo $value[
                   'idRecette'
               ]; ?>" >valider</a> </td>
@@ -1172,7 +1172,7 @@ class adminstrationView
     $this->SearchBar('chercher utilisateur par nom');
     $userView->FilterButtons(['nom', 'prenom', 'email', 'age'], 0, '');
     $this->table(
-        ['utilisateur', 'name', 'prenom', 'email', 'age', 'états'],
+        ['utilisateur', 'name', 'prenom', 'email', 'age', 'états',"profile"],
         2,
         $users
     );?>
