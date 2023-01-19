@@ -834,6 +834,10 @@ class adminstrationView
 
     public function gestionNewsPage()
     {
+        session_start();
+        if (!isset($_SESSION['admin'])) {
+            header('Location:./connexion');
+        }
         $userView = new userView();
         $this->Entete_Page();
         $newsCtrl = new newsController();
@@ -870,6 +874,10 @@ class adminstrationView
 
     public function gestionNutritionPage()
     {
+        session_start();
+        if (!isset($_SESSION['admin'])) {
+            header('Location:./connexion');
+        }
         $userView = new userView();
         $ingredient = new ingredientController();
         if (isset($_GET['idIngredientSupp'])) {
@@ -926,6 +934,10 @@ class adminstrationView
 
     public function gestionRecettePage()
     {
+        session_start();
+        if (!isset($_SESSION['admin'])) {
+            header('Location:./connexion');
+        }
         $userView = new userView();
         $recetteCtrl = new recetteController();
 
@@ -1016,6 +1028,10 @@ class adminstrationView
 
     public function paramsPage()
     {
+        session_start();
+        if (!isset($_SESSION['admin'])) {
+            header('Location:./connexion');
+        }
         $pars = new parametreController();
         if (isset($_POST['diapoSubmit'])) {
             $pars->addDiaporamaController($_POST['recette'], $_POST['news']);
@@ -1070,6 +1086,7 @@ class adminstrationView
 
     public function modifierNutritionPage()
     {
+        
         $userView = new userView();
         $ingredient = new ingredientController();
         if (!isset($_GET['id'])) {
@@ -1140,6 +1157,10 @@ class adminstrationView
 
     public function gestionUserPage()
     {
+        session_start();
+        if (!isset($_SESSION['admin'])) {
+            header('Location:./connexion');
+        }
         $userView = new userView();
         $auth = new AuthController();
 
