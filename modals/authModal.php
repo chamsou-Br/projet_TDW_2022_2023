@@ -117,7 +117,7 @@ class AuthModal
 
     public function getAllUsersModal(){
         $db = $this->Connexion();
-        $_REQUEST = $db->prepare("SELECT * FROM utilisateur order by nom ");
+        $_REQUEST = $db->prepare("SELECT * FROM utilisateur where email != 'admin' order by nom ");
         $_REQUEST->execute();
         $res = $_REQUEST->fetchAll(PDO::FETCH_ASSOC);
         $this->Deconexion($db);

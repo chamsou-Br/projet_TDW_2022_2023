@@ -181,12 +181,9 @@ class  recetteController{
                 }
                 $c = $c + $ingr["calories"];
             }
-
-            if ($i >= 0.7 * count($ingrs ) && $c > 0){
                 $rec["Healthy"] = 1;
                 $rec["calories"] = $c;
                 array_push($res, $rec);
-            }
         }
         $res = $this->GetSaison($res);
         return $res; 

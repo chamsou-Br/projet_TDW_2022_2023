@@ -1645,7 +1645,6 @@ class userView
         }
         unset($saisonFilter[count($saisons)]);
         $this->Entete_Page();
-
         $values = $recetteCtrl->getrecetteSaisonController();
         ?>
     <body>

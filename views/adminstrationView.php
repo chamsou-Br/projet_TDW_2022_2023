@@ -726,7 +726,7 @@ class adminstrationView
             </div>
             <div class="col-md-6 form-group">
             <label style="font-size: 14px;margin-bottom : 5px;letter-spacing: 1.1px;color: #000000AA">image</label>
-              <input type="file" name="image" class="form-control" id="name" placeholder="image" >
+              <input <?php if ($modifier == false) echo "required" ?> type="file" name="image" class="form-control" id="name" placeholder="image" >
           </div>
             <!-- <div class="col-md-6 form-group mt-3 mt-md-0">
             
@@ -922,7 +922,8 @@ class adminstrationView
                 0,
                 $ingrs
             );
-            $this->formNurtition(false, 'ajouter');?>
+            $this->formNurtition(false, 'ajouter');
+            ?>
             <script src="./views/script/hero.js"></script>
             <script src="./views/script/addVitsMins.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -1127,7 +1128,7 @@ class adminstrationView
         }
         if (isset($_POST['ajouter-recette'])) {
             $recetteCtrl->modifierRecette();
-            header('location:./gestionRecette');
+            
         }
         $this->Entete_Page();
         ?>        
